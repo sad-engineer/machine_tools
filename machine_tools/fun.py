@@ -35,3 +35,36 @@ def connect(filename):
     cursor = db.cursor()
     db.commit()
     return db, cursor
+
+
+def ror(variable: float, order: int = 6) -> float:
+    """ Функция округления (round_off_result).
+    round - работает не так как надо
+    round применяю только для выбора значений из таблиц, для отсечения
+    миллионных погрешностей
+
+    Argvs:
+    variable - переменная или результат вычислений
+    order - точность округления
+
+    Возвращает значение variable, округленное до order-знака после запятой.
+    Округляет вверх, если цифра пять и больше.
+    """
+    if order > 0:
+        order = '1.' + '0' * order
+        variable = Decimal(variable)
+        try:
+            variable = variable.quantize(Decimal(order), ROUND_HALF_UP)
+        except Exception:
+            pass
+        variable = float(variable)
+    elif order == 0:
+        order = '1'
+        variable = Decimal(variable)
+        variable = variable.quantize(Decimal(order), ROUND_HALF_UP)
+        variable = int(variable)
+    else:
+        order = order * (-1)
+        order = '1' + '0' * order
+        variable = float(variable // int(order) * int(order))
+    return variable

@@ -125,3 +125,12 @@ def passport_data(name: str = "5В12",
     data = data.drop(columns='index')
     data.rename(columns={name: 'Значение'}, inplace=True)
     return data
+
+
+if __name__ == "__main__":
+    print(list_mt(1, 1))
+    print(characteristics())
+    print(passport_data())
+
+
+

@@ -12,3 +12,6 @@ env.bak /
 .coverage 
 .idea
 .idea/
+temp/
+dist/
+
