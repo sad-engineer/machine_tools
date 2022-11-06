@@ -14,13 +14,15 @@
 # -------------------------------------------------------------------------------
 from pathlib import Path
 import os.path
-possible_paths = [str(Path.cwd()) + "\\env\\Lib\\site-packages\\machine_tools\\data\\machine_tools.db",
-                  str(Path.cwd()) + "\\venv\\Lib\\site-packages\\machine_tools\\data\\machine_tools.db",
-                  str(Path.cwd()) + "\\data\\machine_tools.db",
-                  ]
-for path in possible_paths:
-    if os.path.exists(path):
-        PATH_DB_FOR_TOOLS = path
+# possible_paths = [str(Path.cwd()) + "\\env\\Lib\\site-packages\\machine_tools\\data\\machine_tools.db",
+#                   str(Path.cwd()) + "\\venv\\Lib\\site-packages\\machine_tools\\data\\machine_tools.db",
+#                   str(Path.cwd()) + "\\data\\machine_tools.db",
+#                   __file__.replace("obj\\constants.py", "data\\machine_tools.db")
+#                   ]
+# for path in possible_paths:
+#     if os.path.exists(path):
+#         PATH_DB_FOR_TOOLS = path
+PATH_DB_FOR_TOOLS = __file__.replace("obj\\constants.py", "data\\machine_tools.db")
 # Настройка начальных данных
 DEFAULT_SETTINGS_FOR_MACHINE_TOOL = {
     "milling":{"name": "6Р82", "quantity": 1, "hard_MFTD": 0},
