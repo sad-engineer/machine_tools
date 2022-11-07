@@ -15,7 +15,7 @@
 
 
 class ReceivedEmptyDataFrame(Exception):
-    """Выкидывать ошибку, если DataFrame пустой.
+    """Выкидывать ошибку, если DataFrame пустой
     message: объяснение ошибки
     """
     def __init__(self, message=""):
@@ -36,6 +36,18 @@ class UnexpectedDataInDataFrame(Exception):
 class CalculationIsNotDefined(Exception):
     """Исключение возникает когда расчет для этого типа обработки не определен.
     Также, выбрасываю везде, где расчет нужно дописать или просто не существует.
+
+    Атрибуты:
+        message: объяснение ошибки
+    """
+    def __init__(self, message=""):
+        self.message = message
+        super().__init__(self.message)
+
+
+class InvalidValue(Exception):
+    """Исключение возникает при некорректном значении переменной.
+    Например, если значение не соответствует ожидаемому типу или пустое
 
     Атрибуты:
         message: объяснение ошибки

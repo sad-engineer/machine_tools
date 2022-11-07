@@ -38,7 +38,7 @@ def list_mt(group: Optional[Union[int, float]] = None,
         Тип станков в группе (от 1 до 9 вкл.)
         По умолчанию : None
     path_bd : str, optional
-        Путь к базе данных по материаллам
+        Путь к базе данных по материалам
 
     Returns
     -------
@@ -70,7 +70,7 @@ def characteristics(name: str = "5В12",
     name : str, optional
         Наименование станка. По умолчанию : "5В12".
     path_bd : str, optional
-        Путь к базе данных по материаллам.
+        Путь к базе данных по материалам.
 
     Returns
     -------
@@ -95,19 +95,19 @@ def characteristics(name: str = "5В12",
 
 def passport_data(name: str = "5В12",
                   path_bd: str = PATH_DB) -> pd.DataFrame:
-    """Запрашивает из БД таблицу паспортных даных станка.
+    """Запрашивает из БД таблицу паспортных данных станка.
 
     Parameters
     ----------
     name : str, optional
         Наименование станка. По умолчанию : "5В12".
     path_bd : str, optional
-        Путь к базе данных по материаллам.
+        Путь к базе данных по материалам.
 
     Returns
     -------
     data : pd.DataFrame
-        Возвращает DataFrame, содержащий паспортные даные станка, если в БД существует таблица паспортных даных.
+        Возвращает DataFrame, содержащий паспортные данные станка, если в БД существует таблица паспортных данных.
     """
     data = None
     db, cursor = connect(path_bd)
@@ -131,6 +131,3 @@ if __name__ == "__main__":
     print(list_mt(1, 1))
     print(characteristics())
     print(passport_data())
-
-
-

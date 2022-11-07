@@ -14,43 +14,46 @@
 # -------------------------------------------------------------------------------
 from typing import Optional, Union
 from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_MACHINE_TOOL as DEFAULT_SETTINGS
+from machine_tools.obj.constants import NAMES_OF_HARD_MFTD
+from machine_tools.obj.constants import INDEXES_OF_HARD_MFTD
 from machine_tools.find import characteristics
 from machine_tools.find import passport_data
+from machine_tools.obj.exceptions import InvalidValue
 
 
-class MachineTool():
+class MachineTool:
     """Параметры применяемого оборудования"""
     def __init__(self,
-                 kind_of_cut:str='milling',
-                 name:Optional[str] = None,                     # Наименование выбранного станка
-                 quantity:Optional[int] = 1,                    # количество станков
-                 hard_MFTD:Optional[Union[str, int]] = None):   # Жесткость системы СПИД: станок, приспособление, инструмент, деталь - machine, fixture, tool, detail
+                 kind_of_cut: str = 'milling',
+                 name: Optional[str] = None,  # Наименование выбранного станка
+                 quantity: Optional[int] = 1,  # количество станков
+                 # Жесткость системы СПИД: станок, приспособление, инструмент, деталь - machine, fixture, tool, detail
+                 hard_mftd: Optional[Union[str, int]] = None):
         self.kind_of_cut = kind_of_cut
         self.update_chars(name)
         self.__calculate_spindle_power
         self.quantity = quantity
-        self.hard_MFTD = hard_MFTD
-        self.type_of_planing_machine:Optional[int] = None # Тип строгального станка. Задать долько для строгального станка: 0-продольно строгальный, 1-поперечно строгальный, 2-долбежный
+        self.hard_MFTD = hard_mftd
+        # Тип строгального станка. Задать только для строгального станка:
+        # 0-продольно строгальный, 1-поперечно строгальный, 2-долбежный
+        self.type_of_planing_machine: Optional[int] = None
         self.get_default_settings
-
 
     @property    
     def __calculate_spindle_power(self) -> None:
-        """ Расчитывает мощность шпинделя """
+        """ Рассчитывает мощность шпинделя """
         if hasattr(self, "performance_proc"):
             performance = self.performance_proc
         else:
             performance = None
         if hasattr(self, "power_lathe_passport_kVt"): 
-            N_lathe_passport = self.power_lathe_passport_kVt
+            n_lathe_passport = self.power_lathe_passport_kVt
         else:
-            N_lathe_passport = None
-        
+            n_lathe_passport = None
         self.spindle_power = None
-        if not isinstance(N_lathe_passport, type(None)) and not isinstance(performance, type(None)):
-            self.spindle_power = N_lathe_passport * performance
-        
-        
+        if not isinstance(n_lathe_passport, type(None)) and not isinstance(performance, type(None)):
+            self.spindle_power = n_lathe_passport * performance
+
     @property    
     def show(self):
         report = f"""
@@ -69,18 +72,16 @@ class MachineTool():
             Количество станков: {self.quantity} шт.
             Жесткость системы СПИД: {self.hard_MFTD}."""
         print(report)
-        
-        
+
     @property
     def get_default_settings(self) -> None:
         """ Настраивает атрибуты класса в соответствии с 
-        глобальными дефолтными настрйками"""
+        глобальными дефолтными настройками"""
         for setting_name, setting_val in DEFAULT_SETTINGS[self.kind_of_cut].items():
-            self.update_chars(name = setting_val) if setting_name == "name" else setattr(self, setting_name, setting_val)
+            self.update_chars(name=setting_val) if setting_name == "name" else setattr(self, setting_name, setting_val)
         self.__calculate_spindle_power
 
-        
-    def update_chars(self, name:Optional[str]=None) -> None:
+    def update_chars(self, name: Optional[str] = None) -> None:
         """ Запрашивает паспортные данные станка в БД и определяет характеристики класса в соответствии с
         паспортными данными
         """
@@ -91,10 +92,10 @@ class MachineTool():
             self.performance_proc = float(chars["КПД"][0])
             self.power_lathe_passport_kVt = float(chars["Мощность"][0])
             self.type_of_planing_machine = None
-            self.city   = str(chars["Город"][0])
+            self.city = str(chars["Город"][0])
             self.manufacturer = str(chars["Производитель"][0])
             self.length = float(chars["Длина"][0])
-            self.width  = float(chars["Ширина"][0])
+            self.width = float(chars["Ширина"][0])
             self.height = float(chars["Высота"][0])
             self.weight = float(chars["Масса"][0])
             # self.class_by_weight = chars["Классификация_по_массе"][0]
@@ -109,29 +110,27 @@ class MachineTool():
         else:
             print("Необходимо ввести наименование станка!")
 
-
-    def update_hard_MFTD(self, hard_MFTD:Optional[Union[str, int]] = None):
+    def update_hard_mftd(self, hard_mftd: Optional[Union[str, int]] = None):
         """ Проверяет значение параметра "Жесткость системы СПИД". При корректном значении устанавливает тип параметра.
         """
-        if  isinstance(hard_MFTD, type(None)):
+        if isinstance(hard_mftd, type(None)):
             print("Параметр 'Жесткость системы СПИД' не был передан")
         else:
-            if isinstance(hard_MFTD, int):
-                if hard_MFTD in NAMES_OF_HARD_MFTD:
-                    self.hard_MFTD = hard_MFTD
+            if isinstance(hard_mftd, int):
+                if hard_mftd in NAMES_OF_HARD_MFTD:
+                    self.hard_MFTD = hard_mftd
                 else:
                     message = {"Индекс параметра 'Жесткость системы СПИД' не определен."}
                     raise InvalidValue(message)
-            elif isinstance(hard_MFTD, str):
-                if hard_MFTD in INDEXES_OF_HARD_MFTD:
-                    self.hard_MFTD = INDEXES_OF_HARD_MFTD[hard_MFTD]
+            elif isinstance(hard_mftd, str):
+                if hard_mftd in INDEXES_OF_HARD_MFTD:
+                    self.hard_MFTD = INDEXES_OF_HARD_MFTD[hard_mftd]
                 else:
                     message = {"Параметр 'Жесткость системы СПИД' не определен."}
                     raise InvalidValue(message)
             else:
                 message = {"Параметр 'Жесткость системы СПИД' не определен."}
                 raise InvalidValue(message)
-
 
     @property
     def clear_characteristics(self) -> None:
@@ -140,20 +139,21 @@ class MachineTool():
         self.performance_proc = None
         self.power_lathe_passport_kVt = None
         self.type_of_planing_machine = None 
-        self.city   = None
+        self.city = None
         self.manufacturer = None 
         self.length = None
-        self.width  = None
+        self.width = None
         self.height = None
-        self.weight =None
+        self.weight = None
         self.class_by_weight = None
         self.automation = None
         self.accuracy = None
-        self.specialization =None
+        self.specialization = None
         self.group = None
         self.machine_type = None
         self.passport_data = None
         self.spindle_power = None
+
 
 """
 #TODO: Список задач в данном модуле программе:
