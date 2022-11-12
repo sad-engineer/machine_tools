@@ -33,7 +33,7 @@ class MachineTool:
         self.update_chars(name)
         self.__calculate_spindle_power
         self.quantity = quantity
-        self.hard_MFTD = hard_mftd
+        self.hard_mftd = hard_mftd
         # Тип строгального станка. Задать только для строгального станка:
         # 0-продольно строгальный, 1-поперечно строгальный, 2-долбежный
         self.type_of_planing_machine: Optional[int] = None
@@ -47,7 +47,7 @@ class MachineTool:
         else:
             performance = None
         if hasattr(self, "power_lathe_passport_kVt"): 
-            n_lathe_passport = self.power_lathe_passport_kVt
+            n_lathe_passport = self.power_lathe_passport_kvt
         else:
             n_lathe_passport = None
         self.spindle_power = None
@@ -60,7 +60,7 @@ class MachineTool:
         ### Параметры применяемого оборудования ###
             Наименование выбранного станка: {self.name}.
             КПД станка: {self.performance_proc*100}%.
-            Мощность главного двигателя станка = {self.power_lathe_passport_kVt} кВт.
+            Мощность главного двигателя станка = {self.power_lathe_passport_kvt} кВт.
             Мощность шпинделя станка = {self.spindle_power} кВт.
             Габаритные характеристики станка (длина х ширина х высота): {self.length} x {self.width} x {self.height} мм.
             Масса станка = {self.weight} кг.
@@ -70,7 +70,7 @@ class MachineTool:
             Группа станка по виду обработки: {self.group}.
             Тип станка по виду обработки: {self.machine_type}.
             Количество станков: {self.quantity} шт.
-            Жесткость системы СПИД: {self.hard_MFTD}."""
+            Жесткость системы СПИД: {self.hard_mftd}."""
         print(report)
 
     @property
@@ -90,7 +90,7 @@ class MachineTool:
             # Запрашиваем характеристики станка в БД
             chars = characteristics(name)
             self.performance_proc = float(chars["КПД"][0])
-            self.power_lathe_passport_kVt = float(chars["Мощность"][0])
+            self.power_lathe_passport_kvt = float(chars["Мощность"][0])
             self.type_of_planing_machine = None
             self.city = str(chars["Город"][0])
             self.manufacturer = str(chars["Производитель"][0])
@@ -118,13 +118,13 @@ class MachineTool:
         else:
             if isinstance(hard_mftd, int):
                 if hard_mftd in NAMES_OF_HARD_MFTD:
-                    self.hard_MFTD = hard_mftd
+                    self.hard_mftd = hard_mftd
                 else:
                     message = {"Индекс параметра 'Жесткость системы СПИД' не определен."}
                     raise InvalidValue(message)
             elif isinstance(hard_mftd, str):
                 if hard_mftd in INDEXES_OF_HARD_MFTD:
-                    self.hard_MFTD = INDEXES_OF_HARD_MFTD[hard_mftd]
+                    self.hard_mftd = INDEXES_OF_HARD_MFTD[hard_mftd]
                 else:
                     message = {"Параметр 'Жесткость системы СПИД' не определен."}
                     raise InvalidValue(message)
@@ -137,7 +137,7 @@ class MachineTool:
         """ Производит очистку всех характеристик """
         self.name = None
         self.performance_proc = None
-        self.power_lathe_passport_kVt = None
+        self.power_lathe_passport_kvt = None
         self.type_of_planing_machine = None 
         self.city = None
         self.manufacturer = None 
