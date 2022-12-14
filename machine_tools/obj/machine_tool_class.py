@@ -1,17 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # -------------------------------------------------------------------------------
-# Name:        machine_tool
-# Purpose:     Parameters of the equipment used
-#
-# Author:      ANKorenuk
-#
-# Created:     09.04.2022
-# Copyright:   (c) ANKorenuk 2022
-# Licence:     <your licence>
-# -------------------------------------------------------------------------------
-# Параметры применяемого оборудования
-# -------------------------------------------------------------------------------
 from typing import Optional, Union
 from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_MACHINE_TOOL as DEFAULT_SETTINGS
 from machine_tools.obj.constants import NAMES_OF_HARD_MFTD
@@ -30,31 +19,21 @@ class MachineTool:
                  # Жесткость системы СПИД: станок, приспособление, инструмент, деталь - machine, fixture, tool, detail
                  hard_mftd: Optional[Union[str, int]] = None):
         self.kind_of_cut = kind_of_cut
-        self.update_chars(name)
-        self.__calculate_spindle_power
         self.quantity = quantity
         self.hard_mftd = hard_mftd
+        self.update_chars(name) if not isinstance(name, type(None)) else self.get_default_settings()
         # Тип строгального станка. Задать только для строгального станка:
         # 0-продольно строгальный, 1-поперечно строгальный, 2-долбежный
         self.type_of_planing_machine: Optional[int] = None
-        self.get_default_settings
 
-    @property    
     def __calculate_spindle_power(self) -> None:
         """ Рассчитывает мощность шпинделя """
-        if hasattr(self, "performance_proc"):
-            performance = self.performance_proc
-        else:
-            performance = None
-        if hasattr(self, "power_lathe_passport_kVt"): 
-            n_lathe_passport = self.power_lathe_passport_kvt
-        else:
-            n_lathe_passport = None
+        performance = self.performance_proc if hasattr(self, "performance_proc") else None
+        n_lathe_passport = self.power_lathe_passport_kvt if hasattr(self, "power_lathe_passport_kvt") else None
         self.spindle_power = None
         if not isinstance(n_lathe_passport, type(None)) and not isinstance(performance, type(None)):
             self.spindle_power = n_lathe_passport * performance
 
-    @property    
     def show(self):
         report = f"""
         ### Параметры применяемого оборудования ###
@@ -73,13 +52,12 @@ class MachineTool:
             Жесткость системы СПИД: {self.hard_mftd}."""
         print(report)
 
-    @property
     def get_default_settings(self) -> None:
         """ Настраивает атрибуты класса в соответствии с 
         глобальными дефолтными настройками"""
         for setting_name, setting_val in DEFAULT_SETTINGS[self.kind_of_cut].items():
             self.update_chars(name=setting_val) if setting_name == "name" else setattr(self, setting_name, setting_val)
-        self.__calculate_spindle_power
+        self.__calculate_spindle_power()
 
     def update_chars(self, name: Optional[str] = None) -> None:
         """ Запрашивает паспортные данные станка в БД и определяет характеристики класса в соответствии с
@@ -106,7 +84,8 @@ class MachineTool:
             self.machine_type = int(chars["Тип"][0]) if not isinstance(chars["Тип"][0], type(None)) else 0
             # Запрашиваем паспортные данные станка в БД
             self.passport_data = passport_data(name)
-            self.__calculate_spindle_power
+
+            self.__calculate_spindle_power()
         else:
             print("Необходимо ввести наименование станка!")
 
@@ -132,7 +111,6 @@ class MachineTool:
                 message = {"Параметр 'Жесткость системы СПИД' не определен."}
                 raise InvalidValue(message)
 
-    @property
     def clear_characteristics(self) -> None:
         """ Производит очистку всех характеристик """
         self.name = None
