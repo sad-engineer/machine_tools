@@ -20,6 +20,18 @@ class Finder:
         records = self._requester.get_records({"Станок": any_name})
         return records if records else None
 
+    def by_type(self, machine_type):
+        records = self._requester.get_records({"Тип": machine_type})
+        return records if records else None
+
+    def by_group(self, machine_group):
+        records = self._requester.get_records({"Группа": machine_group})
+        return records if records else None
+
+    def by_type_and_group(self, machine_type, machine_group):
+        records = self._requester.get_records({"Группа": machine_group, "Тип": machine_type})
+        return records if records else None
+
     @property
     def all(self) -> Any:
         """ Возвращает все записи. Формат возвращаемых данных определяет self._requester."""

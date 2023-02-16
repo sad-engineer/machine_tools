@@ -7,6 +7,7 @@ from service import Requester as RequesterContainer
 from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_DB
 from machine_tools.obj.finders import Finder
 from machine_tools.obj.entities import MachineTool
+from machine_tools.obj.creators import Creator
 
 
 class Container(containers.DeclarativeContainer):
@@ -26,10 +27,14 @@ class Container(containers.DeclarativeContainer):
         record_requester=container_for_DB.requester,
     )
 
+    creator = providers.Factory(
+        Creator,
+        finder.provider
+    )
+
     machine_tool = providers.Factory(
         MachineTool
     )
-
 
 
 if __name__ == '__main__':
