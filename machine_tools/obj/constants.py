@@ -13,7 +13,13 @@
 # Содержит локальные переменные
 # -------------------------------------------------------------------------------
 # Расположение БД
-PATH_DB_FOR_TOOLS = __file__.replace("obj\\constants.py", "data\\machine_tools.db")
+DEFAULT_SETTINGS_FOR_DB= {
+    'path': f"{__file__}".replace("obj\\constants.py", "data\\machine_tools.db"),
+    'requester_type': "sqlite",
+    'reader_type': 'list_dict',
+    'tablename': 'machine_tools'
+}
+
 # Настройка начальных данных
 DEFAULT_SETTINGS_FOR_MACHINE_TOOL = {
     "milling": {"name": "6Р82", "quantity": 1, "hard_mftd": 0},
@@ -25,5 +31,9 @@ DEFAULT_SETTINGS_FOR_MACHINE_TOOL = {
     "broaching": {"name": "7Б55", "quantity": 1, "hard_mftd": 0},
     }
 # Описание параметра "Жесткость системы СПИД":
-NAMES_OF_HARD_MFTD = {None: "Без указания", 0: "Малая жесткость", 1: "Средняя жесткость", 2: "Высокая жесткость"}
-INDEXES_OF_HARD_MFTD = {"Без указания": None, "Малая жесткость": 0, "Средняя жесткость": 1, "Высокая жесткость": 2}
+HARD_MFTD = {None: "Без указания", 0: "Малая жесткость", 1: "Средняя жесткость", 2: "Высокая жесткость"}
+# Описание типов автоматизации
+TYPES_OF_AUTOMATION = {None: "Без указания", 0: 'Ручной', 1: 'Полуавтомат', 2: 'Автомат'}
+# Описание типов специализации
+TYPES_OF_SPECIALIZATION = {None: "Без указания", 0: 'Специализированный', 1: 'Универсальный', 2: 'Специальный'}
+

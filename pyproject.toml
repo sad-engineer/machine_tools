@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "machine-tools"
-version = "0.1.15"
+version = "0.1.16"
 description = ""
 authors = ["Andrey Nikolaevich Korenyuk <korenyuk.a.n@mail.ru>"]
 readme = "README.md"
@@ -9,6 +9,9 @@ packages = [{include = "machine_tools"}]
 [tool.poetry.dependencies]
 python = "^3.9"
 pandas = "^1.5.1"
+pydantic = "^1.10.5"
+dependency-injector = "^4.41.0"
+service = {path = "I:/Программирование/Pro0.5-service_for_my_projects/dist/service-0.1.23.tar.gz"}
 
 [build-system]
 requires = ["poetry-core"]
