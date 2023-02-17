@@ -50,6 +50,12 @@ if __name__ == '__main__':
     print(available_values.keys())
     print(available_values['Тип'])
 
-    machine_tool = container.machine_tool(name="16К20")
+    creator = container.creator()
+    machine_tool = creator.by_name('1К62')
     print(machine_tool)
+
+    # machine_tool = container.machine_tool(name="16К20")
+    # print(machine_tool)
+
+
 

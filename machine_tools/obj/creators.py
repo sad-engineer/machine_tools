@@ -10,7 +10,7 @@ from machine_tools.obj.entities import MachineTool
 from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_MACHINE_TOOL as DEF_SET
 
 
-class Creator(ABC):
+class Creator:
     """ создает класс станок с параметрами из БД"""
     @abstractmethod
     def __init__(self,
@@ -38,6 +38,7 @@ class Creator(ABC):
         data["group"] = raw_data['Группа']
         data["machine_type"] = raw_data['Тип']
         data["passport_data"] = raw_data
+        return data
 
     def by_name(self, any_name: str):
         rows = self._finder().by_name(any_name)
