@@ -26,9 +26,9 @@ def output_debug_message(message: str):
 class Lister:
     @debug_message_for_init()
     def __init__(self,
-                 creator_container: Callable[..., Creator],
+                 creator_provider: Callable[..., Creator],
                  finder_provider: Callable[..., Finder]):
-        self._creator = creator_container
+        self._creator = creator_provider
         self._finder = finder_provider
 
     @output_debug_message("Создание списка доступных станков по классу {}")

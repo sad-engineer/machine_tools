@@ -8,6 +8,7 @@ from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_DB
 from machine_tools.obj.finders import Finder
 from machine_tools.obj.entities import MachineTool
 from machine_tools.obj.creators import Creator
+from machine_tools.obj.listers import Lister
 
 
 class Container(containers.DeclarativeContainer):
@@ -24,38 +25,20 @@ class Container(containers.DeclarativeContainer):
 
     finder = providers.Factory(
         Finder,
-        record_requester=container_for_DB.requester,
+        record_requester=container_for_DB.requester.provider,
     )
 
     creator = providers.Factory(
         Creator,
-        finder.provider
+        finder_provider=finder.provider.provider
+    )
+
+    lister = providers.Factory(
+        Lister,
+        creator_provider=creator.provider,
+        finder_provider=finder.provider
     )
 
     machine_tool = providers.Factory(
         MachineTool
     )
-
-
-if __name__ == '__main__':
-    print(DEFAULT_SETTINGS_FOR_DB)
-    container = Container()
-    print(container.config())
-
-    container.config.from_dict(DEFAULT_SETTINGS_FOR_DB)
-    finder = container.finder()
-    print(finder.by_name("1К62"))
-
-    available_values = finder.available_values
-    print(available_values.keys())
-    print(available_values['Тип'])
-
-    creator = container.creator()
-    machine_tool = creator.by_name('1К62')
-    print(machine_tool)
-
-    # machine_tool = container.machine_tool(name="16К20")
-    # print(machine_tool)
-
-
-
