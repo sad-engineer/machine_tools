@@ -3,8 +3,12 @@
 # -------------------------------------------------------------------------------
 from typing import Optional, Any
 from pydantic import BaseModel, confloat, PositiveInt, PositiveFloat
+from collections import namedtuple
 
 from machine_tools.obj.fields_types import InHardMFTD, InTypesOfAutomation, InTypesOfSpecialization
+
+
+ErrorWithData = namedtuple('ErrorWithData', ['err', 'name', 'params'])   # для сохранения данных с ошибкой
 
 
 class MachineTool(BaseModel):
