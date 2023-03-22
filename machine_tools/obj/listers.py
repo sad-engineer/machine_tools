@@ -28,23 +28,27 @@ class Lister:
     def __init__(self,
                  creator_provider: Callable[..., Creator],
                  finder_provider: Callable[..., Finder]):
-        self._creator = creator_provider
-        self._finder = finder_provider
+        self._creator = creator_provider()
+        self._finder = finder_provider()
 
     @output_debug_message("Создание списка доступных станков по классу {}")
     def by_type(self, machine_type: confloat(ge=0, le=9)) -> list:
-        return [self._creator().by_name(row['Станок']) for row in self._finder().by_type(machine_type=machine_type)]
+        self._finder._verbose = True
+        return [self._creator.by_name(row['Станок']) for row in self._finder.by_type(machine_type=machine_type)]
 
     @output_debug_message("Создание списка доступных станков по группе {}")
     def by_group(self, group: confloat(ge=0, le=9)) -> list:
-        return [self._creator().by_name(row['Станок']) for row in self._finder().by_group(group=group)]
+        self._finder._verbose = True
+        return [self._creator.by_name(row['Станок']) for row in self._finder.by_group(group=group)]
 
     @output_debug_message("Создание списка доступных станков по классу {}")
     def by_type_and_group(self, machine_type: confloat(ge=0, le=9), group: confloat(ge=0, le=9)) -> list:
-        return [self._creator().by_name(row['Станок'])
-                for row in self._finder().by_type_and_group(machine_type=machine_type, group=group)]
+        self._finder._verbose = True
+        return [self._creator.by_name(row['Станок'])
+                for row in self._finder.by_type_and_group(machine_type=machine_type, machine_group=group)]
 
     @property
     @output_debug_message("Создание списка всех доступных материалов")
     def all(self) -> list:
-        return [self._creator().by_name(row['Станок']) for row in self._finder().all]
+        self._finder._verbose = False
+        return [self._creator.by_name(row['Станок']) for row in self._finder.all]

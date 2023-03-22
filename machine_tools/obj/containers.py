@@ -30,7 +30,7 @@ class Container(containers.DeclarativeContainer):
 
     creator = providers.Factory(
         Creator,
-        finder_provider=finder.provider.provider
+        finder_provider=finder.provider
     )
 
     lister = providers.Factory(

@@ -16,7 +16,7 @@ class MachineTool(BaseModel):
     name: str
     quantity: Optional[PositiveInt] = None
     hard_mftd: Optional[InHardMFTD] = None
-    performance_proc: Optional[confloat(ge=0, le=100)] = None
+    performance_proc: Optional[confloat(ge=0, le=1)] = None
     power_lathe_passport_kvt: Optional[PositiveFloat] = None
     city: Optional[str] = None
     manufacturer: Optional[str] = None

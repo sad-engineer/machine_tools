@@ -60,13 +60,15 @@ class Creator:
     def __init__(self,
                  finder_provider: Callable[..., Finder],
                  ):
-        self._finder = finder_provider
+        self._finder = finder_provider()
 
+        self._verbose = True
         self.data = {}
 
-    def _prepare_data(self, raw_data: dict):
+    @staticmethod
+    def _prepare_data(raw_data: dict):
         data = dict({"name": raw_data['Станок']})
-        data["name"] = DEF_SET['quantity']
+        data["quantity"] = DEF_SET['quantity']
         data["hard_mftd"] = DEF_SET['hard_mftd']
         data["performance_proc"] = raw_data['КПД']
         data["power_lathe_passport_kvt"] = raw_data['Мощность']
@@ -87,7 +89,7 @@ class Creator:
     @output_debug_message()
     @output_error_message()
     def by_name(self, any_name: str):
-        rows = self._finder().by_name(any_name)
+        rows = self._finder.by_name(any_name=any_name)
         data = self._prepare_data(rows[0])
         try:
             return MachineTool.parse_obj(data)
@@ -114,5 +116,3 @@ class Creator:
     #     for row in self._finder().by_type_and_group(machine_group=machine_group, machine_type=machine_type):
     #         name = row['Станок']
     #         yield self.by_name(name)
-
-

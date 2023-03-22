@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # ----------------------------------------------------------------------------------------------------------------------
 from typing import Any, Callable
+import itertools
 
 from service import RecordRequester
 from service import logged
@@ -27,10 +28,11 @@ def output_debug_message_with_with_length(message: str):
     """ Выводит в лог сообщение message"""
     def decorator(func):
         def wrapper(self, *args, **kwargs):
-            result = func(self, *args, **kwargs)
+            gen1, gen2 = itertools.tee(func(self, *args, **kwargs))
+            length = len(list(gen1))
             self.debug(message) if message.find("{") == -1 else self.debug(
-                message.format(self.__class__.__name__, len(result)))
-            return result
+                message.format(self.__class__.__name__, length))
+            return gen2
         return wrapper
     return decorator
 
@@ -40,7 +42,7 @@ class Finder:
     """ Ищет записи в БД по конкретным параметрам."""
     @debug_message_for_init()
     def __init__(self, record_requester: Callable[..., RecordRequester]):
-        self._requester = record_requester
+        self._requester = record_requester()
 
     @output_debug_message_with_kwargs_and_length("{0} по ключу {1} нашел записей: {2}")
     def by_name(self, any_name: str) -> Any:
@@ -71,7 +73,7 @@ class Finder:
     @output_debug_message_with_with_length("{0} ищет все записи таблицы. Найдено записей: {1}")
     def all(self) -> Any:
         """ Возвращает все записи. Формат возвращаемых данных определяет self._requester."""
-        for index, record in self._requester.get_all_records.items():
+        for record in self._requester.get_all_records:
             yield record
 
     @property
