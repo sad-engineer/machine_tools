@@ -5,13 +5,13 @@ from dependency_injector import containers, providers
 from service import Requester as RequesterContainer
 
 from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_DB
-from machine_tools.obj.finders import Finder
+from machine_tools.obj.finders import MachineToolsFinder
 from machine_tools.obj.entities import MachineTool
-from machine_tools.obj.creators import Creator
-from machine_tools.obj.listers import Lister
+from machine_tools.obj.creators import MachineToolsCreator
+from machine_tools.obj.listers import MachineToolsLister
 
 
-class Container(containers.DeclarativeContainer):
+class MachineToolsContainer(containers.DeclarativeContainer):
     default_settings = providers.Object(
         {'for_machine_tools': DEFAULT_SETTINGS_FOR_DB}
     )
@@ -24,17 +24,17 @@ class Container(containers.DeclarativeContainer):
     )
 
     finder = providers.Factory(
-        Finder,
+        MachineToolsFinder,
         record_requester=container_for_DB.requester.provider,
     )
 
     creator = providers.Factory(
-        Creator,
+        MachineToolsCreator,
         finder_provider=finder.provider
     )
 
     lister = providers.Factory(
-        Lister,
+        MachineToolsLister,
         creator_provider=creator.provider,
         finder_provider=finder.provider
     )

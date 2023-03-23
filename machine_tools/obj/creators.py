@@ -9,7 +9,7 @@ from pydantic import PositiveInt
 from service import logged
 from service import output_debug_message_for_init_method as debug_message_for_init
 
-from machine_tools.obj.finders import Finder
+from machine_tools.obj.finders import MachineToolsFinder
 from machine_tools.obj.entities import MachineTool
 from machine_tools.obj.fields_types import InHardMFTD, InTypesOfProcessing
 from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_MACHINE_TOOL as DEF_SET
@@ -56,12 +56,12 @@ def output_error_message():
 
 
 @logged
-class Creator:
+class MachineToolsCreator:
     """ Создает класс станок с параметрами из БД"""
     @abstractmethod
     @debug_message_for_init()
     def __init__(self,
-                 finder_provider: Callable[..., Finder],
+                 finder_provider: Callable[..., MachineToolsFinder],
                  ):
         self._finder = finder_provider()
 
@@ -107,5 +107,3 @@ class Creator:
     def default(self, type_processing: InTypesOfProcessing = "Фрезерование"):
         default_settings = DEF_SET_BY_TYPE_PROC[type_processing]
         return self.by_name(**default_settings)
-
-

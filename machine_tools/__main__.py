@@ -5,7 +5,7 @@ import logging.config
 
 from service import timeit, timeit_property
 
-from machine_tools.obj.containers import Container
+from machine_tools.obj.containers import MachineToolsContainer as Container
 from machine_tools.logger_settings import config
 
 logging.config.dictConfig(config)
@@ -16,7 +16,7 @@ def main():
     create = creator.by_name
     timeit("Время запроса одного станка: {}")(create)("16К20Ф3")
 
-    result = creator.default()
+    result = creator.default(type_processing="Фрезерование")
     print(result)
 
     lister = Container().lister()

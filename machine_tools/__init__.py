@@ -1,12 +1,40 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# from machine_tools.find import list_mt
-# from machine_tools.find import characteristics
-# from machine_tools.find import passport_data
-# from machine_tools.obj.machine_tool_class import MachineTool
-#
-#
+# Константы пакета
+from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_DB
+from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_MACHINE_TOOL_BY_TYPE_PROCESSING
+from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_MACHINE_TOOL
+from machine_tools.obj.constants import HARD_MFTD
+from machine_tools.obj.constants import TYPES_OF_AUTOMATION
+from machine_tools.obj.constants import TYPES_OF_SPECIALIZATION
+from machine_tools.obj.constants import TYPES_PROCESSING
+# Методы пакета
+
+# Классы пакета
+from machine_tools.obj.containers import MachineToolsContainer
+MachineToolsFinder = MachineToolsContainer.finder
+MachineToolsCreator = MachineToolsContainer.creator
+MachineToolsLister = MachineToolsContainer.lister
+from machine_tools.obj.entities import MachineTool
+
+__all__ = [
+    # Константы пакета
+    "DEFAULT_SETTINGS_FOR_DB",
+    "DEFAULT_SETTINGS_FOR_MACHINE_TOOL_BY_TYPE_PROCESSING",
+    "DEFAULT_SETTINGS_FOR_MACHINE_TOOL",
+    "HARD_MFTD",
+    "TYPES_OF_AUTOMATION",
+    "TYPES_OF_SPECIALIZATION",
+    "TYPES_PROCESSING",
+    # Методы пакета
+    # Классы пакета
+    "MachineToolsContainer",
+    "MachineToolsFinder",
+    "MachineToolsCreator",
+    "MachineToolsLister",
+    "MachineTool",
+    ]
+
+
 # if __name__ == "__main__":
-#     machine_tool = MachineTool()
-#     machine_tool.update_chars(name="16К20Ф1")
-#     print(machine_tool.spindle_power)
+#     pass

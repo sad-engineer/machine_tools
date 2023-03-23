@@ -7,8 +7,8 @@ from pydantic import confloat
 from service import logged
 from service import output_debug_message_for_init_method as debug_message_for_init
 
-from machine_tools.obj.creators import Creator
-from machine_tools.obj.finders import Finder
+from machine_tools.obj.creators import MachineToolsCreator
+from machine_tools.obj.finders import MachineToolsFinder
 
 
 def output_debug_message(message: str):
@@ -23,11 +23,11 @@ def output_debug_message(message: str):
 
 
 @logged
-class Lister:
+class MachineToolsLister:
     @debug_message_for_init()
     def __init__(self,
-                 creator_provider: Callable[..., Creator],
-                 finder_provider: Callable[..., Finder]):
+                 creator_provider: Callable[..., MachineToolsCreator],
+                 finder_provider: Callable[..., MachineToolsFinder]):
         self._creator = creator_provider()
         self._finder = finder_provider()
 

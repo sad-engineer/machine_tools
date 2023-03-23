@@ -1,12 +1,12 @@
 from service.logger_settings import config
 
 config['loggers'] = {
-    'Finder': {
+    'MachineToolsFinder': {
         'handlers': ['consoleHandler', 'fileHandler'],
         'level': 'CRITICAL',
         'propagate': False
     },
-    'Creator': {
+    'MachineToolsCreator': {
         'handlers': ['consoleHandler', 'fileHandler'],
         'level': 'ERROR',
         'propagate': False
