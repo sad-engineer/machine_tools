@@ -16,6 +16,9 @@ def main():
     create = creator.by_name
     timeit("Время запроса одного станка: {}")(create)("16К20Ф3")
 
+    result = creator.default()
+    print(result)
+
     lister = Container().lister()
     result = timeit_property("Время запроса всех станков: {}")(lister)("all")
     print(len(result))

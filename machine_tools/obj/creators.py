@@ -4,13 +4,16 @@
 from typing import Callable
 from abc import abstractmethod
 from pydantic import ValidationError
+from pydantic import PositiveInt
 
 from service import logged
 from service import output_debug_message_for_init_method as debug_message_for_init
 
 from machine_tools.obj.finders import Finder
 from machine_tools.obj.entities import MachineTool
+from machine_tools.obj.fields_types import InHardMFTD, InTypesOfProcessing
 from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_MACHINE_TOOL as DEF_SET
+from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_MACHINE_TOOL_BY_TYPE_PROCESSING as DEF_SET_BY_TYPE_PROC
 from machine_tools.obj.entities import ErrorWithData
 
 
@@ -66,10 +69,12 @@ class Creator:
         self.data = {}
 
     @staticmethod
-    def _prepare_data(raw_data: dict):
+    def _prepare_data(raw_data: dict,
+                      quantity: PositiveInt = DEF_SET['quantity'],
+                      hard_mftd: InHardMFTD = DEF_SET['hard_mftd']):
         data = dict({"name": raw_data['Станок']})
-        data["quantity"] = DEF_SET['quantity']
-        data["hard_mftd"] = DEF_SET['hard_mftd']
+        data["quantity"] = quantity
+        data["hard_mftd"] = hard_mftd
         data["performance_proc"] = raw_data['КПД']
         data["power_lathe_passport_kvt"] = raw_data['Мощность']
         data["city"] = raw_data['Город']
@@ -88,31 +93,19 @@ class Creator:
 
     @output_debug_message()
     @output_error_message()
-    def by_name(self, any_name: str):
-        rows = self._finder.by_name(any_name=any_name)
-        data = self._prepare_data(rows[0])
+    def by_name(self,
+                name: str,
+                quantity: PositiveInt = DEF_SET['quantity'],
+                hard_mftd: InHardMFTD = DEF_SET['hard_mftd']):
+        rows = self._finder.by_name(any_name=name)
+        data = self._prepare_data(rows[0], quantity=quantity, hard_mftd=hard_mftd)
         try:
             return MachineTool.parse_obj(data)
         except Exception as error:
             return ErrorWithData(err=error, name=MachineTool.__name__, params=data)
-    #
-    # @property
-    # def create_all(self):
-    #     for row in self._finder().all:
-    #         name = row['Станок']
-    #         yield self.by_name(name)
-    #
-    # def by_type(self, machine_type):
-    #     for row in self._finder().by_type(machine_type):
-    #         name = row['Станок']
-    #         yield self.by_name(name)
-    #
-    # def by_group(self, machine_group):
-    #     for row in self._finder().by_group(machine_group):
-    #         name = row['Станок']
-    #         yield self.by_name(name)
-    #
-    # def by_type_and_group(self, machine_type, machine_group):
-    #     for row in self._finder().by_type_and_group(machine_group=machine_group, machine_type=machine_type):
-    #         name = row['Станок']
-    #         yield self.by_name(name)
+
+    def default(self, type_processing: InTypesOfProcessing = "Фрезерование"):
+        default_settings = DEF_SET_BY_TYPE_PROC[type_processing]
+        return self.by_name(**default_settings)
+
+
