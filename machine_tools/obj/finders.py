@@ -4,9 +4,9 @@
 from typing import Any, Callable
 import itertools
 
-from service import RecordRequester
-from service import logged
-from service import output_debug_message_for_init_method as debug_message_for_init
+from service_for_my_projects import RecordRequester
+from service_for_my_projects import logged
+from service_for_my_projects import output_debug_message_for_init_method as debug_message_for_init
 
 
 def output_debug_message_with_kwargs_and_length(message: str):

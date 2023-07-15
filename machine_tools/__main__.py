@@ -3,10 +3,14 @@
 # ----------------------------------------------------------------------------------------------------------------------
 import logging.config
 
-from service import timeit, timeit_property
+from service_for_my_projects import timeit, timeit_property
 
 from machine_tools.obj.containers import MachineToolsContainer as Container
 from machine_tools.logger_settings import config
+
+import os.path
+if not os.path.exists("logs/"):
+    os.makedirs("logs/")
 
 logging.config.dictConfig(config)
 

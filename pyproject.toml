@@ -8,11 +8,11 @@ packages = [{include = "machine_tools"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-pandas = "^1.5.1"
-pydantic = "^1.10.5"
+pandas = "^2.0.3"
 dependency-injector = "^4.41.0"
-service = {path = "I:/Программирование/Pro0.5-service_for_my_projects/dist/service-0.1.32.tar.gz"}
 beautifulsoup4 = "^4.12.0"
+service-for-my-projects = {git = "https://github.com/sad-engineer/service_for_my_projects.git"}
+pydantic = "^2.0.3"
 
 [build-system]
 requires = ["poetry-core"]

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # ----------------------------------------------------------------------------------------------------------------------
 from dependency_injector import containers, providers
-from service import Requester as RequesterContainer
+from service_for_my_projects import Requester as RequesterContainer
 
 from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_DB
 from machine_tools.obj.finders import MachineToolsFinder

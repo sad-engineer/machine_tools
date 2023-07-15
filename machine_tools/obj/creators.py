@@ -6,8 +6,8 @@ from abc import abstractmethod
 from pydantic import ValidationError
 from pydantic import PositiveInt
 
-from service import logged
-from service import output_debug_message_for_init_method as debug_message_for_init
+from service_for_my_projects import logged
+from service_for_my_projects import output_debug_message_for_init_method as debug_message_for_init
 
 from machine_tools.obj.finders import MachineToolsFinder
 from machine_tools.obj.entities import MachineTool

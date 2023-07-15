@@ -1,4 +1,4 @@
-from service.logger_settings import config
+from service_for_my_projects.logger_settings import config
 
 config['loggers'] = {
     'MachineToolsFinder': {

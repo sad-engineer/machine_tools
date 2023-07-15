@@ -34,6 +34,7 @@ class MachineTool(BaseModel):
     class Config:
         validate_assignment = True
         extra = "allow"
+        arbitrary_types_allowed = True
 
 
 if __name__ == '__main__':

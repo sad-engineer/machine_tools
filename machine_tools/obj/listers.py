@@ -4,8 +4,8 @@
 from typing import Callable
 from pydantic import confloat
 
-from service import logged
-from service import output_debug_message_for_init_method as debug_message_for_init
+from service_for_my_projects import logged
+from service_for_my_projects import output_debug_message_for_init_method as debug_message_for_init
 
 from machine_tools.obj.creators import MachineToolsCreator
 from machine_tools.obj.finders import MachineToolsFinder
