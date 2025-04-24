@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "machine-tools"
-version = "0.1.25"
+version = "0.1.27"
 description = ""
 authors = ["Andrey Nikolaevich Korenyuk <korenyuk.a.n@mail.ru>"]
 readme = "README.md"
@@ -10,9 +10,8 @@ packages = [{include = "machine_tools"}]
 python = "^3.9"
 pandas = "^2.0.3"
 dependency-injector = "^4.41.0"
-beautifulsoup4 = "^4.12.0"
 service-for-my-projects = {git = "https://github.com/sad-engineer/service_for_my_projects.git"}
-pydantic = "^2.0.3"
+pydantic = "^2.11.3"
 
 [build-system]
 requires = ["poetry-core"]
