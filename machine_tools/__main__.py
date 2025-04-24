@@ -31,6 +31,11 @@ def main():
     result = timeit("Время запроса станков по типу и группе: {}")(create)(machine_type=1, group=1)
     print(len(result))
 
+    machine_tools = creator.by_name("16К20Ф3")
+    print(machine_tools.length)
+    print(machine_tools.width)
+    print(machine_tools.height)
+
 
 if __name__ == '__main__':
     main()

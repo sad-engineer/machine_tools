@@ -100,26 +100,7 @@ class MachineToolsCreator:
         rows = self._finder.by_name(any_name=name)
         data = self._prepare_data(rows[0], quantity=quantity, hard_mftd=hard_mftd)
         try:
-            return MachineTool(
-                name=data['name'],
-                quantity=data['quantity'],
-                hard_mftd=data['hard_mftd'],
-                performance_proc=data['performance_proc'],
-                power_lathe_passport_kvt=data['power_lathe_passport_kvt'],
-                city=data['city'],
-                manufacturer=data['manufacturer'],
-                length=data['length'],
-                width=data['width'],
-                height=data['height'],
-                weight=data['weight'],
-                automation=data['automation'],
-                accuracy=data['accuracy'],
-                specialization=data['specialization'],
-                group=data['group'],
-                machine_type=data['machine_type'],
-                passport_data=data['passport_data'],
-                )
-
+            return MachineTool.construct(**data)
         except Exception as error:
             return ErrorWithData(err=error, name=MachineTool.__name__, params=data)
 
