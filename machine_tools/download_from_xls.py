@@ -9,7 +9,7 @@ import pandas as pd
 from machine_tools.fun import connect
 from machine_tools.obj.exceptions import InvalidValue
 
-PATH_DB = "data\\machine_tools_pro.db"
+PATH_DB = "machine_tools\\data\\machine_tools_pro.db"
 
 
 def save_table(table, name, path=PATH_DB):
