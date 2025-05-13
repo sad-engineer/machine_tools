@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 # ----------------------------------------------------------------------------------------------------------------------
 import logging.config
+import os.path
 
 from service_for_my_projects import timeit, timeit_property
 
-from machine_tools.obj.containers import MachineToolsContainer as Container
 from machine_tools.logger_settings import config
+from machine_tools.obj.containers import MachineToolsContainer as Container
 
-import os.path
 if not os.path.exists("logs/"):
     os.makedirs("logs/")
 
@@ -28,7 +28,9 @@ def main():
     print(len(result))
 
     create = lister.by_type_and_group
-    result = timeit("Время запроса станков по типу и группе: {}")(create)(machine_type=1, group=1)
+    result = timeit("Время запроса станков по типу и группе: {}")(create)(
+        machine_type=1, group=1
+    )
     print(len(result))
 
     machine_tools = creator.by_name("16К20Ф3")
@@ -37,5 +39,5 @@ def main():
     print(machine_tools.height)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

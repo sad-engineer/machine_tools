@@ -38,7 +38,7 @@ def connect(filename):
 
 
 def ror(variable: float, order: int = 6) -> float:
-    """ Функция округления (round_off_result).
+    """Функция округления (round_off_result).
     round - работает не так как надо
     round применяю только для выбора значений из таблиц, для отсечения
     миллионных погрешностей
@@ -51,7 +51,7 @@ def ror(variable: float, order: int = 6) -> float:
     Округляет вверх, если цифра пять и больше.
     """
     if order > 0:
-        order = '1.' + '0' * order
+        order = "1." + "0" * order
         variable = Decimal(variable)
         try:
             variable = variable.quantize(Decimal(order), ROUND_HALF_UP)
@@ -59,12 +59,12 @@ def ror(variable: float, order: int = 6) -> float:
             pass
         variable = float(variable)
     elif order == 0:
-        order = '1'
+        order = "1"
         variable = Decimal(variable)
         variable = variable.quantize(Decimal(order), ROUND_HALF_UP)
         variable = int(variable)
     else:
         order = order * (-1)
-        order = '1' + '0' * order
+        order = "1" + "0" * order
         variable = float(variable // int(order) * int(order))
     return variable

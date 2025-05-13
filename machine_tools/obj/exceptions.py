@@ -18,6 +18,7 @@ class ReceivedEmptyDataFrame(Exception):
     """Выкидывать ошибку, если DataFrame пустой
     message: объяснение ошибки
     """
+
     def __init__(self, message=""):
         self.message = message
         super().__init__(self.message)
@@ -28,6 +29,7 @@ class UnexpectedDataInDataFrame(Exception):
     результат (Больше строк, чем предполагалось; пустой DataFrame; и т.д.)
     message: объяснение ошибки
     """
+
     def __init__(self, message=""):
         self.message = message
         super().__init__(self.message)
@@ -40,6 +42,7 @@ class CalculationIsNotDefined(Exception):
     Атрибуты:
         message: объяснение ошибки
     """
+
     def __init__(self, message=""):
         self.message = message
         super().__init__(self.message)
@@ -52,6 +55,7 @@ class InvalidValue(Exception):
     Атрибуты:
         message: объяснение ошибки
     """
+
     def __init__(self, message=""):
         self.message = message
         super().__init__(self.message)
