@@ -1,3 +1,12 @@
 cd C:\Users\Korenyk.A\Downloads\pgsql\bin
 .\pg_ctl.exe start -D "C:\Users\Korenyk.A\Downloads\pgsql\data"
 netstat -ano | findstr 5432
+.\psql.exe -U postgres
+
+CREATE DATABASE machine_tools
+     WITH
+     OWNER = postgres
+     ENCODING = 'UTF8'
+     LC_COLLATE = 'Russian_Russia.1251'
+     LC_CTYPE = 'Russian_Russia.1251'
+     TEMPLATE = template0;
