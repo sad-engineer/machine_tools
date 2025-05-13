@@ -7,10 +7,6 @@ from sqlalchemy import inspect
 
 from machine_tools_3.app.db.session import engine
 
-print("CWD:", os.getcwd())
-print(".env exists:", os.path.exists(os.path.join(os.getcwd(), ".env")))
-print("POSTGRES_USER:", os.environ.get("POSTGRES_USER"))
-
 
 def check_connection():
     try:
