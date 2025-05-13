@@ -23,3 +23,6 @@ psycopg2-binary = "^2.9.10"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+init-machine-tools-db = "machine_tools_3.app.db.init_db:init_db_from_csv"
