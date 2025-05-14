@@ -18,11 +18,9 @@ import pandas as pd
 
 from machine_tools.fun import connect
 from machine_tools.obj.constants import PATH_DB_FOR_TOOLS as PATH_DB
-from machine_tools.obj.exceptions import (
-    CalculationIsNotDefined,
-    ReceivedEmptyDataFrame,
-    UnexpectedDataInDataFrame,
-)
+from machine_tools.obj.exceptions import (CalculationIsNotDefined,
+                                          ReceivedEmptyDataFrame,
+                                          UnexpectedDataInDataFrame)
 
 
 def list_mt(

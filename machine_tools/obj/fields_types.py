@@ -5,12 +5,9 @@ from typing import ClassVar, Optional, Union
 
 from pydantic import BaseModel, validator
 
-from machine_tools.obj.constants import (
-    HARD_MFTD,
-    TYPES_OF_AUTOMATION,
-    TYPES_OF_SPECIALIZATION,
-    TYPES_PROCESSING,
-)
+from machine_tools.obj.constants import (HARD_MFTD, TYPES_OF_AUTOMATION,
+                                         TYPES_OF_SPECIALIZATION,
+                                         TYPES_PROCESSING)
 
 
 class ValueFromDict:

@@ -4,13 +4,11 @@
 from collections import namedtuple
 from typing import Any, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, PositiveFloat, PositiveInt, confloat
+from pydantic import (BaseModel, ConfigDict, Field, PositiveFloat, PositiveInt,
+                      confloat)
 
-from machine_tools.obj.fields_types import (
-    InHardMFTD,
-    InTypesOfAutomation,
-    InTypesOfSpecialization,
-)
+from machine_tools.obj.fields_types import (InHardMFTD, InTypesOfAutomation,
+                                            InTypesOfSpecialization)
 
 ErrorWithData = namedtuple(
     "ErrorWithData", ["err", "name", "params"]

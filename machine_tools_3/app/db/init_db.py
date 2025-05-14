@@ -4,6 +4,7 @@
 import os
 import sys
 
+import chardet
 import pandas as pd
 import psycopg2
 from sqlalchemy import create_engine, text
@@ -13,7 +14,8 @@ from sqlalchemy.orm import sessionmaker
 from machine_tools_3.app.core.config import get_settings
 from machine_tools_3.app.db.session import engine
 from machine_tools_3.app.models.machine import Base, Machine
-from machine_tools_3.app.models.technical_requirement import TechnicalRequirement
+from machine_tools_3.app.models.technical_requirement import \
+    TechnicalRequirement
 
 settings = get_settings()
 
@@ -59,7 +61,10 @@ def create_database():
 
         if not exists:
             print(f"Создаю базу данных {settings.POSTGRES_DB}...")
-            cur.execute(f"CREATE DATABASE {settings.POSTGRES_DB}")
+            # Создаем БД с кодировкой UTF-8
+            cur.execute(
+                f"CREATE DATABASE {settings.POSTGRES_DB} WITH ENCODING 'UTF8' LC_COLLATE='ru_RU.UTF-8' LC_CTYPE='ru_RU.UTF-8' TEMPLATE=template0"
+            )
             print("База данных создана успешно!")
         else:
             print(f"База данных {settings.POSTGRES_DB} уже существует.")
@@ -121,7 +126,7 @@ def init_db_from_csv():
             main_csv = os.path.join(csv_dir, "machine_tools.csv")
             if os.path.exists(main_csv):
                 print("Импортирую данные из machine_tools.csv...")
-                df = pd.read_csv(main_csv, encoding='cp1251')
+                df = pd.read_csv(main_csv)
                 for _, row in df.iterrows():
                     machine = Machine(
                         name=str(row["Станок"]),
@@ -148,8 +153,6 @@ def init_db_from_csv():
             else:
                 print("ОШИБКА: Файл machine_tools.csv не найден!")
 
-            # Импортируем технические требования
-            import_technical_requirements()
         else:
             print(
                 "Технические требования уже импортированы, инициализация не требуется."
@@ -157,6 +160,9 @@ def init_db_from_csv():
 
         session.close()
         print("Инициализация БД завершена успешно!")
+
+        # Импортируем технические требования
+        import_technical_requirements()
 
     except Exception as e:
         print(f"ОШИБКА при инициализации БД: {str(e)}")
@@ -178,11 +184,21 @@ def import_technical_requirements():
         session.close()
         return
 
+    print(f"Импортирую технические характеристики")
     # Импорт всех CSV-файлов с требованиями
     for filename in os.listdir(csv_dir):
         if filename.endswith(".csv") and filename != "machine_tools.csv":
-            print(f"Импортирую данные из {filename}...")
-            df = pd.read_csv(os.path.join(csv_dir, filename), encoding='cp1251')
+            # print(f"Импортирую данные из {filename}...")
+
+            # Определяем кодировку файла
+            file_path = os.path.join(csv_dir, filename)
+            with open(file_path, "rb") as file:
+                raw_data = file.read()
+                result = chardet.detect(raw_data)
+                encoding = result["encoding"]
+
+            # Читаем CSV с определенной кодировкой
+            df = pd.read_csv(file_path, encoding=encoding)
 
             # Получаем имя станка из последнего столбца
             machine_name = df.columns[-1]
@@ -193,6 +209,7 @@ def import_technical_requirements():
             )
             if not machine:
                 print(f"Станок {machine_name} не найден, пропускаю.")
+                print(filename)
                 continue
 
             # Импортируем каждое требование
@@ -209,7 +226,7 @@ def import_technical_requirements():
                     session.add(req)
 
             session.commit()
-            print(f"Импортированы требования из {filename} для станка {machine_name}")
+            # print(f"Импортированы технические характеристики из {filename} для станка {machine_name}")
 
     session.close()
     print("Импорт технических требований завершён.")
