@@ -4,8 +4,7 @@
 import enum
 from datetime import datetime
 
-from sqlalchemy import (JSON, Column, DateTime, Enum, Float, ForeignKey,
-                        Integer, String)
+from sqlalchemy import JSON, Column, DateTime, Enum, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from machine_tools_2.app.db.base import Base

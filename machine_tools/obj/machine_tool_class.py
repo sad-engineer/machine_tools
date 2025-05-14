@@ -4,10 +4,10 @@
 from typing import Optional, Union
 
 from machine_tools.find import characteristics, passport_data
-from machine_tools.obj.constants import \
-    DEFAULT_SETTINGS_FOR_MACHINE_TOOL as DEFAULT_SETTINGS
-from machine_tools.obj.constants import (INDEXES_OF_HARD_MFTD,
-                                         NAMES_OF_HARD_MFTD)
+from machine_tools.obj.constants import (
+    DEFAULT_SETTINGS_FOR_MACHINE_TOOL as DEFAULT_SETTINGS,
+)
+from machine_tools.obj.constants import INDEXES_OF_HARD_MFTD, NAMES_OF_HARD_MFTD
 from machine_tools.obj.exceptions import InvalidValue
 
 

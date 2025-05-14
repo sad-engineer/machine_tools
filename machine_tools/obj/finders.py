@@ -5,8 +5,9 @@ import itertools
 from typing import Any, Callable
 
 from service_for_my_projects import RecordRequester, logged
-from service_for_my_projects import \
-    output_debug_message_for_init_method as debug_message_for_init
+from service_for_my_projects import (
+    output_debug_message_for_init_method as debug_message_for_init,
+)
 
 
 def output_debug_message_with_kwargs_and_length(message: str):

@@ -8,8 +8,7 @@ from sqlalchemy import engine_from_config, pool
 
 from machine_tools_2.app.core.config import get_settings
 from machine_tools_2.app.db.base import Base
-from machine_tools_2.app.models.machine import \
-    Machine  # Импортируем все модели
+from machine_tools_2.app.models.machine import Machine  # Импортируем все модели
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -6,11 +6,15 @@ from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, Field
 
-from machine_tools_2.app.models.machine import (AccuracyClass, AutomationType,
-                                                MachineGroup, MachineType,
-                                                PlaningMachineType,
-                                                SpecializationType,
-                                                WeightClass)
+from machine_tools_2.app.models.machine import (
+    AccuracyClass,
+    AutomationType,
+    MachineGroup,
+    MachineType,
+    PlaningMachineType,
+    SpecializationType,
+    WeightClass,
+)
 
 
 class MachineBase(BaseModel):

@@ -7,8 +7,7 @@ from sqlalchemy.orm import Session
 
 from machine_tools_2.app.models.machine import MachineType, PlaningMachineType
 from machine_tools_2.app.repositories.machine import MachineRepository
-from machine_tools_2.app.schemas.machine import (Machine, MachineCreate,
-                                                 MachineUpdate)
+from machine_tools_2.app.schemas.machine import Machine, MachineCreate, MachineUpdate
 
 
 class MachineService:
