@@ -121,7 +121,7 @@ def init_db_from_csv():
             main_csv = os.path.join(csv_dir, "machine_tools.csv")
             if os.path.exists(main_csv):
                 print("Импортирую данные из machine_tools.csv...")
-                df = pd.read_csv(main_csv)
+                df = pd.read_csv(main_csv, encoding='utf-8')
                 for _, row in df.iterrows():
                     machine = Machine(
                         name=str(row["Станок"]),
@@ -182,7 +182,7 @@ def import_technical_requirements():
     for filename in os.listdir(csv_dir):
         if filename.endswith(".csv") and filename != "machine_tools.csv":
             print(f"Импортирую данные из {filename}...")
-            df = pd.read_csv(os.path.join(csv_dir, filename))
+            df = pd.read_csv(os.path.join(csv_dir, filename), encoding='utf-8')
 
             # Получаем имя станка из последнего столбца
             machine_name = df.columns[-1]
