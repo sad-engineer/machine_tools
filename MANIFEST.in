@@ -1,0 +1,4 @@
+include README.md
+include LICENSE
+recursive-include machine_tools_3/app/resources *.csv
+recursive-include machine_tools_3/alembic *

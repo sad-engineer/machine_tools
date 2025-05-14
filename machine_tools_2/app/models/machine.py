@@ -55,7 +55,7 @@ class MachineType(enum.Enum):
 
 
 class MachineGroup(enum.Enum):
-    GROUP_1 = "Группа 1"
+    GROUP_1 = "Группа update_relationships.py"
     GROUP_2 = "Группа 2"
     GROUP_3 = "Группа 3"
     GROUP_4 = "Группа 4"
@@ -116,6 +116,11 @@ class Machine(Base):
     # Метаданные
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # технические требования
+    technical_requirements = relationship(
+        "TechnicalRequirement", back_populates="machine"
+    )
 
     def __repr__(self):
         return f"<Machine {self.name}>"

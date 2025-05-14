@@ -31,7 +31,7 @@ class MachineTool:
             else self.get_default_settings()
         )
         # Тип строгального станка. Задать только для строгального станка:
-        # 0-продольно строгальный, 1-поперечно строгальный, 2-долбежный
+        # 0-продольно строгальный, update_relationships.py-поперечно строгальный, 2-долбежный
         self.type_of_planing_machine: Optional[int] = None
 
     def __calculate_spindle_power(self) -> None:

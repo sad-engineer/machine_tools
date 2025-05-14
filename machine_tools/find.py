@@ -36,10 +36,10 @@ def list_mt(
     Parameters
     ----------
     group : int, float, optional
-        Группа станков (от 1 до 9 вкл.)
+        Группа станков (от update_relationships.py до 9 вкл.)
         По умолчанию : None
     type_ : int, float, optional
-        Тип станков в группе (от 1 до 9 вкл.)
+        Тип станков в группе (от update_relationships.py до 9 вкл.)
         По умолчанию : None
     path_bd : str, optional
         Путь к базе данных по материалам

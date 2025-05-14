@@ -1,10 +1,10 @@
 [tool.poetry]
 name = "machine-tools"
-version = "0.1.28"
+version = "0.2.07"
 description = ""
 authors = ["Andrey Nikolaevich Korenyuk <korenyuk.a.n@mail.ru>"]
 readme = "README.md"
-packages = [{include = "machine_tools"}]
+packages = [{include = "machine_tools_3"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"

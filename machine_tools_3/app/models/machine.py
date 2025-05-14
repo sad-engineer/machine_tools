@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
-from sqlalchemy import Column, Integer, String, Float, DateTime
-from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
+
+from sqlalchemy import Column, DateTime, Float, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -12,7 +14,7 @@ class Machine(Base):
     __tablename__ = "machine_tools"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
+    name = Column(String, nullable=False, unique=True)
     group = Column(Float)
     type = Column(Float)
     power = Column(Float)
@@ -31,3 +33,8 @@ class Machine(Base):
     machine_type = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    technical_requirements = relationship(
+        "TechnicalRequirement",
+        back_populates="machine",
+        primaryjoin="Machine.name == TechnicalRequirement.machine_name",
+    )
