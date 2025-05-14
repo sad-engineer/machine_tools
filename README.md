@@ -7,15 +7,13 @@
 ## Установка
 
 ### Вариант 1: Poetry (рекомендуется)
-
 ```bash
-poetry add git+https://github.com/sad-engineer/machine_tools.git
+poetry add git+https://github.com/sad-engineer/machine_tools.git#postgresql
 ```
 
 ### Вариант 2: pip
-
 ```bash
-pip install git+https://github.com/sad-engineer/machine_tools.git
+pip install git+https://github.com/sad-engineer/machine_tools.git#postgresql
 ```
 
 ## Инициализация базы данных
@@ -23,6 +21,10 @@ pip install git+https://github.com/sad-engineer/machine_tools.git
 После установки пакета выполните:
 
 ```bash
+# Вариант 1: Используя команду machine-tools
+machine-tools init
+
+# Вариант 2: Через Python модуль
 python -m machine_tools_3.app.db.init_db
 ```
 
@@ -39,20 +41,6 @@ machine_tools_3/
 └── setup.cfg # Настройки установки
 ```
 
-## Использование
-
-После установки и инициализации БД вы можете:
-
-1. **Проверить подключение к БД:**
-```python
-python -m machine_tools_3.app.db.check_connection
-```
-
-2. **Импортировать данные из CSV:**
-```python
-python -m machine_tools_3.app.db.init_db
-```
-
 ## Требования
 
 - Python 3.9+
@@ -60,3 +48,5 @@ python -m machine_tools_3.app.db.init_db
 - SQLAlchemy
 - Pandas
 - Alembic
+- Click (для CLI)
+
