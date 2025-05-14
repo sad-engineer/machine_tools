@@ -6,7 +6,7 @@ from sqlalchemy import text
 from machine_tools_3.app.db.session import engine
 
 
-def show_machines():
+def technical_requirements():
     with engine.connect() as connection:
         result = connection.execute(text("SELECT * FROM technical_requirements"))
         columns = result.keys()
@@ -17,4 +17,4 @@ def show_machines():
 
 
 if __name__ == "__main__":
-    show_machines()
+    technical_requirements()

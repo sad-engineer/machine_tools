@@ -41,6 +41,98 @@ machine_tools_3/
 └── setup.cfg # Настройки установки
 ```
 
+## Использование
+
+### Пример 1: Получение информации о станке
+```python
+from machine_tools import get_machine_info
+
+# Получаем информацию о станке
+machine_info = get_machine_info("16К20")
+
+if machine_info:
+    print(f"Станок: {machine_info['name']}")
+    print(f"Тип: {machine_info['machine_type']}")
+    print(f"Мощность: {machine_info['power']} кВт")
+    print(f"Точность: {machine_info['accuracy']}")
+    print(f"Автоматизация: {machine_info['automation']}")
+    
+    print("\nГабариты:")
+    print(f"Длина: {machine_info['dimensions']['length']} мм")
+    print(f"Ширина: {machine_info['dimensions']['width']} мм")
+    print(f"Высота: {machine_info['dimensions']['height']} мм")
+    
+    print("\nТехнические требования:")
+    for req, value in machine_info['technical_requirements'].items():
+        print(f"{req}: {value}")
+else:
+    print("Станок не найден")
+```
+
+### Пример 2: Получение списка станков
+```python
+from machine_tools import Machine, Session
+
+# Создаем сессию
+session = Session()
+
+# Получаем все станки
+machines = session.query(Machine).all()
+
+# Выводим информацию
+for machine in machines:
+    print(f"Станок: {machine.name}")
+    print(f"Мощность: {machine.power}")
+    print(f"Тип: {machine.machine_type}")
+    print("---")
+
+# Закрываем сессию
+session.close()
+```
+
+### Пример 3: Поиск станков по параметрам
+```python
+from machine_tools import Machine, Session
+
+session = Session()
+
+# Поиск по мощности
+powerful_machines = session.query(Machine).filter(Machine.power > 10).all()
+
+# Поиск по типу
+lathes = session.query(Machine).filter(Machine.machine_type == "Токарный").all()
+
+# Поиск по нескольким параметрам
+specific_machines = session.query(Machine).filter(
+    Machine.power > 5,
+    Machine.automation == "Автоматизированный"
+).all()
+
+session.close()
+```
+
+### Пример 4: Работа с техническими требованиями
+```python
+from machine_tools import Machine, TechnicalRequirement, Session
+
+session = Session()
+
+# Получаем станок
+machine = session.query(Machine).filter(Machine.name == "16К20").first()
+
+if machine:
+    # Получаем все требования для станка
+    requirements = session.query(TechnicalRequirement).filter(
+        TechnicalRequirement.machine_name == machine.name
+    ).all()
+    
+    # Выводим требования
+    for req in requirements:
+        print(f"{req.requirement}: {req.value}")
+
+session.close()
+```
+
 ## Требования
 
 - Python 3.9+

@@ -8,12 +8,13 @@ from machine_tools_3.app.models.machine import Base
 
 
 class TechnicalRequirement(Base):
+    """Модель технических требований станка"""
     __tablename__ = "technical_requirements"
 
-    id = Column(Integer, primary_key=True)
-    machine_name = Column(String, ForeignKey("machine_tools.name"), nullable=False)
-    requirement = Column(String, nullable=False)
-    value = Column(String, nullable=True)
+    id = Column(Integer, primary_key=True)  # Уникальный идентификатор требования
+    machine_name = Column(String, ForeignKey("machine_tools.name"), nullable=False)  # Имя станка (внешний ключ)
+    requirement = Column(String, nullable=False)  # Наименование параметра (например, "Максимальный диаметр обработки")
+    value = Column(String, nullable=True)  # Значение параметра (может быть числом, текстом или диапазоном)
 
     # Связь с моделью Machine
-    machine = relationship("Machine", back_populates="technical_requirements")
+    machine = relationship("Machine", back_populates="technical_requirements")  

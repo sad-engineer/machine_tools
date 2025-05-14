@@ -11,30 +11,31 @@ Base = declarative_base()
 
 
 class Machine(Base):
+    """Модель станка"""
     __tablename__ = "machine_tools"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False, unique=True)
-    group = Column(Float)
-    type = Column(Float)
-    power = Column(Float)
-    efficiency = Column(Float)
-    accuracy = Column(String)
-    automation = Column(String)
-    specialization = Column(String)
-    weight = Column(Float)
-    weight_class = Column(String)
-    length = Column(Integer)
-    width = Column(Integer)
-    height = Column(Integer)
-    overall_diameter = Column(String)
-    city = Column(String)
-    manufacturer = Column(String)
-    machine_type = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    id = Column(Integer, primary_key=True, index=True)  # Уникальный идентификатор станка
+    name = Column(String, nullable=False, unique=True)  # Название станка (например, "16К20")
+    group = Column(Float)  # Группа станка
+    type = Column(Float)  # Тип станка
+    power = Column(Float)  # Мощность станка в кВт
+    efficiency = Column(Float)  # КПД станка
+    accuracy = Column(String)  # Класс точности станка
+    automation = Column(String)  # Уровень автоматизации (например, "Автоматизированный")
+    specialization = Column(String)  # Специализация станка
+    weight = Column(Float)  # Масса станка в кг
+    weight_class = Column(String)  # Класс станка по массе
+    length = Column(Integer)  # Длина станка в мм
+    width = Column(Integer)  # Ширина станка в мм
+    height = Column(Integer)  # Высота станка в мм
+    overall_diameter = Column(String)  # Габаритный диаметр станка
+    city = Column(String)  # Город производителя
+    manufacturer = Column(String)  # Название производителя
+    machine_type = Column(String)  # Тип станка (например, "Токарный")
+    created_at = Column(DateTime, default=datetime.utcnow)  # Дата создания записи
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)  # Дата последнего обновления
     technical_requirements = relationship(
         "TechnicalRequirement",
         back_populates="machine",
         primaryjoin="Machine.name == TechnicalRequirement.machine_name",
-    )
+    ) 

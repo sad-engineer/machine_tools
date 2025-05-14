@@ -7,15 +7,12 @@ import sys
 import chardet
 import pandas as pd
 import psycopg2
-from sqlalchemy import create_engine, text
-from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import sessionmaker
 
 from machine_tools_3.app.core.config import get_settings
 from machine_tools_3.app.db.session import engine
 from machine_tools_3.app.models.machine import Base, Machine
-from machine_tools_3.app.models.technical_requirement import \
-    TechnicalRequirement
+from machine_tools_3.app.models.technical_requirement import TechnicalRequirement
 
 settings = get_settings()
 

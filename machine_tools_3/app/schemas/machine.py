@@ -2,29 +2,49 @@
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Dict, Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, confloat, PositiveFloat, PositiveInt, ConfigDict
 
 
-class MachineBase(BaseModel):
-    name: str
-    group: Optional[float]
-    type: Optional[float]
-    power: Optional[float]
-    efficiency: Optional[float]
-    accuracy: Optional[str]
-    automation: Optional[str]
-    specialization: Optional[str]
-    weight: Optional[float]
-    weight_class: Optional[str]
-    length: Optional[int]
-    width: Optional[int]
-    height: Optional[int]
-    overall_diameter: Optional[str]
-    city: Optional[str]
-    manufacturer: Optional[str]
-    machine_type: Optional[str]
+class Dimensions(BaseModel):
+    """Габариты станка"""
+    length: Optional[PositiveFloat] = Field(None, description="Длина станка в мм")
+    width: Optional[PositiveFloat] = Field(None, description="Ширина станка в мм")
+    height: Optional[PositiveFloat] = Field(None, description="Высота станка в мм")
+    overall_diameter: Optional[str] = Field(None, description="Габаритный диаметр станка")
+
+
+class Location(BaseModel):
+    """Информация о местоположении"""
+    city: Optional[str] = Field(None, description="Город производителя")
+    manufacturer: Optional[str] = Field(None, description="Название производителя")
+
+
+class MachineInfo(BaseModel):
+    """Полная информация о станке"""
+    name: str = Field(..., description="Название станка (например, '16К20')")
+    group: Optional[confloat(ge=0, le=9)] = Field(None, description="Группа станка")
+    type: Optional[confloat(ge=0, le=9)] = Field(None, description="Тип станка")
+    power: Optional[PositiveFloat] = Field(None, description="Мощность станка в кВт")
+    efficiency: Optional[confloat(ge=0, le=1)] = Field(None, description="КПД станка")
+    accuracy: Optional[str] = Field(None, description="Класс точности станка")
+    automation: Optional[str] = Field(None, description="Уровень автоматизации")
+    specialization: Optional[str] = Field(None, description="Специализация станка")
+    weight: Optional[PositiveFloat] = Field(None, description="Масса станка в кг")
+    weight_class: Optional[str] = Field(None, description="Класс станка по массе")
+    dimensions: Optional[Dimensions] = Field(None, description="Габариты станка")
+    location: Optional[Location] = Field(None, description="Информация о местоположении")
+    machine_type: Optional[str] = Field(None, description="Тип станка (например, 'Токарный')")
+    technical_requirements: Optional[Dict[str, Any]] = Field(
+        None, description="Технические требования станка"
+    )
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+
+class MachineBase(MachineInfo):
+    pass
 
 
 class MachineCreate(MachineBase):
@@ -40,8 +60,7 @@ class MachineInDBBase(MachineBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Machine(MachineInDBBase):
