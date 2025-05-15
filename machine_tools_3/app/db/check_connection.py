@@ -30,6 +30,8 @@ def check_connection():
 
         print("✅ Подключение установлено успешно")
 
+        return True
+
     except Exception as e:
         print("❌ Ошибка подключения к базе данных!")
         print(f"Детали ошибки: {str(e)}")
