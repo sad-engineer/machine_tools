@@ -6,11 +6,15 @@ from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, Field
 
-from machine_tools_2.app.models.machine import (AccuracyClass, AutomationType,
-                                                MachineGroup, MachineType,
-                                                PlaningMachineType,
-                                                SpecializationType,
-                                                WeightClass)
+from machine_tools_2.app.models.machine import (
+    AccuracyClass,
+    AutomationType,
+    MachineGroup,
+    MachineType,
+    PlaningMachineType,
+    SpecializationType,
+    WeightClass,
+)
 
 
 class MachineBase(BaseModel):
@@ -29,27 +33,19 @@ class MachineBase(BaseModel):
     # Классификация
     machine_type: MachineType = Field(..., description="Тип станка")
     group: Optional[MachineGroup] = Field(None, description="Группа станка")
-    type_of_planing_machine: Optional[PlaningMachineType] = Field(
-        None, description="Тип строгального станка"
-    )
+    type_of_planing_machine: Optional[PlaningMachineType] = Field(None, description="Тип строгального станка")
     class_by_weight: Optional[WeightClass] = Field(None, description="Класс по весу")
 
     # Технические характеристики
     performance_proc: Optional[float] = Field(None, description="КПД обработки")
-    power_lathe_passport_kvt: Optional[float] = Field(
-        None, description="Мощность станка по паспорту, кВт"
-    )
+    power_lathe_passport_kvt: Optional[float] = Field(None, description="Мощность станка по паспорту, кВт")
     spindle_power: Optional[float] = Field(None, description="Мощность шпинделя")
     automation: Optional[AutomationType] = Field(None, description="Тип автоматизации")
     accuracy: Optional[AccuracyClass] = Field(None, description="Класс точности")
-    specialization: Optional[SpecializationType] = Field(
-        None, description="Специализация"
-    )
+    specialization: Optional[SpecializationType] = Field(None, description="Специализация")
 
     # Дополнительные данные
-    passport_data: Optional[Dict[str, Any]] = Field(
-        None, description="Паспортные данные"
-    )
+    passport_data: Optional[Dict[str, Any]] = Field(None, description="Паспортные данные")
 
 
 class MachineCreate(MachineBase):

@@ -11,7 +11,8 @@ Base = declarative_base()
 
 
 class Machine(Base):
-    """Модель станка"""
+    """SQLAlchemy модель станка, которая представляет таблицу в базе данных"""
+
     __tablename__ = "machine_tools"
 
     id = Column(Integer, primary_key=True, index=True)  # Уникальный идентификатор станка
@@ -38,4 +39,4 @@ class Machine(Base):
         "TechnicalRequirement",
         back_populates="machine",
         primaryjoin="Machine.name == TechnicalRequirement.machine_name",
-    ) 
+    )

@@ -4,10 +4,8 @@
 from typing import Optional, Union
 
 from machine_tools.find import characteristics, passport_data
-from machine_tools.obj.constants import \
-    DEFAULT_SETTINGS_FOR_MACHINE_TOOL as DEFAULT_SETTINGS
-from machine_tools.obj.constants import (INDEXES_OF_HARD_MFTD,
-                                         NAMES_OF_HARD_MFTD)
+from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_MACHINE_TOOL as DEFAULT_SETTINGS
+from machine_tools.obj.constants import INDEXES_OF_HARD_MFTD, NAMES_OF_HARD_MFTD
 from machine_tools.obj.exceptions import InvalidValue
 
 
@@ -25,29 +23,17 @@ class MachineTool:
         self.kind_of_cut = kind_of_cut
         self.quantity = quantity
         self.hard_mftd = hard_mftd
-        (
-            self.update_chars(name)
-            if not isinstance(name, type(None))
-            else self.get_default_settings()
-        )
+        (self.update_chars(name) if not isinstance(name, type(None)) else self.get_default_settings())
         # Тип строгального станка. Задать только для строгального станка:
         # 0-продольно строгальный, update_relationships.py-поперечно строгальный, 2-долбежный
         self.type_of_planing_machine: Optional[int] = None
 
     def __calculate_spindle_power(self) -> None:
         """Рассчитывает мощность шпинделя"""
-        performance = (
-            self.performance_proc if hasattr(self, "performance_proc") else None
-        )
-        n_lathe_passport = (
-            self.power_lathe_passport_kvt
-            if hasattr(self, "power_lathe_passport_kvt")
-            else None
-        )
+        performance = self.performance_proc if hasattr(self, "performance_proc") else None
+        n_lathe_passport = self.power_lathe_passport_kvt if hasattr(self, "power_lathe_passport_kvt") else None
         self.spindle_power = None
-        if not isinstance(n_lathe_passport, type(None)) and not isinstance(
-            performance, type(None)
-        ):
+        if not isinstance(n_lathe_passport, type(None)) and not isinstance(performance, type(None)):
             self.spindle_power = n_lathe_passport * performance
 
     def show(self):
@@ -100,16 +86,8 @@ class MachineTool:
             self.automation = str(chars["Автоматизация"][0])
             self.accuracy = str(chars["Точность"][0])
             self.specialization = str(chars["Специализация"][0])
-            self.group = (
-                int(chars["Группа"][0])
-                if not isinstance(chars["Группа"][0], type(None))
-                else 0
-            )
-            self.machine_type = (
-                int(chars["Тип"][0])
-                if not isinstance(chars["Тип"][0], type(None))
-                else 0
-            )
+            self.group = int(chars["Группа"][0]) if not isinstance(chars["Группа"][0], type(None)) else 0
+            self.machine_type = int(chars["Тип"][0]) if not isinstance(chars["Тип"][0], type(None)) else 0
             # Запрашиваем паспортные данные станка в БД
             self.passport_data = passport_data(name)
 
@@ -126,9 +104,7 @@ class MachineTool:
                 if hard_mftd in NAMES_OF_HARD_MFTD:
                     self.hard_mftd = hard_mftd
                 else:
-                    message = {
-                        "Индекс параметра 'Жесткость системы СПИД' не определен."
-                    }
+                    message = {"Индекс параметра 'Жесткость системы СПИД' не определен."}
                     raise InvalidValue(message)
             elif isinstance(hard_mftd, str):
                 if hard_mftd in INDEXES_OF_HARD_MFTD:

@@ -5,8 +5,7 @@ import itertools
 from typing import Any, Callable
 
 from service_for_my_projects import RecordRequester, logged
-from service_for_my_projects import \
-    output_debug_message_for_init_method as debug_message_for_init
+from service_for_my_projects import output_debug_message_for_init_method as debug_message_for_init
 
 
 def output_debug_message_with_kwargs_and_length(message: str):
@@ -61,9 +60,7 @@ class MachineToolsFinder:
     def __init__(self, record_requester: Callable[..., RecordRequester]):
         self._requester = record_requester()
 
-    @output_debug_message_with_kwargs_and_length(
-        "{0} по ключу {update_relationships.py} нашел записей: {2}"
-    )
+    @output_debug_message_with_kwargs_and_length("{0} по ключу {update_relationships.py} нашел записей: {2}")
     def by_name(self, any_name: str) -> Any:
         """Возвращает найденные записи по наименованию станка. Формат возвращаемых данных определяет self._requester
 
@@ -73,33 +70,23 @@ class MachineToolsFinder:
         records = self._requester.get_records({"Станок": any_name})
         return records if records else None
 
-    @output_debug_message_with_kwargs_and_length(
-        "{0} по ключу {update_relationships.py} нашел записей: {2}"
-    )
+    @output_debug_message_with_kwargs_and_length("{0} по ключу {update_relationships.py} нашел записей: {2}")
     def by_type(self, machine_type) -> Any:
         records = self._requester.get_records({"Тип": machine_type})
         return records if records else None
 
-    @output_debug_message_with_kwargs_and_length(
-        "{0} по ключу {update_relationships.py} нашел записей: {2}"
-    )
+    @output_debug_message_with_kwargs_and_length("{0} по ключу {update_relationships.py} нашел записей: {2}")
     def by_group(self, machine_group) -> Any:
         records = self._requester.get_records({"Группа": machine_group})
         return records if records else None
 
-    @output_debug_message_with_kwargs_and_length(
-        "{0} по ключу {update_relationships.py} нашел записей: {2}"
-    )
+    @output_debug_message_with_kwargs_and_length("{0} по ключу {update_relationships.py} нашел записей: {2}")
     def by_type_and_group(self, machine_type, machine_group) -> Any:
-        records = self._requester.get_records(
-            {"Группа": machine_group, "Тип": machine_type}
-        )
+        records = self._requester.get_records({"Группа": machine_group, "Тип": machine_type})
         return records if records else None
 
     @property
-    @output_debug_message_with_with_length(
-        "{0} ищет все записи таблицы. Найдено записей: {update_relationships.py}"
-    )
+    @output_debug_message_with_with_length("{0} ищет все записи таблицы. Найдено записей: {update_relationships.py}")
     def all(self) -> Any:
         """Возвращает все записи. Формат возвращаемых данных определяет self._requester."""
         for record in self._requester.get_all_records:

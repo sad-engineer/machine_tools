@@ -7,8 +7,7 @@ from sqlalchemy.orm import Session
 
 from machine_tools_2.app.models.machine import MachineType, PlaningMachineType
 from machine_tools_2.app.repositories.machine import MachineRepository
-from machine_tools_2.app.schemas.machine import (Machine, MachineCreate,
-                                                 MachineUpdate)
+from machine_tools_2.app.schemas.machine import Machine, MachineCreate, MachineUpdate
 
 
 class MachineService:
@@ -39,9 +38,7 @@ class MachineService:
         db_machines = self.repository.get_by_machine_type(machine_type)
         return [Machine.model_validate(machine) for machine in db_machines]
 
-    def get_machines_by_planing_type(
-        self, planing_type: PlaningMachineType
-    ) -> List[Machine]:
+    def get_machines_by_planing_type(self, planing_type: PlaningMachineType) -> List[Machine]:
         """Получить строгальные станки по типу"""
         db_machines = self.repository.get_by_planing_type(planing_type)
         return [Machine.model_validate(machine) for machine in db_machines]
@@ -51,9 +48,7 @@ class MachineService:
         db_machine = self.repository.create(machine)
         return Machine.model_validate(db_machine)
 
-    def update_machine(
-        self, machine_id: int, machine: MachineUpdate
-    ) -> Optional[Machine]:
+    def update_machine(self, machine_id: int, machine: MachineUpdate) -> Optional[Machine]:
         """Обновить существующий станок"""
         db_machine = self.repository.update(machine_id, machine)
         if not db_machine:

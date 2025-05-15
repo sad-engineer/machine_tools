@@ -28,9 +28,7 @@ def main():
     print(len(result))
 
     create = lister.by_type_and_group
-    result = timeit("Время запроса станков по типу и группе: {}")(create)(
-        machine_type=1, group=1
-    )
+    result = timeit("Время запроса станков по типу и группе: {}")(create)(machine_type=1, group=1)
     print(len(result))
 
     machine_tools = creator.by_name("16К20Ф3")

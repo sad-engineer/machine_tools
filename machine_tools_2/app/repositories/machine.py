@@ -23,11 +23,7 @@ class MachineRepository:
         return self.db.query(Machine).offset(skip).limit(limit).all()
 
     def get_by_processing_type(self, processing_type: ProcessingType) -> List[Machine]:
-        return (
-            self.db.query(Machine)
-            .filter(Machine.processing_type == processing_type)
-            .all()
-        )
+        return self.db.query(Machine).filter(Machine.processing_type == processing_type).all()
 
     def create(self, machine: MachineCreate) -> Machine:
         db_machine = Machine(**machine.model_dump())

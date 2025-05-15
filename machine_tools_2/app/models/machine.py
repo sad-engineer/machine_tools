@@ -4,8 +4,7 @@
 import enum
 from datetime import datetime
 
-from sqlalchemy import (JSON, Column, DateTime, Enum, Float, ForeignKey,
-                        Integer, String)
+from sqlalchemy import JSON, Column, DateTime, Enum, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from machine_tools_2.app.db.base import Base
@@ -98,9 +97,7 @@ class Machine(Base):
     # Классификация
     machine_type = Column(Enum(MachineType), nullable=False, comment="Тип станка")
     group = Column(Enum(MachineGroup), comment="Группа станка")
-    type_of_planing_machine = Column(
-        Enum(PlaningMachineType), comment="Тип строгального станка"
-    )
+    type_of_planing_machine = Column(Enum(PlaningMachineType), comment="Тип строгального станка")
     class_by_weight = Column(Enum(WeightClass), comment="Класс по весу")
     # Технические характеристики
     performance_proc = Column(Float, comment="КПД обработки")
@@ -118,9 +115,7 @@ class Machine(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # технические требования
-    technical_requirements = relationship(
-        "TechnicalRequirement", back_populates="machine"
-    )
+    technical_requirements = relationship("TechnicalRequirement", back_populates="machine")
 
     def __repr__(self):
         return f"<Machine {self.name}>"

@@ -6,14 +6,10 @@ from typing import Callable
 
 from pydantic import PositiveInt, ValidationError
 from service_for_my_projects import logged
-from service_for_my_projects import \
-    output_debug_message_for_init_method as debug_message_for_init
+from service_for_my_projects import output_debug_message_for_init_method as debug_message_for_init
 
-from machine_tools.obj.constants import \
-    DEFAULT_SETTINGS_FOR_MACHINE_TOOL as DEF_SET
-from machine_tools.obj.constants import \
-    DEFAULT_SETTINGS_FOR_MACHINE_TOOL_BY_TYPE_PROCESSING as \
-    DEF_SET_BY_TYPE_PROC
+from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_MACHINE_TOOL as DEF_SET
+from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_MACHINE_TOOL_BY_TYPE_PROCESSING as DEF_SET_BY_TYPE_PROC
 from machine_tools.obj.entities import ErrorWithData, MachineTool
 from machine_tools.obj.fields_types import InHardMFTD, InTypesOfProcessing
 from machine_tools.obj.finders import MachineToolsFinder
@@ -26,9 +22,7 @@ def output_debug_message():
         def wrapper(self, *args, **kwargs):
             result = func(self, *args, **kwargs)
             if not isinstance(result, (ErrorWithData, type(None))) and self._verbose:
-                self.debug(
-                    f"Создан экземпляр класса {result.__class__.__name__}: {result.name}."
-                )
+                self.debug(f"Создан экземпляр класса {result.__class__.__name__}: {result.name}.")
             return result
 
         return wrapper

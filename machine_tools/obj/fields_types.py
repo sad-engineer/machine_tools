@@ -5,9 +5,7 @@ from typing import ClassVar, Optional, Union
 
 from pydantic import BaseModel, validator
 
-from machine_tools.obj.constants import (HARD_MFTD, TYPES_OF_AUTOMATION,
-                                         TYPES_OF_SPECIALIZATION,
-                                         TYPES_PROCESSING)
+from machine_tools.obj.constants import HARD_MFTD, TYPES_OF_AUTOMATION, TYPES_OF_SPECIALIZATION, TYPES_PROCESSING
 
 
 class ValueFromDict:
@@ -18,9 +16,7 @@ class ValueFromDict:
     @classmethod
     def validate(cls, value):
         if not isinstance(value, (int, str)):
-            raise ValueError(
-                f"Ожидается целое число или строка, получено: {type(value)}"
-            )
+            raise ValueError(f"Ожидается целое число или строка, получено: {type(value)}")
         elif isinstance(value, str):
             if value not in cls.AVAILABLE_VALUES.values():
                 raise ValueError(
@@ -31,8 +27,7 @@ class ValueFromDict:
         elif isinstance(value, int):
             if value not in cls.AVAILABLE_VALUES:
                 raise ValueError(
-                    f"Значение должно быть из списка {list(cls.AVAILABLE_VALUES.keys())}, "
-                    f"получено: {value}"
+                    f"Значение должно быть из списка {list(cls.AVAILABLE_VALUES.keys())}, " f"получено: {value}"
                 )
             return value
 
@@ -49,9 +44,7 @@ class InvertedValueFromDict:
     @classmethod
     def validate(cls, value):
         if not isinstance(value, (int, str)):
-            raise ValueError(
-                f"Ожидается целое число или строка, получено: {type(value)}"
-            )
+            raise ValueError(f"Ожидается целое число или строка, получено: {type(value)}")
         elif isinstance(value, str):
             if value not in cls.AVAILABLE_VALUES.values():
                 raise ValueError(
@@ -62,8 +55,7 @@ class InvertedValueFromDict:
         elif isinstance(value, int):
             if value not in cls.AVAILABLE_VALUES:
                 raise ValueError(
-                    f"Значение должно быть из списка {list(cls.AVAILABLE_VALUES.keys())}, "
-                    f"получено: {value}"
+                    f"Значение должно быть из списка {list(cls.AVAILABLE_VALUES.keys())}, " f"получено: {value}"
                 )
             return cls.AVAILABLE_VALUES[value]
 

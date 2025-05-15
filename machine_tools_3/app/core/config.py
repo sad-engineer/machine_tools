@@ -8,9 +8,7 @@ from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
 # Путь к .env относительно текущего файла
-env_path = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.dirname(__file__))), ".env"
-)
+env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), ".env")
 load_dotenv(env_path)
 
 

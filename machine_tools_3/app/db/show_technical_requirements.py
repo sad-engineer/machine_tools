@@ -3,11 +3,12 @@
 # ---------------------------------------------------------------------------------------------------------------------
 from sqlalchemy import text
 
-from machine_tools_3.app.db.session import engine
+from machine_tools_3.app.db.session_manager import session_manager
 
 
-def technical_requirements():
-    with engine.connect() as connection:
+def show_technical_requirements():
+    """Показывает все технические требования в базе данных"""
+    with session_manager.engine.connect() as connection:
         result = connection.execute(text("SELECT * FROM technical_requirements"))
         columns = result.keys()
         print(" | ".join(columns))
@@ -17,4 +18,4 @@ def technical_requirements():
 
 
 if __name__ == "__main__":
-    technical_requirements()
+    show_technical_requirements()

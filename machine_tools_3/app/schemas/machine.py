@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
 from datetime import datetime
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
 
-from pydantic import BaseModel, Field, confloat, PositiveFloat, PositiveInt, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, PositiveFloat, PositiveInt, confloat
 
 
 class Dimensions(BaseModel):
     """Габариты станка"""
+
     length: Optional[PositiveFloat] = Field(None, description="Длина станка в мм")
     width: Optional[PositiveFloat] = Field(None, description="Ширина станка в мм")
     height: Optional[PositiveFloat] = Field(None, description="Высота станка в мм")
@@ -17,12 +18,14 @@ class Dimensions(BaseModel):
 
 class Location(BaseModel):
     """Информация о местоположении"""
+
     city: Optional[str] = Field(None, description="Город производителя")
     manufacturer: Optional[str] = Field(None, description="Название производителя")
 
 
 class MachineInfo(BaseModel):
     """Полная информация о станке"""
+
     name: str = Field(..., description="Название станка (например, '16К20')")
     group: Optional[confloat(ge=0, le=9)] = Field(None, description="Группа станка")
     type: Optional[confloat(ge=0, le=9)] = Field(None, description="Тип станка")
@@ -36,9 +39,7 @@ class MachineInfo(BaseModel):
     dimensions: Optional[Dimensions] = Field(None, description="Габариты станка")
     location: Optional[Location] = Field(None, description="Информация о местоположении")
     machine_type: Optional[str] = Field(None, description="Тип станка (например, 'Токарный')")
-    technical_requirements: Optional[Dict[str, Any]] = Field(
-        None, description="Технические требования станка"
-    )
+    technical_requirements: Optional[Dict[str, Any]] = Field(None, description="Технические требования станка")
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 

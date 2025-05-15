@@ -45,17 +45,13 @@ def is_name_in_main_table(name, path=PATH_DB) -> bool:
     if len(data) == 1:
         return True
     elif len(data) > 1:
-        raise InvalidValue(
-            f"Имя станка {name} в таблице 'machine_tools' встречается несколько раз."
-        )
+        raise InvalidValue(f"Имя станка {name} в таблице 'machine_tools' встречается несколько раз.")
     return False
 
 
 def download_from_xls():
     """Загружает данные из файлов эксель с обновлением главной таблицы"""
-    path_main_table = __file__.replace(
-        "download_from_xls.py", "tables_new\\machine_tools.xlsx"
-    )
+    path_main_table = __file__.replace("download_from_xls.py", "tables_new\\machine_tools.xlsx")
     update_main_table(path_main_table)
     paths = askopenfilenames(
         title="Выберите таблицы паспортных данных станков",

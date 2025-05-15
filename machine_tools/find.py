@@ -18,9 +18,7 @@ import pandas as pd
 
 from machine_tools.fun import connect
 from machine_tools.obj.constants import PATH_DB_FOR_TOOLS as PATH_DB
-from machine_tools.obj.exceptions import (CalculationIsNotDefined,
-                                          ReceivedEmptyDataFrame,
-                                          UnexpectedDataInDataFrame)
+from machine_tools.obj.exceptions import CalculationIsNotDefined, ReceivedEmptyDataFrame, UnexpectedDataInDataFrame
 
 
 def list_mt(
@@ -50,9 +48,7 @@ def list_mt(
         Сортированный список имен станков, доступных в БД .
     """
     if not isinstance(group, type(None)) and not isinstance(type_, type(None)):
-        request = (
-            f"SELECT * FROM machine_tools WHERE Группа = '{group}' AND Тип = '{type_}'"
-        )
+        request = f"SELECT * FROM machine_tools WHERE Группа = '{group}' AND Тип = '{type_}'"
     elif not isinstance(group, type(None)) and isinstance(type_, type(None)):
         request = f"SELECT * FROM machine_tools WHERE Группа = '{group}'"
     elif isinstance(group, type(None)) and not isinstance(type_, type(None)):
@@ -83,9 +79,7 @@ def characteristics(name: str = "5В12", path_bd: str = PATH_DB) -> pd.DataFrame
         Возвращает DataFrame, содержащий характеристики станка.
     """
     db, cursor = connect(path_bd)
-    characteristic = pd.read_sql(
-        f"SELECT * FROM machine_tools WHERE Станок = '{name}'", db
-    )
+    characteristic = pd.read_sql(f"SELECT * FROM machine_tools WHERE Станок = '{name}'", db)
     db.close()
     if len(characteristic) != 1:
         if len(characteristic) == 0:

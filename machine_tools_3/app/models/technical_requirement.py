@@ -8,7 +8,8 @@ from machine_tools_3.app.models.machine import Base
 
 
 class TechnicalRequirement(Base):
-    """Модель технических требований станка"""
+    """SQLAlchemy модель технических требований станка, которая представляет таблицу в базе данных"""
+
     __tablename__ = "technical_requirements"
 
     id = Column(Integer, primary_key=True)  # Уникальный идентификатор требования
@@ -17,4 +18,4 @@ class TechnicalRequirement(Base):
     value = Column(String, nullable=True)  # Значение параметра (может быть числом, текстом или диапазоном)
 
     # Связь с моделью Machine
-    machine = relationship("Machine", back_populates="technical_requirements")  
+    machine = relationship("Machine", back_populates="technical_requirements")
