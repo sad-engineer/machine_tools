@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "machine-tools"
-version = "0.2.22"
+version = "0.2.23"
 description = "Пакет для работы с базой данных станков"
 authors = ["Andrey Nikolaevich Korenyuk <korenyuk.a.n@mail.ru>"]
 readme = "README.md"
