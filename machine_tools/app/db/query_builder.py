@@ -64,12 +64,24 @@ class QueryBuilder:
         self._filters.append(Machine.specialization == specialization)
         return self
 
-    def filter_by_name(self, name: str, case_sensitive: bool = False) -> "QueryBuilder":
-        """Фильтр по имени станка"""
-        if case_sensitive:
-            self._filters.append(Machine.name == name)
+    def filter_by_name(self, name: str, case_sensitive: bool = False, exact_match: bool = False) -> "QueryBuilder":
+        """Фильтр по имени станка
+        
+        Args:
+            name (str): Имя станка для поиска
+            case_sensitive (bool, optional): Учитывать регистр. По умолчанию False
+            exact_match (bool, optional): Точное совпадение. По умолчанию False
+        """
+        if exact_match:
+            if case_sensitive:
+                self._filters.append(Machine.name == name)
+            else:
+                self._filters.append(Machine.name.ilike(name))
         else:
-            self._filters.append(Machine.name.ilike(f"%{name}%"))
+            if case_sensitive:
+                self._filters.append(Machine.name.contains(name))
+            else:
+                self._filters.append(Machine.name.ilike(f"%{name}%"))
         return self
 
     def order_by(self, column: str, descending: bool = False) -> "QueryBuilder":

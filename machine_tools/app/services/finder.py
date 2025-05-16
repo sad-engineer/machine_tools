@@ -160,9 +160,16 @@ class MachineFinder:
         machines = builder.execute()
         return self._formatter.format(machines)
 
-    def by_name(self, name: str, case_sensitive: bool = False, limit: int = None) -> List[Any]:
-        """Поиск станков по имени"""
-        builder = self._builder.filter_by_name(name, case_sensitive)
+    def by_name(self, name: str, case_sensitive: bool = False, exact_match: bool = True, limit: int = None) -> List[Any]:
+        """Поиск станков по имени
+        
+        Args:
+            name (str): Имя станка для поиска
+            case_sensitive (bool, optional): Учитывать регистр. По умолчанию False
+            exact_match (bool, optional): Точное совпадение. По умолчанию True
+            limit (int, optional): Ограничение количества результатов
+        """
+        builder = self._builder.filter_by_name(name, case_sensitive, exact_match)
 
         if limit:
             builder = builder.limit(limit)
