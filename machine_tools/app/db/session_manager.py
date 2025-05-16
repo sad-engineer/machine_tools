@@ -7,7 +7,7 @@ from typing import Dict, Generator, Optional
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from machine_tools_3.app.core.config import get_settings
+from machine_tools.app.core.config import get_settings
 
 settings = get_settings()
 

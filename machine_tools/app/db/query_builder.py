@@ -7,7 +7,7 @@ from sqlalchemy import and_, asc, desc, select
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.selectable import Select
 
-from machine_tools_3.app.models import Machine
+from machine_tools.app.models import Machine
 
 
 class QueryBuilder:
@@ -127,7 +127,7 @@ class QueryBuilder:
 
 # Пример использования:
 if __name__ == "__main__":
-    from machine_tools_3.app.db.session import get_session
+    from machine_tools.app.db.session import get_session
 
     session = get_session()
     try:

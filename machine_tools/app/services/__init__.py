@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
-import sys
 import os
+import sys
 
-from machine_tools_3.app.db.check_connection import check_connection
+from machine_tools.app.db.check_connection import check_connection
 
 # Проверяем, что это импорт пакета, а не запуск скрипта
 if not os.path.basename(sys.argv[0]) == "check_connection.py":
@@ -13,7 +13,7 @@ if not os.path.basename(sys.argv[0]) == "check_connection.py":
         sys.exit(1)
 
 # Импортируем все сервисы
-from machine_tools_3.app.services.finder import MachineFinder
+from machine_tools.app.services.finder import MachineFinder
 
 __all__ = [
     "MachineFinder",

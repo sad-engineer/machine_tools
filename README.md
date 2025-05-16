@@ -25,12 +25,12 @@ pip install git+https://github.com/sad-engineer/machine_tools.git#postgresql
 machine-tools init
 
 # Вариант 2: Через Python модуль
-python -m machine_tools_3.app.db.init_db
+python -m machine_tools.app.db.init_db
 ```
 
 ## Структура проекта
 ```
-machine_tools_3/
+machine_tools/
 ├── alembic/ # Миграции базы данных
 ├── app/
 │ ├── db/ # Работа с базой данных

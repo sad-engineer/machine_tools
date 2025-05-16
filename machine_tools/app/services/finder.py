@@ -5,9 +5,9 @@ from typing import Any, List, Optional
 
 from sqlalchemy.orm import Session
 
-from machine_tools_3.app.db.query_builder import QueryBuilder
-from machine_tools_3.app.db.session_manager import session_manager
-from machine_tools_3.app.formatters.machine_formatters import (
+from machine_tools.app.db.query_builder import QueryBuilder
+from machine_tools.app.db.session_manager import session_manager
+from machine_tools.app.formatters.machine_formatters import (
     ListMachineInfoFormatter,
     ListNameFormatter,
     MachineFormatter,

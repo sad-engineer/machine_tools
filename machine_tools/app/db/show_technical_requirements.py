@@ -3,13 +3,13 @@
 # ---------------------------------------------------------------------------------------------------------------------
 from sqlalchemy import text
 
-from machine_tools_3.app.db.session_manager import session_manager
+from machine_tools.app.db.session_manager import session_manager
 
 
-def show_machines():
-    """Показывает все станки в базе данных"""
+def show_technical_requirements():
+    """Показывает все технические требования в базе данных"""
     with session_manager.engine.connect() as connection:
-        result = connection.execute(text("SELECT * FROM machine_tools_old"))
+        result = connection.execute(text("SELECT * FROM technical_requirements"))
         columns = result.keys()
         print(" | ".join(columns))
         print("-" * 80)
@@ -18,4 +18,4 @@ def show_machines():
 
 
 if __name__ == "__main__":
-    show_machines()
+    show_technical_requirements()

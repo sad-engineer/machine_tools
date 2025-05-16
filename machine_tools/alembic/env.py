@@ -16,7 +16,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from machine_tools_3.app.models.machine import Base
+from machine_tools.app.models.machine import Base
 
 target_metadata = Base.metadata
 

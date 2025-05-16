@@ -8,9 +8,9 @@ import chardet
 import pandas as pd
 import psycopg2
 
-from machine_tools_3.app.core.config import get_settings
-from machine_tools_3.app.db.session_manager import session_manager
-from machine_tools_3.app.models import Base, Machine, TechnicalRequirement
+from machine_tools.app.core.config import get_settings
+from machine_tools.app.db.session_manager import session_manager
+from machine_tools.app.models import Base, Machine, TechnicalRequirement
 
 settings = get_settings()
 

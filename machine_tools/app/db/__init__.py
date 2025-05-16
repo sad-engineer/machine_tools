@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
-from machine_tools_3.app.services import MachineFinder
+from machine_tools.app.db.query_builder import QueryBuilder
 
 __all__ = [
-    "MachineFinder",
+    "QueryBuilder",
 ]
