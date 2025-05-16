@@ -4,10 +4,10 @@
 
 # Расположение БД
 DEFAULT_SETTINGS_FOR_DB = {
-    "path": f"{__file__}".replace("obj\\constants.py", "data\\machine_tools.db"),
+    "path": f"{__file__}".replace("obj\\constants.py", "data\\machine_tools_old.db"),
     "requester_type": "sqlite",
     "reader_type": "list_dict",
-    "tablename": "machine_tools",
+    "tablename": "machine_tools_old",
 }
 
 # Настройка начальных данных по виду обработки

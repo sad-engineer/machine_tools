@@ -6,8 +6,8 @@ import os.path
 
 from service_for_my_projects import timeit, timeit_property
 
-from machine_tools.logger_settings import config
-from machine_tools.obj.containers import MachineToolsContainer as Container
+from machine_tools_old.logger_settings import config
+from machine_tools_old.obj.containers import MachineToolsContainer as Container
 
 if not os.path.exists("logs/"):
     os.makedirs("logs/")

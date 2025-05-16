@@ -13,7 +13,7 @@ pip install git+https://github.com/sad-engineer/machine_tools.git
 ## Клонирование проекта
 ```bash
 git clone https://github.com/sad-engineer/machine_tools.git
-cd machine_tools
+cd machine_tools_old
 ```
 
 ## Подготовка базы данных
@@ -23,8 +23,9 @@ cd machine_tools
 ## Использование
 
 Пример использования:
+
 ```python
-from machine_tools import MachineToolsContainer as Container
+from machine_tools_old import MachineToolsContainer as Container
 
 # Создаем креатор
 creator = Container().creator()
@@ -99,7 +100,7 @@ curl -sSL https://install.python-poetry.org | python3 -
 2. Установите зависимости проекта:
 ```sh
 # Перейдите в директорию проекта
-cd machine_tools
+cd machine_tools_old
 
 # Установите зависимости
 poetry install

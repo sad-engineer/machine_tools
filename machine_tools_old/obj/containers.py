@@ -4,11 +4,11 @@
 from dependency_injector import containers, providers
 from service_for_my_projects import Requester as RequesterContainer
 
-from machine_tools.obj.constants import DEFAULT_SETTINGS_FOR_DB
-from machine_tools.obj.creators import MachineToolsCreator
-from machine_tools.obj.entities import MachineTool
-from machine_tools.obj.finders import MachineToolsFinder
-from machine_tools.obj.listers import MachineToolsLister
+from machine_tools_old.obj.constants import DEFAULT_SETTINGS_FOR_DB
+from machine_tools_old.obj.creators import MachineToolsCreator
+from machine_tools_old.obj.entities import MachineTool
+from machine_tools_old.obj.finders import MachineToolsFinder
+from machine_tools_old.obj.listers import MachineToolsLister
 
 
 class MachineToolsContainer(containers.DeclarativeContainer):

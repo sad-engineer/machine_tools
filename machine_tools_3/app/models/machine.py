@@ -13,7 +13,7 @@ Base = declarative_base()
 class Machine(Base):
     """SQLAlchemy модель станка, которая представляет таблицу в базе данных"""
 
-    __tablename__ = "machine_tools"
+    __tablename__ = "machine_tools_old"
 
     id = Column(Integer, primary_key=True, index=True)  # Уникальный идентификатор станка
     name = Column(String, nullable=False, unique=True)  # Название станка (например, "16К20")

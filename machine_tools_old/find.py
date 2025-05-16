@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # -------------------------------------------------------------------------------
 # Name:        find
-# Purpose:     Contains the functions of working with the database for the machine_tools
+# Purpose:     Contains the functions of working with the database for the machine_tools_old
 #
 # Author:      ANKorenuk
 #
@@ -16,9 +16,9 @@ from typing import Optional, Union
 
 import pandas as pd
 
-from machine_tools.fun import connect
-from machine_tools.obj.constants import PATH_DB_FOR_TOOLS as PATH_DB
-from machine_tools.obj.exceptions import CalculationIsNotDefined, ReceivedEmptyDataFrame, UnexpectedDataInDataFrame
+from machine_tools_old.fun import connect
+from machine_tools_old.obj.constants import PATH_DB_FOR_TOOLS as PATH_DB
+from machine_tools_old.obj.exceptions import CalculationIsNotDefined, ReceivedEmptyDataFrame, UnexpectedDataInDataFrame
 
 
 def list_mt(

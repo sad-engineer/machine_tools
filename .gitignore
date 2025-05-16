@@ -14,4 +14,4 @@ env.bak /
 .idea/
 temp/
 dist/
-machine_tools/logs
+machine_tools_old/logs

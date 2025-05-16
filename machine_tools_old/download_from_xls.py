@@ -6,10 +6,10 @@ from tkinter.filedialog import askopenfilenames
 
 import pandas as pd
 
-from machine_tools.fun import connect
-from machine_tools.obj.exceptions import InvalidValue
+from machine_tools_old.fun import connect
+from machine_tools_old.obj.exceptions import InvalidValue
 
-PATH_DB = "machine_tools\\data\\machine_tools_pro.db"
+PATH_DB = "machine_tools_old\\data\\machine_tools_pro.db"
 
 
 def save_table(table, name, path=PATH_DB):
@@ -22,7 +22,7 @@ def update_main_table(path):
     data_df = pd.read_excel(path, sheet_name="Sheet1")
     save_table(
         table=data_df,
-        name="machine_tools",
+        name="machine_tools_old",
     )
 
 
@@ -31,7 +31,7 @@ def get_name(path):
     name = path.split("/")[-1]
     name = name.replace(".xlsx", "")
     name = name.replace(".xls", "")
-    if name == "machine_tools":
+    if name == "machine_tools_old":
         return name
     if name.find("_") != -1:
         name = name.replace("_", ".")
@@ -41,17 +41,17 @@ def get_name(path):
 def is_name_in_main_table(name, path=PATH_DB) -> bool:
     """Проверяет, есть ли name в главной таблице"""
     db, cursor = connect(path)
-    data = pd.read_sql(f"SELECT * FROM machine_tools WHERE Станок = '{name}'", db)
+    data = pd.read_sql(f"SELECT * FROM machine_tools_old WHERE Станок = '{name}'", db)
     if len(data) == 1:
         return True
     elif len(data) > 1:
-        raise InvalidValue(f"Имя станка {name} в таблице 'machine_tools' встречается несколько раз.")
+        raise InvalidValue(f"Имя станка {name} в таблице 'machine_tools_old' встречается несколько раз.")
     return False
 
 
 def download_from_xls():
     """Загружает данные из файлов эксель с обновлением главной таблицы"""
-    path_main_table = __file__.replace("download_from_xls.py", "tables_new\\machine_tools.xlsx")
+    path_main_table = __file__.replace("download_from_xls.py", "tables_new\\machine_tools_old.xlsx")
     update_main_table(path_main_table)
     paths = askopenfilenames(
         title="Выберите таблицы паспортных данных станков",
@@ -59,12 +59,12 @@ def download_from_xls():
     )
     for path in paths:
         name = get_name(path)
-        if name != "machine_tools":
+        if name != "machine_tools_old":
             if is_name_in_main_table(name):
                 data_df = pd.read_excel(path, sheet_name="Sheet1")
                 save_table(data_df, name)
             else:
-                raise InvalidValue(f"Станка {name} нет в таблице 'machine_tools'")
+                raise InvalidValue(f"Станка {name} нет в таблице 'machine_tools_old'")
 
 
 if __name__ == "__main__":

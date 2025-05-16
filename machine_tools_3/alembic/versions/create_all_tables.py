@@ -19,9 +19,9 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    # Создаем таблицу machine_tools с уникальным name
+    # Создаем таблицу machine_tools_old с уникальным name
     op.create_table(
-        "machine_tools",
+        "machine_tools_old",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("name", sa.String(), nullable=False),
         sa.Column("group", sa.Float(), nullable=True),
@@ -55,7 +55,7 @@ def upgrade() -> None:
         sa.Column("value", sa.String(), nullable=True),
         sa.ForeignKeyConstraint(
             ["machine_name"],
-            ["machine_tools.name"],
+            ["machine_tools_old.name"],
         ),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -63,4 +63,4 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     op.drop_table("technical_requirements")
-    op.drop_table("machine_tools")
+    op.drop_table("machine_tools_old")

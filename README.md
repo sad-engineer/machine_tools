@@ -44,8 +44,9 @@ machine_tools_3/
 ## Использование
 
 ### Пример 1: Получение информации о станке
+
 ```python
-from machine_tools import get_machine_info
+from machine_tools_old import get_machine_info
 
 # Получаем информацию о станке
 machine_info = get_machine_info("16К20")
@@ -56,12 +57,12 @@ if machine_info:
     print(f"Мощность: {machine_info['power']} кВт")
     print(f"Точность: {machine_info['accuracy']}")
     print(f"Автоматизация: {machine_info['automation']}")
-    
+
     print("\nГабариты:")
     print(f"Длина: {machine_info['dimensions']['length']} мм")
     print(f"Ширина: {machine_info['dimensions']['width']} мм")
     print(f"Высота: {machine_info['dimensions']['height']} мм")
-    
+
     print("\nТехнические требования:")
     for req, value in machine_info['technical_requirements'].items():
         print(f"{req}: {value}")
@@ -70,8 +71,9 @@ else:
 ```
 
 ### Пример 2: Получение списка станков
+
 ```python
-from machine_tools import Machine, Session
+from machine_tools_old import Machine, Session
 
 # Создаем сессию
 session = Session()
@@ -91,8 +93,9 @@ session.close()
 ```
 
 ### Пример 3: Поиск станков по параметрам
+
 ```python
-from machine_tools import Machine, Session
+from machine_tools_old import Machine, Session
 
 session = Session()
 
@@ -112,8 +115,9 @@ session.close()
 ```
 
 ### Пример 4: Работа с техническими требованиями
+
 ```python
-from machine_tools import Machine, TechnicalRequirement, Session
+from machine_tools_old import Machine, TechnicalRequirement, Session
 
 session = Session()
 
@@ -125,7 +129,7 @@ if machine:
     requirements = session.query(TechnicalRequirement).filter(
         TechnicalRequirement.machine_name == machine.name
     ).all()
-    
+
     # Выводим требования
     for req in requirements:
         print(f"{req.requirement}: {req.value}")

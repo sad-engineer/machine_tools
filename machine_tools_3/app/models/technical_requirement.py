@@ -13,7 +13,7 @@ class TechnicalRequirement(Base):
     __tablename__ = "technical_requirements"
 
     id = Column(Integer, primary_key=True)  # Уникальный идентификатор требования
-    machine_name = Column(String, ForeignKey("machine_tools.name"), nullable=False)  # Имя станка (внешний ключ)
+    machine_name = Column(String, ForeignKey("machine_tools_old.name"), nullable=False)  # Имя станка (внешний ключ)
     requirement = Column(String, nullable=False)  # Наименование параметра (например, "Максимальный диаметр обработки")
     value = Column(String, nullable=True)  # Значение параметра (может быть числом, текстом или диапазоном)
 
