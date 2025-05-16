@@ -2,12 +2,15 @@
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
 import sys
+import os
 
 from machine_tools_3.app.db.check_connection import check_connection
 
-# Проверяем доступность сервера при импорте модуля
-if not check_connection():
-    sys.exit(1)
+# Проверяем, что это импорт пакета, а не запуск скрипта
+if not os.path.basename(sys.argv[0]) == "check_connection.py":
+    # Проверяем доступность сервера при импорте модуля
+    if not check_connection():
+        sys.exit(1)
 
 # Импортируем все сервисы
 from machine_tools_3.app.services.finder import MachineFinder

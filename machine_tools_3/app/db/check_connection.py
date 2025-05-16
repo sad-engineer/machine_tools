@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
 import psycopg2
-from sqlalchemy import text
 
 from machine_tools_3.app.core.config import get_settings
 
