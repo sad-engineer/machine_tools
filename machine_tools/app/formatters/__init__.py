@@ -4,6 +4,8 @@
 from machine_tools.app.formatters.machine_formatters import (
     DictMachineInfoFormatter,
     DictNameFormatter,
+    IndexedMachineInfoFormatter,
+    IndexedNameFormatter,
     ListMachineInfoFormatter,
     ListNameFormatter,
     MachineFormatter,
@@ -15,4 +17,6 @@ __all__ = [
     "ListMachineInfoFormatter",
     "DictNameFormatter",
     "DictMachineInfoFormatter",
+    "IndexedNameFormatter",
+    "IndexedMachineInfoFormatter",
 ]

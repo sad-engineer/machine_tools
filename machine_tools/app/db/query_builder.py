@@ -66,7 +66,7 @@ class QueryBuilder:
 
     def filter_by_name(self, name: str, case_sensitive: bool = False, exact_match: bool = False) -> "QueryBuilder":
         """Фильтр по имени станка
-        
+
         Args:
             name (str): Имя станка для поиска
             case_sensitive (bool, optional): Учитывать регистр. По умолчанию False

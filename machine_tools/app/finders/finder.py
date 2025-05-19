@@ -19,18 +19,24 @@ class MachineFinder:
     Класс для поиска станков по различным критериям.
     """
 
-    def __init__(self, session: Optional[Session] = None, limit: Optional[int] = None):
+    def __init__(
+        self,
+        session: Optional[Session] = None,
+        limit: Optional[int] = None,
+        formatter: Optional[MachineFormatter] = None,
+    ):
         """
         Инициализация поисковика.
 
         Args:
             session (Session, optional): Сессия БД. Если не указана, будет создана новая.
             limit (int, optional): Глобальный лимит для всех запросов
+            formatter (MachineFormatter, optional): Форматтер для результатов. По умолчанию ListNameFormatter
         """
         self.session: Session = session or session_manager.get_session()
         self._builder: QueryBuilder = QueryBuilder(self.session)
         self._global_limit: int = limit
-        self._formatter: MachineFormatter = ListNameFormatter()  # По умолчанию возвращаем имена
+        self._formatter: MachineFormatter = formatter or ListNameFormatter()
 
     def __enter__(self):
         return self
@@ -160,9 +166,11 @@ class MachineFinder:
         machines = builder.execute()
         return self._formatter.format(machines)
 
-    def by_name(self, name: str, case_sensitive: bool = False, exact_match: bool = True, limit: int = None) -> List[Any]:
+    def by_name(
+        self, name: str, case_sensitive: bool = False, exact_match: bool = True, limit: int = None
+    ) -> List[Any]:
         """Поиск станков по имени
-        
+
         Args:
             name (str): Имя станка для поиска
             case_sensitive (bool, optional): Учитывать регистр. По умолчанию False
