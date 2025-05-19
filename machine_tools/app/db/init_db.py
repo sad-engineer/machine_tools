@@ -114,9 +114,9 @@ def init_db_from_csv():
             # Проверяем только технические требования
             if not session.query(TechnicalRequirement).first():
                 # Импорт основной таблицы
-                main_csv = os.path.join(csv_dir, "machine_tools_old.csv")
+                main_csv = os.path.join(csv_dir, "machine_tools.csv")
                 if os.path.exists(main_csv):
-                    print("Импортирую данные из machine_tools_old.csv...")
+                    print("Импортирую данные из machine_tools.csv...")
                     df = pd.read_csv(main_csv)
                     for _, row in df.iterrows():
                         machine = Machine(
@@ -140,9 +140,9 @@ def init_db_from_csv():
                         )
                         session.add(machine)
                     session.commit()
-                    print(f"Загружено {len(df)} записей из machine_tools_old.csv")
+                    print(f"Загружено {len(df)} записей из machine_tools.csv")
                 else:
-                    print("ОШИБКА: Файл machine_tools_old.csv не найден!")
+                    print("ОШИБКА: Файл machine_tools.csv не найден!")
             else:
                 print("Технические требования уже импортированы, инициализация не требуется.")
 
@@ -172,7 +172,7 @@ def import_technical_requirements():
         print(f"Импортирую технические характеристики")
         # Импорт всех CSV-файлов с требованиями
         for filename in os.listdir(csv_dir):
-            if filename.endswith(".csv") and filename != "machine_tools_old.csv":
+            if filename.endswith(".csv") and filename != "machine_tools.csv":
                 # Определяем кодировку файла
                 file_path = os.path.join(csv_dir, filename)
                 with open(file_path, "rb") as file:
