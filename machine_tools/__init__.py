@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
+from machine_tools.app.enumerations import Accuracy, Automation, Specialization, WeightClass
+from machine_tools.app.fields import AccuracyField, AutomationField, SpecializationField, WeightClassField
 from machine_tools.app.finders import MachineFinder as Finder
 from machine_tools.app.formatters import (
     DictMachineInfoFormatter,

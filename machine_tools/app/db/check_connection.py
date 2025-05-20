@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 import psycopg2
 
-from machine_tools.app.core.config import get_settings
+from machine_tools.app.config import get_settings
 
 settings = get_settings()
 

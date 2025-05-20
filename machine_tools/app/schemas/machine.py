@@ -6,7 +6,7 @@ from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, PositiveFloat, PositiveInt, confloat
 
-from machine_tools.app.fields import MachineAccuracy, MachineAutomation, MachineSpecialization, MachineWeightClass
+from machine_tools.app.enumerations import Accuracy, Automation, Specialization, WeightClass
 
 
 class Dimensions(BaseModel):
@@ -33,11 +33,11 @@ class MachineInfo(BaseModel):
     type: Optional[confloat(ge=0, le=9)] = Field(None, description="Тип станка")
     power: Optional[PositiveFloat] = Field(None, description="Мощность станка в кВт")
     efficiency: Optional[confloat(ge=0, le=1)] = Field(None, description="КПД станка")
-    accuracy: MachineAccuracy = Field(MachineAccuracy.N, description="Класс точности станка")
-    automation: MachineAutomation = Field(MachineAutomation.MANUAL, description="Уровень автоматизации")
-    specialization: MachineSpecialization = Field(MachineSpecialization.UNIVERSAL, description="Специализация станка")
+    accuracy: Accuracy = Field(Accuracy.NO_DATA, description="Класс точности станка")
+    automation: Automation = Field(Automation.MANUAL, description="Уровень автоматизации")
+    specialization: Specialization = Field(Specialization.UNIVERSAL, description="Специализация станка")
     weight: Optional[PositiveFloat] = Field(None, description="Масса станка в кг")
-    weight_class: MachineWeightClass = Field(MachineWeightClass.LIGHT, description="Класс станка по массе")
+    weight_class: WeightClass = Field(WeightClass.LIGHT, description="Класс станка по массе")
     dimensions: Optional[Dimensions] = Field(None, description="Габариты станка")
     location: Optional[Location] = Field(None, description="Информация о местоположении")
     machine_type: Optional[str] = Field(None, description="Тип станка (например, 'Токарный')")
