@@ -38,6 +38,9 @@ class MachineFinder:
         self._global_limit: int = limit
         self._formatter: MachineFormatter = formatter or ListNameFormatter()
 
+        if self._global_limit:
+            self._builder.limit(self._global_limit)
+
     def __enter__(self):
         return self
 
@@ -199,10 +202,10 @@ class MachineFinder:
 # Пример использования:
 if __name__ == "__main__":
     # Использование как контекстный менеджер
-    with MachineFinder(limit=15) as finder:  # Устанавливаем глобальный лимит
+    with MachineFinder(limit=5) as finder:  # Устанавливаем глобальный лимит
         # Получение только имен станков (по умолчанию)
         powerful_machines = finder.by_power(min_power=10.0, order_by_power=True, descending=True)
-        print("Топ-15 самых мощных станков (только имена):", powerful_machines)
+        print("Топ-5 самых мощных станков (только имена):", powerful_machines)
 
         # Переключение на полную информацию
         finder.set_formatter(ListMachineInfoFormatter())

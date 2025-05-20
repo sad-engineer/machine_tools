@@ -75,7 +75,8 @@ class ListMachineInfoFormatter(MachineFormatter):
     def format(self, machines: List[Machine]) -> List[MachineInfo]:
         result = []
         for machine in machines:
-            result.append(MachineInfo.model_validate(_machine_to_dict(machine)))
+            data = _machine_to_dict(machine)
+            result.append(MachineInfo.model_validate(data))
         return result
 
 

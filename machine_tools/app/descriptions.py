@@ -1,9 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
+GROUP_DESCRIPTIONS = {
+    1: "Токарные станки",
+    2: "Сверлильные и расточные станки",
+    3: "Шлифовальные, полировальные, доводочные станки",
+    4: "Комбинированные",
+    5: "Зубообрабатывающие и резьбообрабатывающие станки",
+    6: "Фрезерные станки",
+    7: "Строгальные, долбежные и протяжные станки",
+    8: "Разрезные станки",
+    9: "Разные станки"
+}
 
 
-DESCRIPTIONS = {
+TYPE_DESCRIPTIONS = {
     "1, 0": "Специализированные автоматы и полуавтоматы",
     "1, 1": "Одношпиндельные автоматы и полуавтоматы",
     "1, 2": "Многошпиндельные автоматы и полуавтоматы",
@@ -33,7 +44,7 @@ DESCRIPTIONS = {
     "3, 7": "Плоско-шлифовальные",
     "3, 8": "Притирочные и полировочные",
     "3, 9": "Разные, работающие абразивом",
-    
+
     "4, 1": "Универсальные",
     "4, 2": "Полуавтоматы",
     "4, 3": "Автоматы",
@@ -74,7 +85,6 @@ DESCRIPTIONS = {
     "8, 6": "Пилы дисковые",
     "8, 7": "Пилы (ножовки)",
 
-
     "9, 0": "Опиловочные",
     "9, 1": "Пилонакатательные",
     "9, 2": "Правильно- и безцентровообдирочные",
@@ -84,72 +94,10 @@ DESCRIPTIONS = {
 }
 
 
-class MachineTypeField:
-    """Дескриптор для поля типа станков"""
-
-    def __init__(self):
-        self._value = None
-        self._group = None  # Добавляем поле для хранения группы
-
-    def __get__(self, instance, owner):
-        if instance is None:
-            return self
-        if self._value is None:
-            return None
-        key = f"{self._group},{self._value}"
-        return {self._value: DESCRIPTIONS.get(key, "Неизвестный тип станка")}
-
-    def __set__(self, instance, value):
-        if value is None:
-            self._value = None
-            return
-
-        try:
-            value = int(value)
-            if not 0 <= value <= 9:  # Проверяем диапазон значений
-                raise ValueError(f"Недопустимое значение для типа станков: {value}")
-            self._value = value
-        except (ValueError, TypeError) as e:
-            raise ValueError(f"Недопустимое значение для типа станков: {value}") from e
-
-    def set_group(self, group):
-        """Устанавливает группу станка"""
-        self._group = group
-
-    @property
-    def str(self):
-        """Возвращает описание типа станков"""
-        if self._value is None or self._group is None:
-            return ""
-        key = f"{self._group},{self._value}"
-        return DESCRIPTIONS.get(key, "Неизвестный тип станка")
-
-
-if __name__ == "__main__":
-    from machine_tools.app.fields.machine_group import MachineGroupField
-
-    class Machine:
-        group = MachineGroupField()
-        type = MachineTypeField()
-
-        def __init__(self):
-            self.group = None
-            self.type = None
-
-        def __setattr__(self, name, value):
-            super().__setattr__(name, value)
-            if name == 'group' and value is not None and self.type is not None:
-                self.type.set_group(value)
-
-    machine = Machine()
-
-    # Можно присваивать числа
-    machine.group = 1  # OK
-    machine.type = 0  # OK
-    print(machine.type)  # {0: "Токарно-винторезные станки"}
-
-    machine.group = 2  # OK
-    machine.type = 0  # OK
-    print(machine.type)  # {0: "Вертикально-сверлильные станки"}
-
-    # machine.type = 10  # ValueError: Недопустимое значение д
+ACCURACY_DESCRIPTIONS = {
+    "С": "Особоточные",
+    "А": "Особо высокой точности",
+    "В": "Высокой точности",
+    "П": "Повышенной точности",
+    "Н": "Нормальной точности"
+}
