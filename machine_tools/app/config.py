@@ -1,16 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
-import os
 from functools import lru_cache
 from pathlib import Path
-from typing import Optional
 
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
+
+def get_project_root():
+    """Возвращает корневую директорию проекта"""
+    # Если установлен как пакет, ищем директорию с pyproject.toml
+    current = Path(__file__).resolve()
+    while current.parent != current:  # Пока не достигли корня файловой системы
+        if (current / 'pyproject.toml').exists():
+            return current
+        current = current.parent
+
+    # Если не нашли pyproject.toml, возвращаем директорию с текущим файлом
+    return Path(__file__).parent.parent.parent
+
+
 # Определяем пути к конфигурационным файлам
-PROJECT_ROOT = Path(__file__).parent.parent.parent
+PROJECT_ROOT = get_project_root()
 CONFIG_DIR = PROJECT_ROOT / "settings"
 ENV_FILE = CONFIG_DIR / "machine_tools.env"
 
@@ -44,6 +56,7 @@ load_dotenv(ENV_FILE)
 
 class Settings(BaseSettings):
     """Основные настройки приложения"""
+
     # Настройки базы данных
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
