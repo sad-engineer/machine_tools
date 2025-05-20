@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
+from machine_tools.app.descriptions import ACCURACY_DESCRIPTIONS, GROUP_DESCRIPTIONS, TYPE_DESCRIPTIONS
 from machine_tools.app.enumerations import Accuracy, Automation, Specialization, WeightClass
 from machine_tools.app.fields import AccuracyField, AutomationField, SpecializationField, WeightClassField
 from machine_tools.app.finders import MachineFinder as Finder
@@ -29,11 +30,23 @@ from machine_tools.app.services import get_machine_info_by_name as info_by_name
 from machine_tools.version import __version__
 
 __all__ = [
-    "Machine",
-    "MachineInfo",
-    "TechnicalRequirement",
-    "Container",
+    # описания полей
+    "ACCURACY_DESCRIPTIONS",
+    "GROUP_DESCRIPTIONS",
+    "TYPE_DESCRIPTIONS",
+    # перечисления
+    "Accuracy",
+    "Automation",
+    "Specialization",
+    "WeightClass",
+    # поля
+    "AccuracyField",
+    "AutomationField",
+    "SpecializationField",
+    "WeightClassField",
+    # поисковики
     "Finder",
+    # форматировщики
     "DictMachineInfoFormatter",
     "DictNameFormatter",
     "IndexedMachineInfoFormatter",
@@ -41,12 +54,21 @@ __all__ = [
     "ListMachineInfoFormatter",
     "ListNameFormatter",
     "MachineFormatter",
+    # модели
+    "Machine",
+    "TechnicalRequirement",
+    # схемы
+    "MachineInfo",
+    # контейнеры
+    "Container",
+    # функции
     "find_names",
-    "info_by_name",
     "get_finder_with_list_names",
     "get_finder_with_list_info",
     "get_finder_with_dict_names",
     "get_finder_with_dict_info",
     "get_finder_with_indexed_names",
     "get_finder_with_indexed_info",
+    "info_by_name",
+    "__version__",
 ]

@@ -15,3 +15,5 @@ env.bak /
 temp/
 dist/
 machine_tools_old/logs
+settings
+settings/
