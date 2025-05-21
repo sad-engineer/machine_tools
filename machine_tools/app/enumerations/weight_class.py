@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
-from enum import Enum
+from machine_tools.app.enumerations.base import BaseEnum
 
 
-class WeightClass(Enum):
+class WeightClass(BaseEnum):
     """Перечисление возможных значений класса массы станка"""
 
     LIGHT = "Лёгкий"

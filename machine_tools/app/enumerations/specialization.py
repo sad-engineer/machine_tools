@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
-from enum import Enum
+from machine_tools.app.enumerations.base import BaseEnum
 
 
-class Specialization(Enum):
+class Specialization(BaseEnum):
     """Перечисление возможных значений специализации станка"""
 
     SPECIALIZED = "Специализированный"
