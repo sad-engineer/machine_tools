@@ -37,7 +37,7 @@ def show_all_unique_values() -> None:
 
 if __name__ == "__main__":
     # Пример использования для конкретной колонки
-    show_unique_values("weight_class")
+    show_unique_values("accuracy")
 
 # Пример использования для всех колонок
 # show_all_unique_values()
