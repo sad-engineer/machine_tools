@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
 from enum import Enum
-from typing import TypeVar, Generic, Type, Any
+from typing import TypeVar
 
 T = TypeVar('T')
 
@@ -68,4 +68,4 @@ class BaseEnum(Enum):
         for member in cls:
             if member.value == value:
                 return member
-        raise ValueError(f"Недопустимое значение: {value}. Допустимые значения: {cls.get_values()}") 
+        raise ValueError(f"Недопустимое значение: {value}. Допустимые значения: {cls.get_values()}")

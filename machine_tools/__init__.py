@@ -15,7 +15,7 @@ from machine_tools.app.formatters import (
     MachineFormatter,
 )
 from machine_tools.app.models import Machine, TechnicalRequirement
-from machine_tools.app.schemas import MachineInfo
+from machine_tools.app.schemas import Dimensions, Location, MachineInfo
 from machine_tools.app.services import FinderContainer as Container
 from machine_tools.app.services import (
     find_names,
@@ -58,6 +58,8 @@ __all__ = [
     "Machine",
     "TechnicalRequirement",
     # схемы
+    "Dimensions",
+    "Location",
     "MachineInfo",
     # контейнеры
     "Container",
