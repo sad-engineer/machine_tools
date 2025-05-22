@@ -4,7 +4,7 @@
 from datetime import datetime
 from typing import Any, Dict, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, PositiveFloat, PositiveInt, confloat, conint
+from pydantic import BaseModel, ConfigDict, Field, PositiveFloat, PositiveInt, confloat, conint, NonNegativeFloat
 
 from machine_tools.app.enumerations import Accuracy, Automation, Specialization, WeightClass
 
@@ -31,7 +31,8 @@ class MachineInfo(BaseModel):
     name: str = Field(..., min_length=1, description="Название станка (например, '16К20')")
     group: Optional[conint(ge=0, le=9)] = Field(None, description="Группа станка")
     type: Optional[conint(ge=0, le=9)] = Field(None, description="Тип станка")
-    power: Optional[PositiveFloat] = Field(None, description="Мощность станка в кВт")
+    # В БД есть инфа по приспособлениям (например УДГ Н-100), у каоторых power = 0
+    power: Optional[NonNegativeFloat] = Field(None, description="Мощность станка в кВт")
     efficiency: Optional[confloat(ge=0, le=1)] = Field(None, description="КПД станка")
     accuracy: Accuracy = Field(Accuracy.NO_DATA, description="Класс точности станка")
     automation: Automation = Field(Automation.MANUAL, description="Уровень автоматизации")

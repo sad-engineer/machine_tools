@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from machine_tools.app.db.query_builder import QueryBuilder
 from machine_tools.app.db.session_manager import session_manager
-from machine_tools.app.formatters.machine_formatters import (
+from machine_tools.app.formatters import (
     ListMachineInfoFormatter,
     ListNameFormatter,
     MachineFormatter,
@@ -217,3 +217,7 @@ if __name__ == "__main__":
         # Возврат к именам
         finder.set_formatter(ListNameFormatter())
         print("\nВсе станки (только имена):", finder.all())
+
+        finder.set_formatter(ListMachineInfoFormatter())
+        machine = finder.by_name(name="16К20", exact_match=True)
+        print(machine)

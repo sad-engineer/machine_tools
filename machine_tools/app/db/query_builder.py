@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
-from typing import Any
+from typing import Any, Dict
 
-from sqlalchemy import and_, asc, desc, select
+from sqlalchemy import and_, asc, desc, select, update
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.selectable import Select
 
@@ -22,6 +22,11 @@ class QueryBuilder:
         self._order_by = []
         self._limit = None
         self._offset = None
+
+    def filter_by_id(self, machine_id: int) -> "QueryBuilder":
+        """Фильтр по ID станка"""
+        self._filters.append(Machine.id == machine_id)
+        return self
 
     def filter_by_group(self, group: int) -> "QueryBuilder":
         """Фильтр по группе станка"""
@@ -124,6 +129,31 @@ class QueryBuilder:
         query = self.build()
         return self.session.execute(query).scalars().all()
 
+    def update(self, update_data: Dict[str, Any]) -> int:
+        """
+        Обновление данных в БД.
+
+        Args:
+            update_data (Dict[str, Any]): Словарь с данными для обновления
+
+        Returns:
+            int: Количество обновленных записей
+        """
+        # Создаем запрос на обновление
+        stmt = update(Machine)
+
+        # Применяем фильтры
+        if self._filters:
+            stmt = stmt.where(and_(*self._filters))
+
+        # Применяем данные для обновления
+        stmt = stmt.values(**update_data)
+
+        # Выполняем обновление
+        result = self.session.execute(stmt)
+        self.session.commit()
+        return result.rowcount
+
     def get_unique_values(self, column: str) -> Any:
         """Получение уникальных значений колонки"""
         column_obj = getattr(Machine, column, None)
@@ -139,7 +169,7 @@ class QueryBuilder:
 
 # Пример использования:
 if __name__ == "__main__":
-    from machine_tools.app.db.session import get_session
+    from machine_tools.app.db.session_manager import get_session
 
     session = get_session()
     try:
@@ -160,6 +190,13 @@ if __name__ == "__main__":
         # Получение уникальных значений
         unique_powers = builder.get_unique_values("power")
         print("Уникальные значения мощности:", unique_powers)
+
+        # Пример обновления
+        updated_count = (
+            builder.filter_by_name("16К20", exact_match=True)
+            .update({"power": 15.0, "efficiency": 0.85})
+        )
+        print(f"Обновлено станков: {updated_count}")
 
     finally:
         session.close()

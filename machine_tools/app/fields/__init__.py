@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
-from machine_tools.app.fields.enumeration_field import (
+from machine_tools.app.fields.enumeration import (
     AccuracyField,
     AutomationField,
     SpecializationField,

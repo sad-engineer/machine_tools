@@ -5,7 +5,7 @@ from dependency_injector import containers, providers
 
 from machine_tools.app.db.session_manager import session_manager
 from machine_tools.app.finders.finder import MachineFinder
-from machine_tools.app.formatters.machine_formatters import (
+from machine_tools.app.formatters import (
     DictMachineInfoFormatter,
     DictNameFormatter,
     IndexedMachineInfoFormatter,
