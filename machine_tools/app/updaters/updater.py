@@ -53,8 +53,8 @@ class MachineUpdater:
     def update_by_name(
         self,
         name: str,
-        update_data: Union[MachineUpdate, Dict[str, Any]],
-        case_sensitive: bool = False,
+        update_data: Dict[str, Any],
+        case_sensitive: bool = True,
         exact_match: bool = True,
     ) -> int:
         """
@@ -62,18 +62,15 @@ class MachineUpdater:
 
         Args:
             name (str): Имя станка для поиска
-            update_data (Union[MachineUpdate, Dict[str, Any]]): Данные для обновления
-            case_sensitive (bool, optional): Учитывать регистр. По умолчанию False
+            update_data Dict[str, Any]: Данные для обновления
+            case_sensitive (bool, optional): Учитывать регистр. По умолчанию True
             exact_match (bool, optional): Точное совпадение. По умолчанию True
 
         Returns:
             int: Количество обновленных станков
         """
-        if isinstance(update_data, dict):
-            update_data = MachineUpdate(**update_data)
-
         builder = self._builder.filter_by_name(name, case_sensitive, exact_match)
-        return builder.update(update_data.model_dump(exclude_unset=True))
+        return builder.update(update_data)
 
     def update_by_power(
         self,

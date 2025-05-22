@@ -4,7 +4,7 @@
 from datetime import datetime
 from typing import Any, Dict, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, PositiveFloat, PositiveInt, confloat, conint, NonNegativeFloat
+from pydantic import BaseModel, ConfigDict, Field, NonNegativeFloat, PositiveFloat, PositiveInt, confloat, conint
 
 from machine_tools.app.enumerations import Accuracy, Automation, Specialization, WeightClass
 
@@ -59,7 +59,47 @@ class MachineCreate(MachineBase):
 
 
 class MachineUpdate(MachineBase):
-    pass
+    """Схема для обновления станка"""
+    
+    def get_flat_dict(self) -> Dict[str, Any]:
+        """
+        Возвращает плоский словарь значений без вложенных структур,
+        кроме technical_requirements.
+
+        Returns:
+            Dict[str, Any]: Словарь с данными для обновления
+        """
+        data = self.model_dump()
+        
+        # Обрабатываем dimensions
+        if self.dimensions:
+            data.update({
+                'length': self.dimensions.length,
+                'width': self.dimensions.width,
+                'height': self.dimensions.height,
+                'overall_diameter': self.dimensions.overall_diameter
+            })
+        data.pop('dimensions', None)
+        
+        # Обрабатываем location
+        if self.location:
+            data.update({
+                'city': self.location.city,
+                'manufacturer': self.location.manufacturer
+            })
+        data.pop('location', None)
+        
+        # Преобразуем Enum значения в строки
+        if isinstance(data.get('accuracy'), Accuracy):
+            data['accuracy'] = data['accuracy'].value
+        if isinstance(data.get('automation'), Automation):
+            data['automation'] = data['automation'].value
+        if isinstance(data.get('specialization'), Specialization):
+            data['specialization'] = data['specialization'].value
+        if isinstance(data.get('weight_class'), WeightClass):
+            data['weight_class'] = data['weight_class'].value
+        
+        return data
 
 
 class MachineInDBBase(MachineBase):
@@ -68,6 +108,8 @@ class MachineInDBBase(MachineBase):
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+    
 
 
 class Machine(MachineInDBBase):

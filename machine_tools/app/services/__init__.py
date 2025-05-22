@@ -9,7 +9,12 @@ from machine_tools.app.services.finder_getters import (
     get_finder_with_list_info,
     get_finder_with_list_names,
 )
-from machine_tools.app.services.scripts import FinderContainer, find_names, get_machine_info_by_name
+from machine_tools.app.services.scripts import (
+    FinderContainer,
+    find_names,
+    get_machine_info_by_name,
+    update,
+)
 
 __all__ = [
     "FinderContainer",
@@ -21,4 +26,5 @@ __all__ = [
     "get_finder_with_indexed_info",
     "find_names",
     "get_machine_info_by_name",
+    "update",
 ]

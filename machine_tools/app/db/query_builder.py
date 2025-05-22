@@ -7,7 +7,7 @@ from sqlalchemy import and_, asc, desc, select, update
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.selectable import Select
 
-from machine_tools.app.models import Machine
+from machine_tools.app.models import Machine, TechnicalRequirement
 
 
 class QueryBuilder:
@@ -146,12 +146,36 @@ class QueryBuilder:
         if self._filters:
             stmt = stmt.where(and_(*self._filters))
 
+        # Удаляем technical_requirements из данных обновления
+        # так как это relationship, а не поле
+        processed_data = {k: v for k, v in update_data.items() if k != 'technical_requirements'}
+
         # Применяем данные для обновления
-        stmt = stmt.values(**update_data)
+        stmt = stmt.values(**processed_data)
 
         # Выполняем обновление
         result = self.session.execute(stmt)
         self.session.commit()
+
+        # Если есть technical_requirements, обновляем их отдельно
+        if 'technical_requirements' in update_data and update_data['technical_requirements']:
+            machine_name = processed_data.get('name')
+            if machine_name:
+                # Удаляем старые требования
+                self.session.query(TechnicalRequirement).filter(
+                    TechnicalRequirement.machine_name == machine_name
+                ).delete()
+
+                # Добавляем новые требования
+                for req_name, req_value in update_data['technical_requirements'].items():
+                    requirement = TechnicalRequirement(
+                        machine_name=machine_name,
+                        requirement=req_name,
+                        value=str(req_value) if req_value is not None else None
+                    )
+                    self.session.add(requirement)
+                self.session.commit()
+
         return result.rowcount
 
     def get_unique_values(self, column: str) -> Any:
