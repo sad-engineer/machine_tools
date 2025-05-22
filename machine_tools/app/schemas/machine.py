@@ -4,7 +4,7 @@
 from datetime import datetime
 from typing import Any, Dict, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, PositiveFloat, PositiveInt, confloat
+from pydantic import BaseModel, ConfigDict, Field, PositiveFloat, PositiveInt, confloat, conint
 
 from machine_tools.app.enumerations import Accuracy, Automation, Specialization, WeightClass
 
@@ -28,9 +28,9 @@ class Location(BaseModel):
 class MachineInfo(BaseModel):
     """Полная информация о станке"""
 
-    name: str = Field(..., description="Название станка (например, '16К20')")
-    group: Optional[confloat(ge=0, le=9)] = Field(None, description="Группа станка")
-    type: Optional[confloat(ge=0, le=9)] = Field(None, description="Тип станка")
+    name: str = Field(..., min_length=1, description="Название станка (например, '16К20')")
+    group: Optional[conint(ge=0, le=9)] = Field(None, description="Группа станка")
+    type: Optional[conint(ge=0, le=9)] = Field(None, description="Тип станка")
     power: Optional[PositiveFloat] = Field(None, description="Мощность станка в кВт")
     efficiency: Optional[confloat(ge=0, le=1)] = Field(None, description="КПД станка")
     accuracy: Accuracy = Field(Accuracy.NO_DATA, description="Класс точности станка")
@@ -40,10 +40,13 @@ class MachineInfo(BaseModel):
     weight_class: WeightClass = Field(WeightClass.LIGHT, description="Класс станка по массе")
     dimensions: Optional[Dimensions] = Field(None, description="Габариты станка")
     location: Optional[Location] = Field(None, description="Информация о местоположении")
-    machine_type: Optional[str] = Field(None, description="Тип станка (например, 'Токарный')")
+    machine_type: Optional[str] = Field(None, min_length=1, description="Тип станка (например, 'Токарный')")
     technical_requirements: Optional[Dict[str, Any]] = Field(None, description="Технические требования станка")
 
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,
+        validate_assignment=True,  # Включаем валидацию при присваивании
+    )
 
 
 class MachineBase(MachineInfo):

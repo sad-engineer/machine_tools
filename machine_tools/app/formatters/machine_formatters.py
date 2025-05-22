@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Any, Dict, List, Protocol
+from typing import Any, Dict, List, Protocol, Union
 
 from machine_tools.app.models.machine import Machine
 from machine_tools.app.schemas.machine import MachineInfo
@@ -57,7 +57,7 @@ def _machine_to_dict(machine: Machine) -> dict:
 class MachineFormatter(Protocol):
     """Протокол для форматтеров станков"""
 
-    def format(self, machines: List[Machine]) -> List[Any]:
+    def format(self, machines: List[Machine]):
         """Форматирует список станков"""
         ...
 

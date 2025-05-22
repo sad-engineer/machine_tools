@@ -17,8 +17,8 @@ class Machine(Base):
 
     id = Column(Integer, primary_key=True, index=True)  # Уникальный идентификатор станка
     name = Column(String, nullable=False, unique=True)  # Название станка (например, "16К20")
-    group = Column(Float)  # Группа станка
-    type = Column(Float)  # Тип станка
+    group = Column(Integer)  # Группа станка
+    type = Column(Integer)  # Тип станка
     power = Column(Float)  # Мощность станка в кВт
     efficiency = Column(Float)  # КПД станка
     accuracy = Column(String)  # Класс точности станка
