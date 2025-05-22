@@ -25,9 +25,11 @@ from machine_tools.app.services import (
     get_finder_with_indexed_names,
     get_finder_with_list_info,
     get_finder_with_list_names,
-    update,
 )
 from machine_tools.app.services import get_machine_info_by_name as info_by_name
+from machine_tools.app.services import (
+    update,
+)
 from machine_tools.version import __version__
 
 __all__ = [

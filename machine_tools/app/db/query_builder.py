@@ -171,7 +171,7 @@ class QueryBuilder:
                     requirement = TechnicalRequirement(
                         machine_name=machine_name,
                         requirement=req_name,
-                        value=str(req_value) if req_value is not None else None
+                        value=str(req_value) if req_value is not None else None,
                     )
                     self.session.add(requirement)
                 self.session.commit()
@@ -216,10 +216,7 @@ if __name__ == "__main__":
         print("Уникальные значения мощности:", unique_powers)
 
         # Пример обновления
-        updated_count = (
-            builder.filter_by_name("16К20", exact_match=True)
-            .update({"power": 15.0, "efficiency": 0.85})
-        )
+        updated_count = builder.filter_by_name("16К20", exact_match=True).update({"power": 15.0, "efficiency": 0.85})
         print(f"Обновлено станков: {updated_count}")
 
     finally:

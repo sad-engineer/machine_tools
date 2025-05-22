@@ -60,7 +60,7 @@ class MachineCreate(MachineBase):
 
 class MachineUpdate(MachineBase):
     """Схема для обновления станка"""
-    
+
     def get_flat_dict(self) -> Dict[str, Any]:
         """
         Возвращает плоский словарь значений без вложенных структур,
@@ -70,25 +70,24 @@ class MachineUpdate(MachineBase):
             Dict[str, Any]: Словарь с данными для обновления
         """
         data = self.model_dump()
-        
+
         # Обрабатываем dimensions
         if self.dimensions:
-            data.update({
-                'length': self.dimensions.length,
-                'width': self.dimensions.width,
-                'height': self.dimensions.height,
-                'overall_diameter': self.dimensions.overall_diameter
-            })
+            data.update(
+                {
+                    'length': self.dimensions.length,
+                    'width': self.dimensions.width,
+                    'height': self.dimensions.height,
+                    'overall_diameter': self.dimensions.overall_diameter,
+                }
+            )
         data.pop('dimensions', None)
-        
+
         # Обрабатываем location
         if self.location:
-            data.update({
-                'city': self.location.city,
-                'manufacturer': self.location.manufacturer
-            })
+            data.update({'city': self.location.city, 'manufacturer': self.location.manufacturer})
         data.pop('location', None)
-        
+
         # Преобразуем Enum значения в строки
         if isinstance(data.get('accuracy'), Accuracy):
             data['accuracy'] = data['accuracy'].value
@@ -98,7 +97,7 @@ class MachineUpdate(MachineBase):
             data['specialization'] = data['specialization'].value
         if isinstance(data.get('weight_class'), WeightClass):
             data['weight_class'] = data['weight_class'].value
-        
+
         return data
 
 
@@ -108,8 +107,6 @@ class MachineInDBBase(MachineBase):
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
-
-    
 
 
 class Machine(MachineInDBBase):

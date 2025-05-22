@@ -36,7 +36,6 @@ def get_machine_info_by_name(name: str) -> Optional[MachineInfo]:
         return None
 
 
-
 def _dict_to_machine_update(machine_info: dict) -> MachineUpdate:
     """
     Преобразует словарь в объект MachineUpdate.
@@ -91,4 +90,3 @@ if __name__ == "__main__":
     update(machine)
     machine = get_machine_info_by_name("16К20")
     print(machine)
-
