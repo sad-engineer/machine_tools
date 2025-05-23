@@ -25,6 +25,7 @@ def _machine_to_dict(machine: Machine) -> dict:
         "efficiency": machine.efficiency,
         "accuracy": machine.accuracy,
         "automation": machine.automation,
+        "software_control": machine.software_control,
         "specialization": machine.specialization,
         "weight": machine.weight,
         "weight_class": machine.weight_class,

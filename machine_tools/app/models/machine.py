@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, Float, Integer, String
+from sqlalchemy import Column, DateTime, Float, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -23,6 +23,7 @@ class Machine(Base):
     efficiency = Column(Float)  # КПД станка
     accuracy = Column(String)  # Класс точности станка
     automation = Column(String)  # Уровень автоматизации (например, "Автоматизированный")
+    software_control = Column(String)  # тип программного управления
     specialization = Column(String)  # Специализация станка
     weight = Column(Float)  # Масса станка в кг
     weight_class = Column(String)  # Класс станка по массе

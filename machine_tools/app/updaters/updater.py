@@ -180,6 +180,25 @@ class MachineUpdater:
 
         builder = self._builder.filter_by_specialization(specialization)
         return builder.update(update_data.model_dump(exclude_unset=True))
+    
+    def update_by_software_control(
+        self,
+        update_data: Union[MachineUpdate, Dict[str, Any]],
+        software_control: str,
+    ) -> int:
+        """
+        Обновляет данные станков по наличию системы управления.
+
+        Args:
+            update_data (Dict[str, Any]): Данные для обновления
+            software_control (str): Тип программного управления
+
+        Returns:
+            int: Количество обновленных станков
+        """
+        builder = self._builder.filter_by_software_control(software_control)
+        return builder.update(update_data)
+
 
 
 # Пример использования:

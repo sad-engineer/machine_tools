@@ -187,6 +187,16 @@ class MachineFinder:
 
         machines = builder.execute()
         return self._formatter.format(machines)
+    
+    def by_software_control(self, software_control: str, limit: int = None) -> List[Any]:
+        """Получение станков по наличию системы управления"""
+        builder = self._builder.filter_by_software_control(software_control)
+
+        if limit:
+            builder = builder.limit(limit)
+
+        machines = builder.execute()
+        return self._formatter.format(machines)
 
     def all(self, limit: int = None) -> List[Any]:
         """Получение всех станков"""

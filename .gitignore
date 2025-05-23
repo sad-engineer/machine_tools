@@ -17,3 +17,5 @@ dist/
 machine_tools_old/logs
 settings
 settings/
+#database_backups
+#database_backups/

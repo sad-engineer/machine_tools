@@ -6,15 +6,15 @@ from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, NonNegativeFloat, PositiveFloat, PositiveInt, confloat, conint
 
-from machine_tools.app.enumerations import Accuracy, Automation, Specialization, WeightClass
+from machine_tools.app.enumerations import Accuracy, Automation, Specialization, WeightClass, SoftwareControl
 
 
 class Dimensions(BaseModel):
     """Габариты станка"""
 
-    length: Optional[PositiveFloat] = Field(None, description="Длина станка в мм")
-    width: Optional[PositiveFloat] = Field(None, description="Ширина станка в мм")
-    height: Optional[PositiveFloat] = Field(None, description="Высота станка в мм")
+    length: Optional[PositiveInt] = Field(None, description="Длина станка в мм")
+    width: Optional[PositiveInt] = Field(None, description="Ширина станка в мм")
+    height: Optional[PositiveInt] = Field(None, description="Высота станка в мм")
     overall_diameter: Optional[str] = Field(None, description="Габаритный диаметр станка")
 
 
@@ -36,6 +36,7 @@ class MachineInfo(BaseModel):
     efficiency: Optional[confloat(ge=0, le=1)] = Field(None, description="КПД станка")
     accuracy: Accuracy = Field(Accuracy.NO_DATA, description="Класс точности станка")
     automation: Automation = Field(Automation.MANUAL, description="Уровень автоматизации")
+    software_control: SoftwareControl = Field(SoftwareControl.NO, description="Тип программного управления")
     specialization: Specialization = Field(Specialization.UNIVERSAL, description="Специализация станка")
     weight: Optional[PositiveFloat] = Field(None, description="Масса станка в кг")
     weight_class: WeightClass = Field(WeightClass.LIGHT, description="Класс станка по массе")
@@ -97,7 +98,8 @@ class MachineUpdate(MachineBase):
             data['specialization'] = data['specialization'].value
         if isinstance(data.get('weight_class'), WeightClass):
             data['weight_class'] = data['weight_class'].value
-
+        if isinstance(data.get('software_control'), SoftwareControl):
+            data['software_control'] = data['software_control'].value
         return data
 
 

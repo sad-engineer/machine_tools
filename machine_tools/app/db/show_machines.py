@@ -9,7 +9,7 @@ from machine_tools.app.db.session_manager import session_manager
 def show_machines():
     """Показывает все станки в базе данных"""
     with session_manager.engine.connect() as connection:
-        result = connection.execute(text("SELECT * FROM machine_tools"))
+        result = connection.execute(text("SELECT * FROM machine_tools ORDER BY id"))
         columns = result.keys()
         print(" | ".join(columns))
         print("-" * 80)

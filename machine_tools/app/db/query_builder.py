@@ -68,6 +68,11 @@ class QueryBuilder:
         """Фильтр по специализации"""
         self._filters.append(Machine.specialization == specialization)
         return self
+    
+    def filter_by_software_control(self, software_control: str) -> "QueryBuilder":
+        """Фильтр по наличию системы управления"""
+        self._filters.append(Machine.software_control == software_control)
+        return self
 
     def filter_by_name(self, name: str, case_sensitive: bool = False, exact_match: bool = False) -> "QueryBuilder":
         """Фильтр по имени станка
@@ -127,6 +132,11 @@ class QueryBuilder:
     def execute(self) -> Any:
         """Выполнение запроса"""
         query = self.build()
+        
+        # Если нет явной сортировки, сортируем по id
+        if not self._order_by:
+            query = query.order_by(Machine.id)
+            
         return self.session.execute(query).scalars().all()
 
     def update(self, update_data: Dict[str, Any]) -> int:
