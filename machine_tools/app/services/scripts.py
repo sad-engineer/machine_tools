@@ -8,16 +8,18 @@ from machine_tools.app.schemas import MachineInfo, MachineUpdate
 from machine_tools.app.updaters.utils import update_by_machine_info, update_by_machine_update
 
 
-def find_names(substring: str) -> List[str]:
+def find_names(substring: Optional[str]) -> List[str]:
     """Запрашивает из БД список имен станков, соответствующих подстроке
     Args:
-        substring: подстрока, по которой производится поиск
+        substring: str подстрока, по которой производится поиск. Если передать None - вернет список всех станков.
     Returns:
         список имен станков, соответствующих подстроке
     """
     container = FinderContainer()
     finder = container.finder_with_list_names()
-    return finder.by_name(substring, exact_match=False)
+    if substring:
+        return finder.by_name(substring, exact_match=False)
+    return finder.all()
 
 
 def get_machine_info_by_name(name: str) -> Optional[MachineInfo]:
