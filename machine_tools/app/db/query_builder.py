@@ -30,12 +30,12 @@ class QueryBuilder:
 
     def filter_by_group(self, group: int) -> "QueryBuilder":
         """Фильтр по группе станка"""
-        self._filters.append(Machine.group == group)
+        self._filters.append(Machine.group == str(group))
         return self
 
-    def filter_by_type(self, type: int) -> "QueryBuilder":
+    def filter_by_type(self, type_: int) -> "QueryBuilder":
         """Фильтр по типу станка"""
-        self._filters.append(Machine.type == type)
+        self._filters.append(Machine.type == type_)
         return self
 
     def filter_by_power(self, min_power: float = None, max_power: float = None) -> "QueryBuilder":

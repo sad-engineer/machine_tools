@@ -197,7 +197,38 @@ class MachineFinder:
 
         machines = builder.execute()
         return self._formatter.format(machines)
+    
+    def by_type(self, type_: int, limit: int = None) -> List[Any]:
+        """Получение станков по типу"""
+        builder = self._builder.filter_by_type(type_)
 
+        if limit:
+            builder = builder.limit(limit)
+
+        machines = builder.execute()
+        return self._formatter.format(machines) 
+    
+    def by_group(self, group: int, limit: int = None) -> List[Any]:
+        """Получение станков по группе"""
+        builder = self._builder.filter_by_group(group)
+
+        if limit:
+            builder = builder.limit(limit)  
+
+        machines = builder.execute()
+        return self._formatter.format(machines) 
+    
+    def by_group_and_type(self, group: int, type_: int, limit: int = None) -> List[Any]:
+        """Получение станков по типу и группе"""
+        builder = self._builder.filter_by_group(group)
+        builder = builder.filter_by_type(type_)
+
+        if limit:
+            builder = builder.limit(limit)  
+
+        machines = builder.execute()
+        return self._formatter.format(machines)
+    
     def all(self, limit: int = None) -> List[Any]:
         """Получение всех станков"""
         builder = self._builder
@@ -230,4 +261,19 @@ if __name__ == "__main__":
 
         finder.set_formatter(ListMachineInfoFormatter())
         machine = finder.by_name(name="16К20", exact_match=True)
+        print(machine)
+
+    with MachineFinder(limit=5) as finder:
+        finder.set_formatter(ListNameFormatter())
+        machine = finder.by_group(1)
+        print(machine)
+
+    with MachineFinder(limit=5) as finder:
+        finder.set_formatter(ListNameFormatter())
+        machine = finder.by_type(1)
+        print(machine)
+
+    with MachineFinder(limit=5) as finder:
+        finder.set_formatter(ListNameFormatter())
+        machine = finder.by_group_and_type(2, 2)
         print(machine)
