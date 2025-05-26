@@ -1,5 +1,8 @@
 # Machine Tools
 
+| | |
+| --- | --- |
+| Testing | [![CI - Test](https://github.com/sad-engineer/machine_tools/actions/workflows/python-tests.yml/badge.svg)](https://github.com/sad-engineer/machine_tools/actions/workflows/python-tests.yml) |
 
 # Machine Tools Database
 
