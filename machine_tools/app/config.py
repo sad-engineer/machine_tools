@@ -3,6 +3,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 from functools import lru_cache
 from pathlib import Path
+import os
 
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
@@ -51,7 +52,13 @@ API_V1_STR=/api/v1
 # Загружаем переменные окружения
 if not ENV_FILE.exists():
     create_env_file()
-load_dotenv(ENV_FILE)
+
+# Проверяем наличие тестовых настроек
+TEST_ENV = os.environ.get("MACHINE_TOOLS_ENV")
+if TEST_ENV and Path(TEST_ENV).exists():
+    load_dotenv(TEST_ENV)
+else:
+    load_dotenv(ENV_FILE)
 
 
 class Settings(BaseSettings):
