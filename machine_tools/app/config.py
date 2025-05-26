@@ -56,7 +56,7 @@ if not ENV_FILE.exists():
 # Проверяем наличие тестовых настроек
 TEST_ENV = os.environ.get("MACHINE_TOOLS_ENV")
 if TEST_ENV and Path(TEST_ENV).exists():
-    load_dotenv(TEST_ENV)
+    load_dotenv(TEST_ENV, override=True)
 else:
     load_dotenv(ENV_FILE)
 
@@ -77,7 +77,7 @@ class Settings(BaseSettings):
     API_V1_STR: str
 
     class Config:
-        env_file = str(ENV_FILE)
+        env_file = str(TEST_ENV if TEST_ENV and Path(TEST_ENV).exists() else ENV_FILE)
         case_sensitive = True
 
     @property

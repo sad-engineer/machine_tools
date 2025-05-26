@@ -13,7 +13,8 @@ from machine_tools.app.db.session_manager import session_manager
 from machine_tools.app.models import Base
 
 # Устанавливаем путь к тестовым настройкам
-os.environ["MACHINE_TOOLS_ENV"] = str(Path(__file__).parent.parent.parent / "settings" / "test.env")
+TEST_ENV_PATH = Path(__file__).parent.parent.parent / "settings" / "test.env"
+os.environ["MACHINE_TOOLS_ENV"] = str(TEST_ENV_PATH)
 settings = get_settings()
 
 
