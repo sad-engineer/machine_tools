@@ -1,7 +1,5 @@
 # Machine Tools
 
-[![Tests](https://github.com/KorenykAN/machine_tools/actions/workflows/tests.yml/badge.svg)](https://github.com/KorenykAN/machine_tools/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/KorenykAN/machine_tools/branch/main/graph/badge.svg)](https://codecov.io/gh/KorenykAN/machine_tools)
 
 # Machine Tools Database
 

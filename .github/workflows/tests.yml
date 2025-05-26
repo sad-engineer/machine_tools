@@ -55,16 +55,13 @@ jobs:
     
     - name: Run tests with coverage
       run: |
-        poetry run pytest --cov=machine_tools --cov-report=xml
-        # Временно сохраняем отчет о покрытии как артефакт
+        poetry run pytest --cov=machine_tools --cov-report=xml --cov-report=term-missing
         poetry run coverage report
     
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v3
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
-        fail_ci_if_error: true
-        verbose: true
-        flags: unittests
-        name: codecov-umbrella 
+        name: coverage-report-${{ matrix.python-version }}
+        path: |
+          coverage.xml
+          .coverage 
