@@ -5,6 +5,7 @@ import os
 import unittest
 from pathlib import Path
 
+import psycopg2
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -24,6 +25,35 @@ class TestSessionManager(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Подготовка тестовой БД"""
+        # Подключаемся к postgres для создания тестовой БД
+        conn = psycopg2.connect(
+            dbname="postgres",
+            user=settings.POSTGRES_USER,
+            password=settings.POSTGRES_PASSWORD,
+            host=settings.POSTGRES_HOST,
+            port=settings.POSTGRES_PORT
+        )
+        conn.autocommit = True
+        cursor = conn.cursor()
+        
+        # Закрываем все соединения с тестовой БД
+        cursor.execute(f"""
+            SELECT pg_terminate_backend(pg_stat_activity.pid)
+            FROM pg_stat_activity
+            WHERE pg_stat_activity.datname = '{settings.POSTGRES_DB}'
+            AND pid <> pg_backend_pid();
+        """)
+        
+        # Удаляем тестовую БД, если она существует
+        cursor.execute(f"DROP DATABASE IF EXISTS {settings.POSTGRES_DB}")
+        
+        # Создаем тестовую БД
+        cursor.execute(f"CREATE DATABASE {settings.POSTGRES_DB}")
+        
+        # Закрываем соединение
+        cursor.close()
+        conn.close()
+        
         # Создаем движок с тестовой БД
         session_manager.engine = create_engine(settings.DATABASE_URL)
         session_manager.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=session_manager.engine)
@@ -49,6 +79,19 @@ class TestSessionManager(unittest.TestCase):
     def tearDownClass(cls):
         """Очистка БД после всех тестов"""
         Base.metadata.drop_all(session_manager.engine)
+        # Удаляем тестовую БД
+        conn = psycopg2.connect(
+            dbname="postgres",
+            user=settings.POSTGRES_USER,
+            password=settings.POSTGRES_PASSWORD,
+            host=settings.POSTGRES_HOST,
+            port=settings.POSTGRES_PORT
+        )
+        conn.autocommit = True
+        cursor = conn.cursor()
+        cursor.execute(f"DROP DATABASE IF EXISTS {settings.POSTGRES_DB}")
+        cursor.close()
+        conn.close()
 
     def test_01_get_session(self):
         """Тест получения сессии"""
