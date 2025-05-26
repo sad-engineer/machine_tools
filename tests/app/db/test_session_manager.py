@@ -78,8 +78,13 @@ class TestSessionManager(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         """Очистка БД после всех тестов"""
+        # Закрываем все сессии
+        session_manager.close_session()
+        
+        # Удаляем все таблицы
         Base.metadata.drop_all(session_manager.engine)
-        # Удаляем тестовую БД
+        
+        # Подключаемся к postgres для удаления тестовой БД
         conn = psycopg2.connect(
             dbname="postgres",
             user=settings.POSTGRES_USER,
@@ -89,7 +94,19 @@ class TestSessionManager(unittest.TestCase):
         )
         conn.autocommit = True
         cursor = conn.cursor()
+        
+        # Закрываем все соединения с тестовой БД
+        cursor.execute(f"""
+            SELECT pg_terminate_backend(pg_stat_activity.pid)
+            FROM pg_stat_activity
+            WHERE pg_stat_activity.datname = '{settings.POSTGRES_DB}'
+            AND pid <> pg_backend_pid();
+        """)
+        
+        # Удаляем тестовую БД
         cursor.execute(f"DROP DATABASE IF EXISTS {settings.POSTGRES_DB}")
+        
+        # Закрываем соединение
         cursor.close()
         conn.close()
 
