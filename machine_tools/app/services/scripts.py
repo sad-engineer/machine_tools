@@ -87,9 +87,9 @@ def update(info: Union[MachineInfo, MachineUpdate, Dict[str, Any]]) -> bool:
 
 if __name__ == "__main__":
     print(find_names("16К20"))
-    machine = get_machine_info_by_name("16К20")
-    print(machine)
-    machine.power = 20
-    update(machine)
-    machine = get_machine_info_by_name("16К20")
-    print(machine)
+    machine = get_machine_info_by_name("16К20Ф3")
+    print(machine.software_control.value)
+    # machine.power = 20
+    # update(machine)
+    # machine = get_machine_info_by_name("16К20")
+    # print(machine)

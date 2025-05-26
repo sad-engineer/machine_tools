@@ -214,20 +214,20 @@ if __name__ == "__main__":
     # Использование как контекстный менеджер
     with MachineFinder(limit=5) as finder:  # Устанавливаем глобальный лимит
         # Получение только имен станков (по умолчанию)
-        powerful_machines = finder.by_power(min_power=10.0, order_by_power=True, descending=True)
+        powerful_machines = finder.find_by_power(min_power=10.0, order_by_power=True, descending=True)
         print("Топ-5 самых мощных станков (только имена):", powerful_machines)
 
         # Переключение на полную информацию
         finder.set_formatter(ListMachineInfoFormatter())
-        efficient_machines = finder.by_efficiency(min_efficiency=0.5, order_by_efficiency=True, descending=True)
+        efficient_machines = finder.find_by_efficiency(min_efficiency=0.5, order_by_efficiency=True, descending=True)
         print("\nСтанки с КПД > 50% (полная информация):")
         for machine in efficient_machines:
             print(f"- {machine.name}: мощность={machine.power}кВт, КПД={machine.efficiency}")
 
         # Возврат к именам
         finder.set_formatter(ListNameFormatter())
-        print("\nВсе станки (только имена):", finder.all())
+        print("\nВсе станки (только имена):", finder.find_all())
 
         finder.set_formatter(ListMachineInfoFormatter())
-        machine = finder.by_name(name="16К20", exact_match=True)
+        machine = finder.find_by_name(name="16К20Ф3", exact_match=True)
         print(machine)

@@ -33,6 +33,8 @@ class TestSessionManager(unittest.TestCase):
             host=settings.POSTGRES_HOST,
             port=settings.POSTGRES_PORT
         )
+
+        print(settings.POSTGRES_DB)
         conn.autocommit = True
         cursor = conn.cursor()
         
