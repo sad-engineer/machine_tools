@@ -11,7 +11,8 @@
 
 ### Вариант 1: Poetry (рекомендуется)
 ```bash
-poetry add git+https://github.com/sad-engineer/machine_tools.git#postgresql
+poetry add git+https://github.com/sad-engineer/machine_tools.git#postgresql 
+
 ```
 
 ### Вариант 2: pip
