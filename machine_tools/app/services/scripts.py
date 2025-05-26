@@ -19,7 +19,7 @@ def find_names(substring: Optional[str]) -> List[str]:
     finder = container.finder_with_list_names()
     if substring:
         return finder.find_by_name(substring, exact_match=False)
-    return finder.all()
+    return finder.find_all()
 
 
 def get_machine_info_by_name(name: str) -> Optional[MachineInfo]:

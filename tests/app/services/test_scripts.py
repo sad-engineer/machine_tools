@@ -43,7 +43,7 @@ class TestScripts(unittest.TestCase):
         """Тест поиска имен по подстроке"""
         # Настраиваем мок
         mock_finder = MagicMock()
-        mock_finder.by_name.return_value = ["16К20", "16К20Ф3"]
+        mock_finder.find_by_name.return_value = ["16К20", "16К20Ф3"]
         mock_container.return_value.finder_with_list_names.return_value = mock_finder
 
         # Вызываем функцию
@@ -51,14 +51,14 @@ class TestScripts(unittest.TestCase):
 
         # Проверяем результат
         self.assertEqual(result, ["16К20", "16К20Ф3"])
-        mock_finder.by_name.assert_called_once_with("16К20", exact_match=False)
+        mock_finder.find_by_name.assert_called_once_with("16К20", exact_match=False)
 
     @patch('machine_tools.app.services.scripts.FinderContainer')
     def test_02_find_names_without_substring(self, mock_container):
         """Тест получения всех имен"""
         # Настраиваем мок
         mock_finder = MagicMock()
-        mock_finder.all.return_value = ["16К20", "16К20Ф3", "1К62"]
+        mock_finder.find_all.return_value = ["16К20", "16К20Ф3", "1К62"]
         mock_container.return_value.finder_with_list_names.return_value = mock_finder
 
         # Вызываем функцию
@@ -66,14 +66,14 @@ class TestScripts(unittest.TestCase):
 
         # Проверяем результат
         self.assertEqual(result, ["16К20", "16К20Ф3", "1К62"])
-        mock_finder.all.assert_called_once()
+        mock_finder.find_all.assert_called_once()
 
     @patch('machine_tools.app.services.scripts.FinderContainer')
     def test_03_get_machine_info_by_name_found(self, mock_container):
         """Тест получения информации о станке (станок найден)"""
         # Настраиваем мок
         mock_finder = MagicMock()
-        mock_finder.by_name.return_value = [MachineInfo(**self.test_machine_info)]
+        mock_finder.find_by_name.return_value = [MachineInfo(**self.test_machine_info)]
         mock_container.return_value.finder_with_list_info.return_value = mock_finder
 
         # Вызываем функцию
@@ -82,14 +82,14 @@ class TestScripts(unittest.TestCase):
         # Проверяем результат
         self.assertIsNotNone(result)
         self.assertEqual(result.name, "16К20")
-        mock_finder.by_name.assert_called_once_with("16К20", exact_match=True)
+        mock_finder.find_by_name.assert_called_once_with("16К20", exact_match=True)
 
     @patch('machine_tools.app.services.scripts.FinderContainer')
     def test_04_get_machine_info_by_name_not_found(self, mock_container):
         """Тест получения информации о станке (станок не найден)"""
         # Настраиваем мок
         mock_finder = MagicMock()
-        mock_finder.by_name.return_value = []
+        mock_finder.find_by_name.return_value = []
         mock_container.return_value.finder_with_list_info.return_value = mock_finder
 
         # Вызываем функцию
@@ -97,7 +97,7 @@ class TestScripts(unittest.TestCase):
 
         # Проверяем результат
         self.assertIsNone(result)
-        mock_finder.by_name.assert_called_once_with("НесуществующийСтанок", exact_match=True)
+        mock_finder.find_by_name.assert_called_once_with("НесуществующийСтанок", exact_match=True)
 
     def test_05_dict_to_machine_update(self):
         """Тест преобразования словаря в MachineUpdate"""
