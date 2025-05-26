@@ -42,7 +42,7 @@ jobs:
         echo "Start installing dependencies at $(date)"
         python -m pip install --upgrade pip
         pip install poetry
-        poetry lock --no-update
+        poetry lock
         poetry install --with dev
         echo "End installing dependencies at $(date)"
 
