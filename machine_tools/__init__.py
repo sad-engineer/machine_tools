@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
 from machine_tools.app.descriptions import ACCURACY_DESCRIPTIONS, GROUP_DESCRIPTIONS, TYPE_DESCRIPTIONS
-from machine_tools.app.enumerations import Accuracy, Automation, Specialization, WeightClass, SoftwareControl
+from machine_tools.app.enumerations import Accuracy, Automation, SoftwareControl, Specialization, WeightClass
 from machine_tools.app.fields import AccuracyField, AutomationField, SpecializationField, WeightClassField
 from machine_tools.app.finders import MachineFinder as Finder
 from machine_tools.app.formatters import (

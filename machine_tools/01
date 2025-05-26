@@ -13,7 +13,7 @@ alembic revision --autogenerate -m "add new_column"
 .\pg_dump.exe -U postgres machine_tools > "C:\Users\Korenyk.A\Documents\Проекты\machine_tools\database_backups\machine_tools_backup_1.sql"
 
 восстановление
-.\psql.exe -U postgres -d machine_tools < "C:\Users\Korenyk.A\Documents\Проекты\machine_tools\machine_tools_backup.sql"
+.\psql.exe -U postgres -d machine_tools -f "C:\Users\Korenyk.A\Documents\Проекты\machine_tools\database_backups\machine_tools_backup_3_CNC.sql"
 
 в CSV
 psql -U postgres -d machine_tools -c "\copy (SELECT * FROM machine_tools) TO 'machine_tools.csv' WITH CSV HEADER"

@@ -47,7 +47,7 @@ class MachineUpdater:
             update_data = MachineUpdate(**update_data)
 
         builder = self._builder.filter_by_id(machine_id)
-        result = builder.update(update_data.model_dump(exclude_unset=True))
+        result = builder.update(update_data.get_flat_dict())
         return result > 0
 
     def update_by_name(
@@ -69,7 +69,7 @@ class MachineUpdater:
         Returns:
             int: Количество обновленных станков
         """
-        builder = self._builder.filter_by_name(name, case_sensitive, exact_match)
+        builder = self._builder.filter_by_name(name, case_sensitive=case_sensitive, exact_match=exact_match)
         return builder.update(update_data)
 
     def update_by_power(
@@ -137,7 +137,7 @@ class MachineUpdater:
             update_data = MachineUpdate(**update_data)
 
         builder = self._builder.filter_by_accuracy(accuracy)
-        return builder.update(update_data.model_dump(exclude_unset=True))
+        return builder.update(update_data.get_flat_dict())
 
     def update_by_automation(
         self,
@@ -158,7 +158,7 @@ class MachineUpdater:
             update_data = MachineUpdate(**update_data)
 
         builder = self._builder.filter_by_automation(automation)
-        return builder.update(update_data.model_dump(exclude_unset=True))
+        return builder.update(update_data.get_flat_dict())
 
     def update_by_specialization(
         self,
@@ -179,8 +179,8 @@ class MachineUpdater:
             update_data = MachineUpdate(**update_data)
 
         builder = self._builder.filter_by_specialization(specialization)
-        return builder.update(update_data.model_dump(exclude_unset=True))
-    
+        return builder.update(update_data.get_flat_dict())
+
     def update_by_software_control(
         self,
         update_data: Union[MachineUpdate, Dict[str, Any]],
@@ -197,8 +197,7 @@ class MachineUpdater:
             int: Количество обновленных станков
         """
         builder = self._builder.filter_by_software_control(software_control)
-        return builder.update(update_data)
-
+        return builder.update(update_data.get_flat_dict())
 
 
 # Пример использования:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
-from typing import Any, Dict
+from typing import Any, Dict, List, Union
 
 from sqlalchemy import and_, asc, desc, select, update
 from sqlalchemy.orm import Session
@@ -23,28 +23,33 @@ class QueryBuilder:
         self._limit = None
         self._offset = None
 
-    def reset_builder(self) -> "QueryBuilder":
-        """Сброс всех фильтров и параметров запроса"""
-        self._query = select(Machine)
-        self._filters = []
-        self._order_by = []
-        self._limit = None
-        self._offset = None
-        return self
-
     def filter_by_id(self, machine_id: int) -> "QueryBuilder":
         """Фильтр по ID станка"""
         self._filters.append(Machine.id == machine_id)
         return self
 
-    def filter_by_group(self, group: int) -> "QueryBuilder":
-        """Фильтр по группе станка"""
-        self._filters.append(Machine.group == str(group))
+    def filter_by_group(self, group: Union[int, List[int]]) -> "QueryBuilder":
+        """Фильтр по группе станка
+
+        Args:
+            group (Union[int, List[int]]): Одно значение группы или список значений групп
+        """
+        if isinstance(group, list):
+            self._filters.append(Machine.group.in_(group))
+        else:
+            self._filters.append(Machine.group == group)
         return self
 
-    def filter_by_type(self, type_: int) -> "QueryBuilder":
-        """Фильтр по типу станка"""
-        self._filters.append(Machine.type == type_)
+    def filter_by_type(self, type: Union[int, List[int]]) -> "QueryBuilder":
+        """Фильтр по типу станка
+
+        Args:
+            type (Union[int, List[int]]): Одно значение типа или список значений типов
+        """
+        if isinstance(type, list):
+            self._filters.append(Machine.type.in_(type))
+        else:
+            self._filters.append(Machine.type == type)
         return self
 
     def filter_by_power(self, min_power: float = None, max_power: float = None) -> "QueryBuilder":
@@ -63,24 +68,52 @@ class QueryBuilder:
             self._filters.append(Machine.efficiency <= max_efficiency)
         return self
 
-    def filter_by_accuracy(self, accuracy: str) -> "QueryBuilder":
-        """Фильтр по классу точности"""
-        self._filters.append(Machine.accuracy == accuracy)
+    def filter_by_accuracy(self, accuracy: Union[str, List[str]]) -> "QueryBuilder":
+        """Фильтр по классу точности
+
+        Args:
+            accuracy (Union[str, List[str]]): Одно значение класса точности или список значений
+        """
+        if isinstance(accuracy, list):
+            self._filters.append(Machine.accuracy.in_(accuracy))
+        else:
+            self._filters.append(Machine.accuracy == accuracy)
         return self
 
-    def filter_by_automation(self, automation: str) -> "QueryBuilder":
-        """Фильтр по уровню автоматизации"""
-        self._filters.append(Machine.automation == automation)
+    def filter_by_automation(self, automation: Union[str, List[str]]) -> "QueryBuilder":
+        """Фильтр по уровню автоматизации
+
+        Args:
+            automation (Union[str, List[str]]): Одно значение уровня автоматизации или список значений
+        """
+        if isinstance(automation, list):
+            self._filters.append(Machine.automation.in_(automation))
+        else:
+            self._filters.append(Machine.automation == automation)
         return self
 
-    def filter_by_specialization(self, specialization: str) -> "QueryBuilder":
-        """Фильтр по специализации"""
-        self._filters.append(Machine.specialization == specialization)
+    def filter_by_specialization(self, specialization: Union[str, List[str]]) -> "QueryBuilder":
+        """Фильтр по специализации
+
+        Args:
+            specialization (Union[str, List[str]]): Одно значение специализации или список значений
+        """
+        if isinstance(specialization, list):
+            self._filters.append(Machine.specialization.in_(specialization))
+        else:
+            self._filters.append(Machine.specialization == specialization)
         return self
-    
-    def filter_by_software_control(self, software_control: str) -> "QueryBuilder":
-        """Фильтр по наличию системы управления"""
-        self._filters.append(Machine.software_control == software_control)
+
+    def filter_by_software_control(self, software_control: Union[str, List[str]]) -> "QueryBuilder":
+        """Фильтр по наличию системы управления
+
+        Args:
+            software_control (Union[str, List[str]]): Одно значение системы управления или список значений
+        """
+        if isinstance(software_control, list):
+            self._filters.append(Machine.software_control.in_(software_control))
+        else:
+            self._filters.append(Machine.software_control == software_control)
         return self
 
     def filter_by_name(self, name: str, case_sensitive: bool = False, exact_match: bool = False) -> "QueryBuilder":
@@ -141,11 +174,11 @@ class QueryBuilder:
     def execute(self) -> Any:
         """Выполнение запроса"""
         query = self.build()
-        
+
         # Если нет явной сортировки, сортируем по id
         if not self._order_by:
             query = query.order_by(Machine.id)
-            
+
         return self.session.execute(query).scalars().all()
 
     def update(self, update_data: Dict[str, Any]) -> int:
@@ -221,7 +254,7 @@ if __name__ == "__main__":
 
         # Пример сложного запроса
         machines = (
-            builder.filter_by_group(1)
+            builder.filter_by_group([1, 2])
             .filter_by_power(min_power=0, max_power=20.0)
             .filter_by_efficiency(min_efficiency=0.5)
             .order_by("power", descending=True)

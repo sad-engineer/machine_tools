@@ -6,7 +6,7 @@ from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, NonNegativeFloat, PositiveFloat, PositiveInt, confloat, conint
 
-from machine_tools.app.enumerations import Accuracy, Automation, Specialization, WeightClass, SoftwareControl
+from machine_tools.app.enumerations import Accuracy, Automation, SoftwareControl, Specialization, WeightClass
 
 
 class Dimensions(BaseModel):
