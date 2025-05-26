@@ -48,5 +48,5 @@ jobs:
     - name: Run tests
       run: |
         echo "Start pytest at $(date)"
-        poetry run pytest --timeout=120 tests/ --cov=machine_tools --cov-report=xml
+        poetry run pytest tests/ --cov=machine_tools --cov-report=xml --timeout=120
         echo "End pytest at $(date)" 
