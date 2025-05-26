@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
-from machine_tools import find_names, Automation, ListMachineInfoFormatter, SoftwareControl
-from machine_tools.app.updaters.updater import MachineUpdater
+from machine_tools import Automation, ListMachineInfoFormatter, SoftwareControl, find_names
 from machine_tools.app.finders import MachineFinder
+from machine_tools.app.updaters.updater import MachineUpdater
 
 
 def update_software_control():
@@ -28,7 +28,7 @@ def update_software_control():
 
     # Создаем временные списки для перемещения элементов
     to_move = []
-    
+
     for name in names_for_no_update:
         with MachineFinder(limit=None, formatter=ListMachineInfoFormatter()) as finder_with_info:
             machine = finder_with_info.by_name(name, exact_match=True)[0]

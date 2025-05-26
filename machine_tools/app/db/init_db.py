@@ -127,7 +127,6 @@ def init_db_from_csv():
                             efficiency=str(row["efficiency"]),
                             accuracy=str(row["accuracy"]),
                             automation=str(row["automation"]),
-                            software_control=str(row["software_control"]),
                             specialization=str(row["specialization"]),
                             weight=safe_float(row["weight"]),
                             weight_class=str(row["weight_class"]),

@@ -56,6 +56,7 @@ def _dict_to_machine_update(machine_info: dict) -> MachineUpdate:
         efficiency=machine_info['efficiency'],
         accuracy=machine_info['accuracy'],
         automation=machine_info['automation'],
+        software_control=machine_info['software_control'],
         specialization=machine_info['specialization'],
         weight=machine_info['weight'],
         weight_class=machine_info['weight_class'],

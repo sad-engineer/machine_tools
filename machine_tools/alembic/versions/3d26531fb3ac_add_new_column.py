@@ -5,11 +5,11 @@ Revises: create_all_tables
 Create Date: 2025-05-23 10:30:40.373177
 
 """
+
 from typing import Sequence, Union
 
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = '3d26531fb3ac'

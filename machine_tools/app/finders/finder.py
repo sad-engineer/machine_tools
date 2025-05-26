@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Union
 
 from sqlalchemy.orm import Session
 
@@ -99,7 +99,7 @@ class MachineFinder:
         self._formatter = formatter
         return self
 
-    def by_power(
+    def find_by_power(
         self,
         min_power: float = None,
         max_power: float = None,
@@ -119,7 +119,7 @@ class MachineFinder:
         machines = builder.execute()
         return self._formatter.format(machines)
 
-    def by_efficiency(
+    def find_by_efficiency(
         self,
         min_efficiency: float = None,
         max_efficiency: float = None,
@@ -139,7 +139,7 @@ class MachineFinder:
         machines = builder.execute()
         return self._formatter.format(machines)
 
-    def by_accuracy(self, accuracy: str, limit: int = None) -> List[Any]:
+    def find_by_accuracy(self, accuracy: Union[str, List[str]], limit: int = None) -> List[Any]:
         """Получение станков по классу точности"""
         builder = self._builder.filter_by_accuracy(accuracy)
 
@@ -149,7 +149,7 @@ class MachineFinder:
         machines = builder.execute()
         return self._formatter.format(machines)
 
-    def by_automation(self, automation: str, limit: int = None) -> List[Any]:
+    def find_by_automation(self, automation: Union[str, List[str]], limit: int = None) -> List[Any]:
         """Получение станков по уровню автоматизации"""
         builder = self._builder.filter_by_automation(automation)
 
@@ -159,7 +159,7 @@ class MachineFinder:
         machines = builder.execute()
         return self._formatter.format(machines)
 
-    def by_specialization(self, specialization: str, limit: int = None) -> List[Any]:
+    def find_by_specialization(self, specialization: Union[str, List[str]], limit: int = None) -> List[Any]:
         """Получение станков по специализации"""
         builder = self._builder.filter_by_specialization(specialization)
 
@@ -169,7 +169,7 @@ class MachineFinder:
         machines = builder.execute()
         return self._formatter.format(machines)
 
-    def by_name(
+    def find_by_name(
         self, name: str, case_sensitive: bool = False, exact_match: bool = True, limit: int = None
     ) -> List[Any]:
         """Поиск станков по имени
@@ -180,15 +180,15 @@ class MachineFinder:
             exact_match (bool, optional): Точное совпадение. По умолчанию True
             limit (int, optional): Ограничение количества результатов
         """
-        builder = self._builder.filter_by_name(name, case_sensitive, exact_match)
+        builder = self._builder.filter_by_name(name=name, case_sensitive=case_sensitive, exact_match=exact_match)
 
         if limit:
             builder = builder.limit(limit)
 
         machines = builder.execute()
         return self._formatter.format(machines)
-    
-    def by_software_control(self, software_control: str, limit: int = None) -> List[Any]:
+
+    def find_by_software_control(self, software_control: Union[str, List[str]], limit: int = None) -> List[Any]:
         """Получение станков по наличию системы управления"""
         builder = self._builder.filter_by_software_control(software_control)
 
@@ -197,39 +197,8 @@ class MachineFinder:
 
         machines = builder.execute()
         return self._formatter.format(machines)
-    
-    def by_type(self, type_: int, limit: int = None) -> List[Any]:
-        """Получение станков по типу"""
-        builder = self._builder.filter_by_type(type_)
 
-        if limit:
-            builder = builder.limit(limit)
-
-        machines = builder.execute()
-        return self._formatter.format(machines) 
-    
-    def by_group(self, group: int, limit: int = None) -> List[Any]:
-        """Получение станков по группе"""
-        builder = self._builder.filter_by_group(group)
-
-        if limit:
-            builder = builder.limit(limit)  
-
-        machines = builder.execute()
-        return self._formatter.format(machines) 
-    
-    def by_group_and_type(self, group: int, type_: int, limit: int = None) -> List[Any]:
-        """Получение станков по типу и группе"""
-        builder = self._builder.filter_by_group(group)
-        builder = builder.filter_by_type(type_)
-
-        if limit:
-            builder = builder.limit(limit)  
-
-        machines = builder.execute()
-        return self._formatter.format(machines)
-    
-    def all(self, limit: int = None) -> List[Any]:
+    def find_all(self, limit: int = None) -> List[Any]:
         """Получение всех станков"""
         builder = self._builder
 
@@ -261,19 +230,4 @@ if __name__ == "__main__":
 
         finder.set_formatter(ListMachineInfoFormatter())
         machine = finder.by_name(name="16К20", exact_match=True)
-        print(machine)
-
-    with MachineFinder(limit=5) as finder:
-        finder.set_formatter(ListNameFormatter())
-        machine = finder.by_group(1)
-        print(machine)
-
-    with MachineFinder(limit=5) as finder:
-        finder.set_formatter(ListNameFormatter())
-        machine = finder.by_type(1)
-        print(machine)
-
-    with MachineFinder(limit=5) as finder:
-        finder.set_formatter(ListNameFormatter())
-        machine = finder.by_group_and_type(2, 2)
         print(machine)

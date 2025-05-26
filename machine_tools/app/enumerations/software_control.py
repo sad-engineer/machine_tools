@@ -29,4 +29,6 @@ class SoftwareControl(BaseEnum):
         for member in cls:
             if member.value == value:
                 return member
-        raise ValueError(f"Недопустимое значение программного управления: {value}. Допустимые значения: {[m.value for m in cls]}")
+        raise ValueError(
+            f"Недопустимое значение программного управления: {value}. Допустимые значения: {[m.value for m in cls]}"
+        )

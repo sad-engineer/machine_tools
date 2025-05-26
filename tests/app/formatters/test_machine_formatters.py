@@ -5,6 +5,7 @@ import unittest
 from datetime import datetime
 from typing import List
 
+from machine_tools.app.enumerations import Accuracy, Automation, SoftwareControl, Specialization, WeightClass
 from machine_tools.app.formatters import (
     DictMachineInfoFormatter,
     DictNameFormatter,
@@ -31,11 +32,12 @@ class TestMachineFormatters(unittest.TestCase):
                 type=2.0,
                 power=10.5,
                 efficiency=0.85,
-                accuracy="Н",
-                automation="ЧПУ",
-                specialization="Токарная обработка",
+                accuracy=Accuracy.P,
+                automation=Automation.AUTOMATIC,
+                specialization=Specialization.SPECIAL,
+                software_control=SoftwareControl.NO,
                 weight=2500.0,
-                weight_class="Средний",
+                weight_class=WeightClass.LIGHT,
                 length=2000,
                 width=1000,
                 height=1500,
@@ -46,25 +48,10 @@ class TestMachineFormatters(unittest.TestCase):
                 created_at=datetime(2024, 1, 1),
                 updated_at=datetime(2024, 1, 1),
                 technical_requirements=[
-                    TechnicalRequirement(
-                        id=1,
-                        machine_name="16К20",
-                        requirement="max_diameter",
-                        value=400
-                    ),
-                    TechnicalRequirement(
-                        id=2,
-                        machine_name="16К20",
-                        requirement="max_length",
-                        value=1000
-                    ),
-                    TechnicalRequirement(
-                        id=3,
-                        machine_name="16К20",
-                        requirement="spindle_speed",
-                        value=2000
-                    )
-                ]
+                    TechnicalRequirement(id=1, machine_name="16К20", requirement="max_diameter", value=400),
+                    TechnicalRequirement(id=2, machine_name="16К20", requirement="max_length", value=1000),
+                    TechnicalRequirement(id=3, machine_name="16К20", requirement="spindle_speed", value=2000),
+                ],
             ),
             Machine(
                 id=2,
@@ -73,11 +60,12 @@ class TestMachineFormatters(unittest.TestCase):
                 type=1.0,
                 power=7.5,
                 efficiency=0.8,
-                accuracy="П",
-                automation="Ручное управление",
-                specialization="Фрезерная обработка",
+                accuracy=Accuracy.P,
+                automation=Automation.MANUAL,
+                specialization=Specialization.UNIVERSAL,
+                software_control=SoftwareControl.CNC,
                 weight=1800.0,
-                weight_class="Средний",
+                weight_class=WeightClass.LIGHT,
                 length=1800,
                 width=900,
                 height=1400,
@@ -88,25 +76,10 @@ class TestMachineFormatters(unittest.TestCase):
                 created_at=datetime(2024, 1, 1),
                 updated_at=datetime(2024, 1, 1),
                 technical_requirements=[
-                    TechnicalRequirement(
-                        id=4,
-                        machine_name="6Р13Ф3",
-                        requirement="table_size",
-                        value="400x1600"
-                    ),
-                    TechnicalRequirement(
-                        id=5,
-                        machine_name="6Р13Ф3",
-                        requirement="max_travel",
-                        value=800
-                    ),
-                    TechnicalRequirement(
-                        id=6,
-                        machine_name="6Р13Ф3",
-                        requirement="spindle_speed",
-                        value=1500
-                    )
-                ]
+                    TechnicalRequirement(id=4, machine_name="6Р13Ф3", requirement="table_size", value="400x1600"),
+                    TechnicalRequirement(id=5, machine_name="6Р13Ф3", requirement="max_travel", value=800),
+                    TechnicalRequirement(id=6, machine_name="6Р13Ф3", requirement="spindle_speed", value=1500),
+                ],
             ),
         ]
 
@@ -143,9 +116,9 @@ class TestMachineFormatters(unittest.TestCase):
         result = formatter.format(self.machines)
         self.assertIsInstance(result, dict)
         self.assertEqual(len(result), 2)
-        self.assertIsInstance(result[1], MachineInfo)
-        self.assertEqual(result[1].name, '16К20')
-        self.assertEqual(result[2].name, '6Р13Ф3')
+        self.assertIsInstance(result['6Р13Ф3'], MachineInfo)
+        self.assertEqual(result['16К20'].name, '16К20')
+        self.assertEqual(result['6Р13Ф3'].name, '6Р13Ф3')
 
     def test_05_indexed_name_formatter(self):
         """Тест форматтера IndexedNameFormatter"""
@@ -169,7 +142,7 @@ class TestMachineFormatters(unittest.TestCase):
     def test_07_empty_list(self):
         """Тест форматтеров с пустым списком"""
         empty_machines: List[Machine] = []
-        
+
         # Проверяем все форматтеры
         formatters = [
             ListNameFormatter(),
@@ -179,7 +152,7 @@ class TestMachineFormatters(unittest.TestCase):
             IndexedNameFormatter(),
             IndexedMachineInfoFormatter(),
         ]
-        
+
         for formatter in formatters:
             result = formatter.format(empty_machines)
             if isinstance(result, list):
@@ -189,4 +162,4 @@ class TestMachineFormatters(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main() 
+    unittest.main()

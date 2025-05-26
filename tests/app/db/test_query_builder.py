@@ -25,7 +25,7 @@ class TestQueryBuilder(unittest.TestCase):
         # Очищаем все таблицы перед каждым тестом
         Base.metadata.drop_all(self.engine)
         Base.metadata.create_all(self.engine)
-        
+
         self.session = self.Session()
         self.machines = [
             Machine(
@@ -180,4 +180,4 @@ class TestQueryBuilder(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main() 
+    unittest.main()
