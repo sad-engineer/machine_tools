@@ -18,7 +18,7 @@ def find_names(substring: Optional[str]) -> List[str]:
     container = FinderContainer()
     finder = container.finder_with_list_names()
     if substring:
-        return finder.by_name(substring, exact_match=False)
+        return finder.find_by_name(substring, exact_match=False)
     return finder.all()
 
 
@@ -31,7 +31,7 @@ def get_machine_info_by_name(name: str) -> Optional[MachineInfo]:
     """
     container = FinderContainer()
     finder = container.finder_with_list_info()
-    result = finder.by_name(name, exact_match=True)
+    result = finder.find_by_name(name, exact_match=True)
     if len(result) > 0:
         return result[0]
     else:
