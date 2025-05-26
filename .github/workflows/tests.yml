@@ -62,10 +62,8 @@ jobs:
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
+        files: ./coverage.xml
         fail_ci_if_error: true
         verbose: true
         flags: unittests
-        name: codecov-umbrella
-        path_to_write_report: ./coverage_report.txt 
+        name: codecov-umbrella 
