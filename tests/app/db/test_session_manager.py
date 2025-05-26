@@ -1,32 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
-import os
 import unittest
 
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy import text
+from sqlalchemy.orm import Session
 
-from machine_tools.app.config import get_settings
 from machine_tools.app.db.session_manager import session_manager
-from machine_tools.app.models import Base
-
-settings = get_settings()
 
 
 class TestSessionManager(unittest.TestCase):
     """Тесты для SessionManager"""
-
-    @classmethod
-    def setUpClass(cls):
-        """Подготовка тестовой БД"""
-        # Используем тестовую БД PostgreSQL
-        os.environ["POSTGRES_DB"] = "machine_tools_test"
-        # Пересоздаем движок с новой БД
-        session_manager.engine = create_engine(settings.DATABASE_URL)
-        session_manager.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=session_manager.engine)
-        # Создаем таблицы
-        Base.metadata.create_all(session_manager.engine)
 
     def setUp(self):
         """Подготовка перед каждым тестом"""
@@ -42,15 +26,6 @@ class TestSessionManager(unittest.TestCase):
             self.session.rollback()
         # Закрываем сессию
         session_manager.close_session()
-
-    # @classmethod
-    # def tearDownClass(cls):
-    #     """Очистка БД после всех тестов"""
-    #     Base.metadata.drop_all(session_manager.engine)
-    #     # Восстанавливаем оригинальную БД
-    #     os.environ["POSTGRES_DB"] = settings.POSTGRES_DB
-    #     session_manager.engine = create_engine(settings.DATABASE_URL)
-    #     session_manager.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=session_manager.engine)
 
     def test_01_get_session(self):
         """Тест получения сессии"""
