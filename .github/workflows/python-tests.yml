@@ -1,0 +1,52 @@
+name: Python Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.9, '3.10', 3.11]
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: machine_tools_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        echo "Start installing dependencies at $(date)"
+        python -m pip install --upgrade pip
+        pip install poetry
+        poetry install --with dev
+        echo "End installing dependencies at $(date)"
+
+    - name: Run tests
+      run: |
+        echo "Start pytest at $(date)"
+        poetry run pytest --timeout=120 tests/ --cov=machine_tools --cov-report=xml
+        echo "End pytest at $(date)" 
