@@ -23,6 +23,15 @@ class QueryBuilder:
         self._limit = None
         self._offset = None
 
+    def reset_builder(self) -> "QueryBuilder":
+        """Сброс всех фильтров и параметров запроса"""
+        self._query = select(Machine)
+        self._filters = []
+        self._order_by = []
+        self._limit = None
+        self._offset = None
+        return self
+
     def filter_by_id(self, machine_id: int) -> "QueryBuilder":
         """Фильтр по ID станка"""
         self._filters.append(Machine.id == machine_id)
