@@ -13,14 +13,23 @@ alembic revision --autogenerate -m "add new_column"
 .\pg_dump.exe -U postgres machine_tools > "C:\Users\Korenyk.A\Documents\Проекты\machine_tools\database_backups\machine_tools_backup_1.sql"
 
 восстановление
+.\psql.exe -U postgres -c "DROP DATABASE machine_tools;"
+.\psql.exe -U postgres -c "CREATE DATABASE machine_tools WITH ENCODING 'UTF8' TEMPLATE template0;"
 .\psql.exe -U postgres -d machine_tools -f "C:\Users\Korenyk.A\Documents\Проекты\machine_tools\database_backups\machine_tools_backup_3_CNC.sql"
 
 в CSV
-psql -U postgres -d machine_tools -c "\copy (SELECT * FROM machine_tools) TO 'machine_tools.csv' WITH CSV HEADER"
-psql -U postgres -d machine_tools -c "\copy (SELECT * FROM technical_requirements) TO 'technical_requirements.csv' WITH CSV HEADER"
+.\psql.exe -U postgres -d machine_tools -c "SHOW SERVER_ENCODING;"
+.\psql.exe -U postgres -d machine_tools -c "SET client_encoding TO 'UTF8'; \copy machine_tools TO 'C:/Users/Korenyk.A/Documents/Проекты/machine_tools/database_backups/machine_tools.csv' WITH CSV HEADER".\psql.exe -U postgres -d machine_tools -c "\copy (SELECT * FROM technical_requirements) TO 'technical_requirements.csv' WITH CSV HEADER"
+.\psql.exe -U postgres -d machine_tools -c "SHOW client_encoding;"
+.\psql.exe  -U postgres -d machine_tools
+.\psql.exe -U postgres -d machine_tools -c "SET client_encoding TO 'UTF8';"
+.\psql.exe -U postgres -d machine_tools -c "SHOW SERVER_ENCODING;"
+.\psql.exe -U postgres -d machine_tools -c "SHOW client_encoding;"
 
-.\psql -U postgres -d machine_tools -c "COPY machine_tools TO 'C:\Users\Korenyk.A\Documents\Проекты\machine_tools\database_backups\machine_tools.csv' WITH CSV HEADER"
-.\psql -U postgres -d machine_tools -c "\copy (SELECT * FROM technical_requirements) TO 'C:\Users\Korenyk.A\Documents\Проекты\machine_tools\database_backups\technical_requirements.csv' WITH CSV HEADER"
+
+.\psql.exe -U postgres -d machine_tools -c "\copy machine_tools TO 'C:/Users/Korenyk.A/Documents/Проекты/machine_tools/database_backups/machine_tools.csv' WITH CSV HEADER"
+.\psql.exe -U postgres -d machine_tools -c "\copy (SELECT * FROM machine_tools ORDER BY name) TO 'C:/Users/Korenyk.A/Documents/Проекты/machine_tools/database_backups/machine_tools.csv' WITH CSV HEADER"
+.\psql.exe -U postgres -d machine_tools -c "\copy (SELECT * FROM technical_requirements) TO 'C:\Users\Korenyk.A\Documents\Проекты\machine_tools\database_backups\technical_requirements.csv' WITH CSV HEADER"
 
 CREATE DATABASE machine_tools
      WITH
