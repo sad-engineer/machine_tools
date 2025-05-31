@@ -117,6 +117,7 @@ class MachineFinder:
             builder = builder.limit(limit)
 
         machines = builder.execute()
+        self.reset_builder()
         return self._formatter.format(machines)
 
     def find_by_efficiency(
@@ -137,6 +138,7 @@ class MachineFinder:
             builder = builder.limit(limit)
 
         machines = builder.execute()
+        self.reset_builder()
         return self._formatter.format(machines)
 
     def find_by_accuracy(self, accuracy: Union[str, List[str]], limit: int = None) -> List[Any]:
@@ -147,6 +149,7 @@ class MachineFinder:
             builder = builder.limit(limit)
 
         machines = builder.execute()
+        self.reset_builder()
         return self._formatter.format(machines)
 
     def find_by_automation(self, automation: Union[str, List[str]], limit: int = None) -> List[Any]:
@@ -157,6 +160,7 @@ class MachineFinder:
             builder = builder.limit(limit)
 
         machines = builder.execute()
+        self.reset_builder()
         return self._formatter.format(machines)
 
     def find_by_specialization(self, specialization: Union[str, List[str]], limit: int = None) -> List[Any]:
@@ -167,6 +171,7 @@ class MachineFinder:
             builder = builder.limit(limit)
 
         machines = builder.execute()
+        self.reset_builder()
         return self._formatter.format(machines)
 
     def find_by_name(
@@ -186,6 +191,7 @@ class MachineFinder:
             builder = builder.limit(limit)
 
         machines = builder.execute()
+        self.reset_builder()
         return self._formatter.format(machines)
 
     def find_by_software_control(self, software_control: Union[str, List[str]], limit: int = None) -> List[Any]:
@@ -196,7 +202,32 @@ class MachineFinder:
             builder = builder.limit(limit)
 
         machines = builder.execute()
+        self.reset_builder()
         return self._formatter.format(machines)
+
+    def find_by_group(self, group: Union[int, List[int]], limit: int = None) -> List[Any]:
+        """Получение станков по группе"""
+        group = [str(g) for g in group] if isinstance(group, list) else str(group)
+        builder = self._builder.filter_by_group(group)
+
+        if limit:
+            builder = builder.limit(limit)
+
+        machines = builder.execute()
+        self.reset_builder()
+        return self._formatter.format(machines)
+    
+    def find_by_type(self, type: Union[int, List[int]], limit: int = None) -> List[Any]:
+        """Получение станков по типу"""
+        type = [str(t) for t in type] if isinstance(type, list) else str(type)
+        builder = self._builder.filter_by_type(type)
+
+        if limit:
+            builder = builder.limit(limit)  
+
+        machines = builder.execute()
+        self.reset_builder()
+        return self._formatter.format(machines)    
 
     def find_all(self, limit: int = None) -> List[Any]:
         """Получение всех станков"""
@@ -206,7 +237,13 @@ class MachineFinder:
             builder = builder.limit(limit)
 
         machines = builder.execute()
+        self.reset_builder()
         return self._formatter.format(machines)
+    
+    def reset_builder(self):
+        """Сброс всех параметров поиска"""
+        self._builder = QueryBuilder(self.session)
+        self._builder.limit(self._global_limit)
 
 
 # Пример использования:
@@ -231,3 +268,36 @@ if __name__ == "__main__":
         finder.set_formatter(ListMachineInfoFormatter())
         machine = finder.find_by_name(name="16К20Ф3", exact_match=True)
         print(machine)
+
+        print("Поиск по нескольким типам:", finder.find_by_type([0, 1, 2]))
+
+
+    with MachineFinder() as finder:
+        finder.set_formatter(ListMachineInfoFormatter())
+        # получение информации о станках
+        machines = finder.find_all()
+
+        # получение информации о станке по имени
+        machines = finder.find_by_name(name="16К20Ф3", exact_match=True)
+        if len(machines) == 1:
+            machine_info = machines[0]
+            if machine_info:
+                print(f"Станок: {machine_info.name}")
+                print(f"Тип: {machine_info.machine_type}")
+                print(f"Мощность: {machine_info.power} кВт")
+                print(f"Точность: {machine_info.accuracy}")
+                print(f"Автоматизация: {machine_info.automation}")
+                print("\nГабариты:")
+                print(f"Длина: {machine_info.dimensions.length} мм")
+                print(f"Ширина: {machine_info.dimensions.width} мм")
+                print(f"Высота: {machine_info.dimensions.height} мм")
+                print("\nТехнические требования:")
+                for req, value in machine_info.technical_requirements.items():
+                    print(f"{req}: {value}")
+            else:
+                print("Станок не найден")
+
+        #  Поддерживает все фильтрации и сортировки
+        machines = finder.find_by_power(min_power=10.0, order_by_power=True, descending=True)
+        print(machines)
+        
