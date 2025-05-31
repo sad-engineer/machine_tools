@@ -24,20 +24,35 @@
 
 ### Вариант 1: Poetry (рекомендуется)
 ```bash
-poetry add git+https://github.com/sad-engineer/machine_tools.git#postgresql 
-
+poetry add git+https://github.com/sad-engineer/machine_tools.git
 ```
 
 ### Вариант 2: pip
 ```bash
-pip install git+https://github.com/sad-engineer/machine_tools.git#postgresql
+pip install git+https://github.com/sad-engineer/machine_tools.git
+```
+
+### Установите зависимости:
+```bash
+poetry install
 ```
 
 ## Инициализация базы данных
 
-База данных содержится в пакете, но перед использованием, необходимо инициализировать эту базу.
+### Настройка PostgreSQL
 
-После установки пакета выполните:
+Установите PostgreSQL, если еще не установлен:
+   - Windows: скачайте установщик с [официального сайта](https://www.postgresql.org/download/windows/)
+   - Linux: `sudo apt-get install postgresql`
+   - Mac: `brew install postgresql`
+
+### Устанавливаем базу данных 
+
+Проект использует базу данных станков. 
+
+База данных содержится в пакете machine_tools, который устанавливается при установке зависимостей. 
+
+Но перед использованием, необходимо инициализировать эту базу.
 
 ```bash
 # Вариант 1: Используя команду machine_tools
