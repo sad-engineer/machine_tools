@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
+import os
 from functools import lru_cache
 from pathlib import Path
-import os
 
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings

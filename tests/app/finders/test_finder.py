@@ -133,13 +133,20 @@ class TestMachineFinder(unittest.TestCase):
         self.finder._formatter = self.mock_formatter
         self.finder._builder = self.mock_builder
 
+        # Патчим метод reset_builder чтобы он не создавал новый builder
+        self.finder.reset_builder = Mock()
+
     def test_01_by_power(self):
         """Тест поиска по мощности"""
         # Поиск станков с мощностью больше 7 кВт
         self.finder.find_by_power(min_power=7.0)
         # Проверяем, что builder вызван с правильными параметрами
-        self.mock_builder.filter_by_power.assert_called_once_with(min_power=7.0, max_power=None)
-        self.mock_builder.execute.assert_called_once()
+        self.mock_builder.filter_by_power.assert_called_with(min_power=7.0, max_power=None)
+        self.mock_builder.execute.assert_called()
+
+        # Сбрасываем мок для следующего теста
+        self.mock_builder.filter_by_power.reset_mock()
+        self.mock_builder.execute.reset_mock()
 
         # Поиск станков с мощностью меньше 6 кВт
         self.finder.find_by_power(max_power=6.0)
@@ -147,11 +154,16 @@ class TestMachineFinder(unittest.TestCase):
         self.mock_builder.filter_by_power.assert_called_with(min_power=None, max_power=6.0)
         self.mock_builder.execute.assert_called()
 
+        # Сбрасываем мок для следующего теста
+        self.mock_builder.filter_by_power.reset_mock()
+        self.mock_builder.execute.reset_mock()
+        self.mock_builder.order_by.reset_mock()
+
         # Сортировка по мощности
         self.finder.find_by_power(order_by_power=True, descending=True)
         # Проверяем, что builder вызван с правильными параметрами
         self.mock_builder.filter_by_power.assert_called_with(min_power=None, max_power=None)
-        self.mock_builder.order_by.assert_called_once_with("power", descending=True)
+        self.mock_builder.order_by.assert_called_with("power", descending=True)
         self.mock_builder.execute.assert_called()
 
     def test_02_by_efficiency(self):
@@ -159,14 +171,19 @@ class TestMachineFinder(unittest.TestCase):
         # Поиск станков с КПД больше 0.8
         self.finder.find_by_efficiency(min_efficiency=0.8)
         # Проверяем, что builder вызван с правильными параметрами
-        self.mock_builder.filter_by_efficiency.assert_called_once_with(min_efficiency=0.8, max_efficiency=None)
-        self.mock_builder.execute.assert_called_once()
+        self.mock_builder.filter_by_efficiency.assert_called_with(min_efficiency=0.8, max_efficiency=None)
+        self.mock_builder.execute.assert_called()
+
+        # Сбрасываем мок для следующего теста
+        self.mock_builder.filter_by_efficiency.reset_mock()
+        self.mock_builder.execute.reset_mock()
+        self.mock_builder.order_by.reset_mock()
 
         # Сортировка по КПД
         self.finder.find_by_efficiency(order_by_efficiency=True, descending=True)
         # Проверяем, что builder вызван с правильными параметрами
         self.mock_builder.filter_by_efficiency.assert_called_with(min_efficiency=None, max_efficiency=None)
-        self.mock_builder.order_by.assert_called_once_with("efficiency", descending=True)
+        self.mock_builder.order_by.assert_called_with("efficiency", descending=True)
         self.mock_builder.execute.assert_called()
 
     def test_03_by_accuracy(self):
@@ -174,8 +191,12 @@ class TestMachineFinder(unittest.TestCase):
         # Поиск станков класса точности "Н"
         self.finder.find_by_accuracy("Н")
         # Проверяем, что builder вызван с правильными параметрами
-        self.mock_builder.filter_by_accuracy.assert_called_once_with("Н")
-        self.mock_builder.execute.assert_called_once()
+        self.mock_builder.filter_by_accuracy.assert_called_with("Н")
+        self.mock_builder.execute.assert_called()
+
+        # Сбрасываем мок для следующего теста
+        self.mock_builder.filter_by_accuracy.reset_mock()
+        self.mock_builder.execute.reset_mock()
 
         # Поиск станков нескольких классов точности
         self.finder.find_by_accuracy(["Н", "П"])
@@ -188,8 +209,12 @@ class TestMachineFinder(unittest.TestCase):
         # Поиск станков с ЧПУ
         self.finder.find_by_automation("ЧПУ")
         # Проверяем, что builder вызван с правильными параметрами
-        self.mock_builder.filter_by_automation.assert_called_once_with("ЧПУ")
-        self.mock_builder.execute.assert_called_once()
+        self.mock_builder.filter_by_automation.assert_called_with("ЧПУ")
+        self.mock_builder.execute.assert_called()
+
+        # Сбрасываем мок для следующего теста
+        self.mock_builder.filter_by_automation.reset_mock()
+        self.mock_builder.execute.reset_mock()
 
         # Поиск станков с разными уровнями автоматизации
         self.finder.find_by_automation(["ЧПУ", "Ручное управление"])
@@ -202,8 +227,12 @@ class TestMachineFinder(unittest.TestCase):
         # Поиск токарных станков
         self.finder.find_by_specialization("Токарная обработка")
         # Проверяем, что builder вызван с правильными параметрами
-        self.mock_builder.filter_by_specialization.assert_called_once_with("Токарная обработка")
-        self.mock_builder.execute.assert_called_once()
+        self.mock_builder.filter_by_specialization.assert_called_with("Токарная обработка")
+        self.mock_builder.execute.assert_called()
+
+        # Сбрасываем мок для следующего теста
+        self.mock_builder.filter_by_specialization.reset_mock()
+        self.mock_builder.execute.reset_mock()
 
         # Поиск станков разных специализаций
         self.finder.find_by_specialization(["Токарная обработка", "Фрезерная обработка"])

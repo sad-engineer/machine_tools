@@ -216,18 +216,18 @@ class MachineFinder:
         machines = builder.execute()
         self.reset_builder()
         return self._formatter.format(machines)
-    
+
     def find_by_type(self, type: Union[int, List[int]], limit: int = None) -> List[Any]:
         """Получение станков по типу"""
         type = [str(t) for t in type] if isinstance(type, list) else str(type)
         builder = self._builder.filter_by_type(type)
 
         if limit:
-            builder = builder.limit(limit)  
+            builder = builder.limit(limit)
 
         machines = builder.execute()
         self.reset_builder()
-        return self._formatter.format(machines)    
+        return self._formatter.format(machines)
 
     def find_all(self, limit: int = None) -> List[Any]:
         """Получение всех станков"""
@@ -239,7 +239,7 @@ class MachineFinder:
         machines = builder.execute()
         self.reset_builder()
         return self._formatter.format(machines)
-    
+
     def reset_builder(self):
         """Сброс всех параметров поиска"""
         self._builder = QueryBuilder(self.session)
@@ -271,7 +271,6 @@ if __name__ == "__main__":
 
         print("Поиск по нескольким типам:", finder.find_by_type([0, 1, 2]))
 
-
     with MachineFinder() as finder:
         finder.set_formatter(ListMachineInfoFormatter())
         # получение информации о станках
@@ -300,4 +299,3 @@ if __name__ == "__main__":
         #  Поддерживает все фильтрации и сортировки
         machines = finder.find_by_power(min_power=10.0, order_by_power=True, descending=True)
         print(machines)
-        

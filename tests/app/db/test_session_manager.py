@@ -31,31 +31,33 @@ class TestSessionManager(unittest.TestCase):
             user=settings.POSTGRES_USER,
             password=settings.POSTGRES_PASSWORD,
             host=settings.POSTGRES_HOST,
-            port=settings.POSTGRES_PORT
+            port=settings.POSTGRES_PORT,
         )
 
         print(settings.POSTGRES_DB)
         conn.autocommit = True
         cursor = conn.cursor()
-        
+
         # Закрываем все соединения с тестовой БД
-        cursor.execute(f"""
+        cursor.execute(
+            f"""
             SELECT pg_terminate_backend(pg_stat_activity.pid)
             FROM pg_stat_activity
             WHERE pg_stat_activity.datname = '{settings.POSTGRES_DB}'
             AND pid <> pg_backend_pid();
-        """)
-        
+        """
+        )
+
         # Удаляем тестовую БД, если она существует
         cursor.execute(f"DROP DATABASE IF EXISTS {settings.POSTGRES_DB}")
-        
+
         # Создаем тестовую БД
         cursor.execute(f"CREATE DATABASE {settings.POSTGRES_DB}")
-        
+
         # Закрываем соединение
         cursor.close()
         conn.close()
-        
+
         # Создаем движок с тестовой БД
         session_manager.engine = create_engine(settings.DATABASE_URL)
         session_manager.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=session_manager.engine)
@@ -82,32 +84,34 @@ class TestSessionManager(unittest.TestCase):
         """Очистка БД после всех тестов"""
         # Закрываем все сессии
         session_manager.close_session()
-        
+
         # Удаляем все таблицы
         Base.metadata.drop_all(session_manager.engine)
-        
+
         # Подключаемся к postgres для удаления тестовой БД
         conn = psycopg2.connect(
             dbname="postgres",
             user=settings.POSTGRES_USER,
             password=settings.POSTGRES_PASSWORD,
             host=settings.POSTGRES_HOST,
-            port=settings.POSTGRES_PORT
+            port=settings.POSTGRES_PORT,
         )
         conn.autocommit = True
         cursor = conn.cursor()
-        
+
         # Закрываем все соединения с тестовой БД
-        cursor.execute(f"""
+        cursor.execute(
+            f"""
             SELECT pg_terminate_backend(pg_stat_activity.pid)
             FROM pg_stat_activity
             WHERE pg_stat_activity.datname = '{settings.POSTGRES_DB}'
             AND pid <> pg_backend_pid();
-        """)
-        
+        """
+        )
+
         # Удаляем тестовую БД
         cursor.execute(f"DROP DATABASE IF EXISTS {settings.POSTGRES_DB}")
-        
+
         # Закрываем соединение
         cursor.close()
         conn.close()
