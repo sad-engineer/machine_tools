@@ -10,10 +10,9 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 
 from machine_tools.app.config import get_settings
-from machine_tools.app.db.session_manager import session_manager
+from machine_tools.app.db.session_manager import session_manager, SessionManager
 from machine_tools.app.models import Base
 
-# Устанавливаем путь к тестовым настройкам
 TEST_ENV_PATH = Path(__file__).parent.parent.parent / "settings" / "test.env"
 os.environ["MACHINE_TOOLS_ENV"] = str(TEST_ENV_PATH)
 settings = get_settings()
@@ -25,14 +24,26 @@ class TestSessionManager(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Подготовка тестовой БД"""
+        # По умолчанию считаем сервер недоступным
+        cls.server_unavailable = True
+        cls.skip_message = "PostgreSQL server is not available"
+
         # Подключаемся к postgres для создания тестовой БД
-        conn = psycopg2.connect(
-            dbname="postgres",
-            user=settings.POSTGRES_USER,
-            password=settings.POSTGRES_PASSWORD,
-            host=settings.POSTGRES_HOST,
-            port=settings.POSTGRES_PORT,
-        )
+        try:
+            conn = psycopg2.connect(
+                dbname="postgres",
+                user=settings.POSTGRES_USER,
+                password=settings.POSTGRES_PASSWORD,
+                host=settings.POSTGRES_HOST,
+                port=settings.POSTGRES_PORT,
+                connect_timeout=5
+            )
+        except psycopg2.OperationalError as e:
+            # Помечаем, что сервер недоступен
+            cls.skip_message = f"PostgreSQL server is not available: {e}"
+            return
+
+        cls.server_unavailable = False
 
         print(settings.POSTGRES_DB)
         conn.autocommit = True
@@ -58,18 +69,25 @@ class TestSessionManager(unittest.TestCase):
         cursor.close()
         conn.close()
 
-        # Создаем движок с тестовой БД
-        session_manager.engine = create_engine(settings.DATABASE_URL)
-        session_manager.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=session_manager.engine)
+        # Создаем движок с тестовой БД (используем внутренние переменные, т.к. engine - это property)
+        session_manager._engine = create_engine(settings.DATABASE_URL)
+        session_manager._SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=session_manager._engine)
+        # Закрываем старые сессии, если они есть
+        session_manager._default_session = None
+        session_manager._sessions.clear()
         # Создаем таблицы
-        Base.metadata.create_all(session_manager.engine)
+        Base.metadata.create_all(session_manager._engine)
 
     def setUp(self):
         """Подготовка перед каждым тестом"""
+        if self.server_unavailable:
+            self.skipTest(self.skip_message)
         self.session = session_manager.get_session()
 
     def tearDown(self):
         """Очистка после каждого теста"""
+        if self.server_unavailable:
+            return
         # Удаляем тестовую таблицу, если она существует
         try:
             self.session.execute(text("DROP TABLE IF EXISTS test"))
@@ -82,20 +100,28 @@ class TestSessionManager(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         """Очистка БД после всех тестов"""
+        if cls.server_unavailable:
+            return
+
         # Закрываем все сессии
         session_manager.close_session()
 
-        # Удаляем все таблицы
-        Base.metadata.drop_all(session_manager.engine)
+        # Удаляем все таблицы (используем _engine, т.к. engine - это property)
+        if session_manager._engine is not None:
+            Base.metadata.drop_all(session_manager._engine)
 
         # Подключаемся к postgres для удаления тестовой БД
-        conn = psycopg2.connect(
-            dbname="postgres",
-            user=settings.POSTGRES_USER,
-            password=settings.POSTGRES_PASSWORD,
-            host=settings.POSTGRES_HOST,
-            port=settings.POSTGRES_PORT,
-        )
+        try:
+            conn = psycopg2.connect(
+                dbname="postgres",
+                user=settings.POSTGRES_USER,
+                password=settings.POSTGRES_PASSWORD,
+                host=settings.POSTGRES_HOST,
+                port=settings.POSTGRES_PORT,
+            )
+        except psycopg2.OperationalError:
+            # Если сервер недоступен, просто выходим
+            return
         conn.autocommit = True
         cursor = conn.cursor()
 
@@ -130,16 +156,20 @@ class TestSessionManager(unittest.TestCase):
 
     def test_03_close_session(self):
         """Тест закрытия сессии"""
+        # Убедимся, что сессия закрыта перед тестом (из tearDown предыдущего теста)
+        SessionManager._default_session = None
+
         # Получаем сессию
         default_session = session_manager.get_session()
-        # Проверяем, что сессия создана
-        self.assertIsNotNone(session_manager._default_session)
+        # Проверяем, что сессия создана (используем классовую переменную)
+        self.assertIsNotNone(SessionManager._default_session, "Сессия должна быть создана после get_session()")
         self.assertIsNotNone(default_session)
+        self.assertIs(SessionManager._default_session, default_session, "Возвращенная сессия должна быть той же самой")
         # Закрываем сессию
         session_manager.close_session()
         # Проверяем, что сессия закрыта
-        self.assertIsNone(session_manager._default_session)
-        # Проверяем, ссылку на сессию
+        self.assertIsNone(SessionManager._default_session, "Сессия должна быть закрыта после close_session()")
+        # Проверяем, ссылку на сессию (она все еще существует, но закрыта)
         self.assertIsNotNone(default_session)
         del default_session
         with self.assertRaises(NameError):

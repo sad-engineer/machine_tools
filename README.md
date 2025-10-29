@@ -51,7 +51,6 @@ poetry install
 ```bash
 # Windows (если установлен в стандартную папку)
 "C:\Program Files\PostgreSQL\17\bin\pg_ctl.exe" start -D "C:\Program Files\PostgreSQL\17\data"
-.\psql.exe -U postgres -c "CREATE USER your_user WITH PASSWORD 'your_password';"
 
 # Linux
 sudo systemctl start postgresql
@@ -64,15 +63,21 @@ brew services start postgresql
 ```powershell
 .\psql.exe -U postgres -c "CREATE USER your_user WITH PASSWORD 'your_password';"
 ```
-Создание базы данных не требуется - команда machine_tools init создаст её автоматически.
 
-4) Передайте настройки подключения.
+4) Передайте созданному пользователю права для работы с базой
+```powershell
+.\psql.exe -U postgres -h localhost -p 5432 -c "ALTER ROLE your_user CREATEDB;"
+```
+
+### Настройка пакета для работы с данными
+
+1) Передайте настройки подключения.
 ```bash
-machine_tools setup-database-connection
+machine_tools setup-db-connection
 # или просто запустите любую команду, мастер настройки запустится автоматически
 ```
 
-5) Установите базу данных 
+2) Установите базу данных 
 
 Проект использует базу данных станков. База данных поставляется с пакетом machine_tools. 
 Перед использованием пакетных данных, необходимо инициализировать данные.

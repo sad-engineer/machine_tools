@@ -39,6 +39,7 @@ from machine_tools.app.models import Base, Machine, TechnicalRequirement
 def create_database():
     """Создает базу данных, если она не существует"""
     try:
+        settings = get_settings()
         conn = psycopg2.connect(
             dbname="postgres",
             user=settings.POSTGRES_USER,
@@ -54,7 +55,12 @@ def create_database():
 
         if not exists:
             print(CREATING_DATABASE.format(db_name=settings.POSTGRES_DB))
-            cur.execute(CREATE_DATABASE_WITH_ENCODING.format(db_name=settings.POSTGRES_DB))
+            cur.execute(
+                CREATE_DATABASE_WITH_ENCODING.format(
+                    db_name=settings.POSTGRES_DB,
+                    owner=settings.POSTGRES_USER
+                )
+            )
             print(DATABASE_CREATED_SUCCESS)
         else:
             print(DATABASE_ALREADY_EXISTS.format(db_name=settings.POSTGRES_DB))

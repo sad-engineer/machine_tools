@@ -102,7 +102,6 @@ def save_setting(key: str, value: str) -> None:
         f.write(f"API_V1_STR={current_settings.get('API_V1_STR', '/api/v1')}\n")
 
 
-@lru_cache()
 def get_settings() -> Settings:
     """Получить настройки приложения"""
     return Settings()
