@@ -167,12 +167,8 @@ class QueryBuilder:
         # Применяем фильтры
         if self._filters:
             self._query = self._query.where(and_(*self._filters))
-
-        # Применяем сортировку
         if self._order_by:
             self._query = self._query.order_by(*self._order_by)
-
-        # Применяем лимит и смещение
         if self._limit is not None:
             self._query = self._query.limit(self._limit)
         if self._offset is not None:
@@ -183,11 +179,8 @@ class QueryBuilder:
     def execute(self) -> Any:
         """Выполнение запроса"""
         query = self.build()
-
-        # Если нет явной сортировки, сортируем по id
         if not self._order_by:
             query = query.order_by(Machine.id)
-
         return self.session.execute(query).scalars().all()
 
     def update(self, update_data: Dict[str, Any]) -> int:
@@ -200,34 +193,23 @@ class QueryBuilder:
         Returns:
             int: Количество обновленных записей
         """
-        # Создаем запрос на обновление
         stmt = update(Machine)
-
-        # Применяем фильтры
         if self._filters:
             stmt = stmt.where(and_(*self._filters))
-
         # Удаляем technical_requirements из данных обновления
         # так как это relationship, а не поле
         processed_data = {k: v for k, v in update_data.items() if k != 'technical_requirements'}
 
-        # Применяем данные для обновления
         stmt = stmt.values(**processed_data)
-
-        # Выполняем обновление
         result = self.session.execute(stmt)
         self.session.commit()
 
-        # Если есть technical_requirements, обновляем их отдельно
         if 'technical_requirements' in update_data and update_data['technical_requirements']:
             machine_name = processed_data.get('name')
             if machine_name:
-                # Удаляем старые требования
                 self.session.query(TechnicalRequirement).filter(
                     TechnicalRequirement.machine_name == machine_name
                 ).delete()
-
-                # Добавляем новые требования
                 for req_name, req_value in update_data['technical_requirements'].items():
                     requirement = TechnicalRequirement(
                         machine_name=machine_name,
@@ -244,24 +226,18 @@ class QueryBuilder:
         column_obj = getattr(Machine, column, None)
         if column_obj is None:
             return []
-
         query = select(column_obj).distinct()
         if self._filters:
             query = query.where(and_(*self._filters))
-
         return self.session.execute(query).scalars().all()
 
 
-# Пример использования:
 if __name__ == "__main__":
     from machine_tools.app.db.session_manager import get_session
 
     session = get_session()
     try:
-        # Создаем построитель запросов
         builder = QueryBuilder(session)
-
-        # Пример сложного запроса
         machines = (
             builder.filter_by_group([1, 2])
             .filter_by_power(min_power=0, max_power=20.0)
@@ -272,11 +248,9 @@ if __name__ == "__main__":
         )
         print([machine.name for machine in machines])
 
-        # Получение уникальных значений
         unique_powers = builder.get_unique_values("power")
         print("Уникальные значения мощности:", unique_powers)
 
-        # Пример обновления
         updated_count = builder.filter_by_name("16К20", exact_match=True).update({"power": 15.0, "efficiency": 0.85})
         print(f"Обновлено станков: {updated_count}")
 

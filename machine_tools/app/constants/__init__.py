@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# ---------------------------------------------------------------------------------------------------------------------
+"""
+Модуль констант для базы данных.
+"""
+
+from machine_tools.app.constants.constants import *
+from machine_tools.app.constants.sql_queries import *
+
+__all__ = [
+    # Константы
+    'SUCCESS_CONNECTION',
+    'SUCCESS_DATABASE_CHECK',
+    'SUCCESS_TABLES_CHECK',
+    'ERROR_CONNECTION',
+    'ERROR_DATABASE_CHECK',
+    'ERROR_TABLES_CHECK',
+    'STATUS_OK',
+    'STATUS_MISSING',
+    'STATUS_ERROR',
+    'INFO_TESTING_CONNECTION',
+    'INFO_CHECKING_DATABASE',
+    'INFO_CHECKING_TABLES',
+    'HELP_CONNECTION',
+    'HELP_DATABASE',
+    'HELP_TABLES',
+    'CREATE_DB_COMMAND',
+    'DATABASE_NOT_FOUND',
+    'ERROR_POSTGRES_SERVER',
+    'START_POSTGRES_COMMAND',
+    'CREATING_DATABASE',
+    'DATABASE_CREATED_SUCCESS',
+    'DATABASE_ALREADY_EXISTS',
+    'ERROR_CREATING_DATABASE',
+    'CREATING_TABLES',
+    'TABLES_CREATED_SUCCESS',
+    'ERROR_INIT_DB',
+    'INIT_DB_SUCCESS',
+    'IMPORTING_DATA',
+    'LOADED_RECORDS',
+    'ERROR_FILE_NOT_FOUND',
+    'TECHNICAL_REQUIREMENTS_ALREADY_IMPORTED',
+    'TECHNICAL_REQUIREMENTS_ALREADY_EXIST',
+    'IMPORTING_TECHNICAL_CHARACTERISTICS',
+    'MACHINE_NOT_FOUND',
+    'TECHNICAL_REQUIREMENTS_IMPORT_COMPLETED',
+    'DB_INFO_FORMAT',
+    'DB_STATUS_FORMAT',
+    'ERROR_DETAILS_FORMAT',
+    'POSTGRES_VERSION_FORMAT',
+    # SQL команды
+    'GET_POSTGRES_VERSION',
+    'CHECK_DATABASE_EXISTS',
+    'GET_DATABASE_INFO',
+    'GET_TABLES_LIST',
+    'GET_TABLE_COUNT',
+    'GET_TABLE_COLUMNS',
+    'CHECK_DATABASE_EXISTS_SIMPLE',
+    'CREATE_DATABASE_WITH_ENCODING',
+]

@@ -246,22 +246,17 @@ class MachineFinder:
         self._builder.limit(self._global_limit)
 
 
-# Пример использования:
 if __name__ == "__main__":
-    # Использование как контекстный менеджер
-    with MachineFinder(limit=5) as finder:  # Устанавливаем глобальный лимит
-        # Получение только имен станков (по умолчанию)
+    with MachineFinder(limit=5) as finder:
         powerful_machines = finder.find_by_power(min_power=10.0, order_by_power=True, descending=True)
         print("Топ-5 самых мощных станков (только имена):", powerful_machines)
 
-        # Переключение на полную информацию
         finder.set_formatter(ListMachineInfoFormatter())
         efficient_machines = finder.find_by_efficiency(min_efficiency=0.5, order_by_efficiency=True, descending=True)
         print("\nСтанки с КПД > 50% (полная информация):")
         for machine in efficient_machines:
             print(f"- {machine.name}: мощность={machine.power}кВт, КПД={machine.efficiency}")
 
-        # Возврат к именам
         finder.set_formatter(ListNameFormatter())
         print("\nВсе станки (только имена):", finder.find_all())
 
@@ -273,10 +268,8 @@ if __name__ == "__main__":
 
     with MachineFinder() as finder:
         finder.set_formatter(ListMachineInfoFormatter())
-        # получение информации о станках
         machines = finder.find_all()
 
-        # получение информации о станке по имени
         machines = finder.find_by_name(name="16К20Ф3", exact_match=True)
         if len(machines) == 1:
             machine_info = machines[0]
@@ -296,6 +289,5 @@ if __name__ == "__main__":
             else:
                 print("Станок не найден")
 
-        #  Поддерживает все фильтрации и сортировки
         machines = finder.find_by_power(min_power=10.0, order_by_power=True, descending=True)
         print(machines)

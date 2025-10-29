@@ -127,53 +127,48 @@ if __name__ == "__main__":
 
     machine = Machine()
 
-    # Тестируем accuracy
-    machine.accuracy = "Н"  # OK
+    machine.accuracy = "Н"
     print(machine.accuracy)  # Н
 
-    machine.accuracy = "В/А"  # OK
+    machine.accuracy = "В/А"
     print(machine.accuracy)  # В/А
 
-    machine.accuracy = "П/В"  # OK
+    machine.accuracy = "П/В"
     print(machine.accuracy)  # П/В
 
-    machine.accuracy = 'Нет данных'  # OK
+    machine.accuracy = 'Нет данных'
     print(machine.accuracy)  # "Нет данных"
 
-    # Тестируем automation
-    machine.automation = "Автомат"  # OK
+    machine.automation = "Автомат"
     print(machine.automation)  # "Автомат"
 
-    machine.automation = "Полуавтомат"  # OK
+    machine.automation = "Полуавтомат"
     print(machine.automation)  # "Полуавтомат"
 
-    machine.automation = "Ручной"  # OK
+    machine.automation = "Ручной"
     print(machine.automation)  # "Ручной"
 
-    # Тестируем specialization
-    machine.specialization = "Специализированный"  # OK
+    machine.specialization = "Специализированный"
     print(machine.specialization)  # "Специализированный"
 
-    machine.specialization = "Специальный"  # OK
+    machine.specialization = "Специальный"
     print(machine.specialization)  # "Специальный"
 
-    machine.specialization = "Универсальный"  # OK
+    machine.specialization = "Универсальный"
     print(machine.specialization)  # "Универсальный"
 
-    # Тестируем weight_class
-    machine.weight_class = "Лёгкий"  # OK
+    machine.weight_class = "Лёгкий"
     print(machine.weight_class)  # "Лёгкий"
 
-    machine.weight_class = "Средний"  # OK
+    machine.weight_class = "Средний"
     print(machine.weight_class)  # "Средний"
 
-    machine.weight_class = "Тяжёлый"  # OK
+    machine.weight_class = "Тяжёлый"
     print(machine.weight_class)  # "Тяжёлый"
 
-    machine.weight_class = "Уникальный"  # OK
+    machine.weight_class = "Уникальный"
     print(machine.weight_class)  # "Уникальный"
 
-    # Тестируем ошибки
     try:
         machine.accuracy = "X"  # ValueError: Недопустимое значение точности: X
     except ValueError as e:

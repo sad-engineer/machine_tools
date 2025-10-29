@@ -200,11 +200,8 @@ class MachineUpdater:
         return builder.update(update_data.get_flat_dict())
 
 
-# Пример использования:
 if __name__ == "__main__":
-    # Использование как контекстный менеджер
     with MachineUpdater() as updater:
-        # Обновление станка по ID
         success = updater.update_by_id(
             1,
             {
@@ -214,7 +211,6 @@ if __name__ == "__main__":
         )
         print(f"Обновление по ID: {'успешно' if success else 'не найдено'}")
 
-        # Обновление станков по имени
         updated_count = updater.update_by_name(
             "16К20",
             {
@@ -225,7 +221,6 @@ if __name__ == "__main__":
         )
         print(f"Обновлено станков по имени: {updated_count}")
 
-        # Обновление станков по мощности
         updated_count = updater.update_by_power(
             {
                 "automation": "SEMI_AUTO",

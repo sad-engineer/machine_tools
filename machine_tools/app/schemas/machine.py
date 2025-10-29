@@ -47,7 +47,7 @@ class MachineInfo(BaseModel):
 
     model_config = ConfigDict(
         arbitrary_types_allowed=True,
-        validate_assignment=True,  # Включаем валидацию при присваивании
+        validate_assignment=True,  # валидация при присваивании
     )
 
 
@@ -71,8 +71,6 @@ class MachineUpdate(MachineBase):
             Dict[str, Any]: Словарь с данными для обновления
         """
         data = self.model_dump()
-
-        # Обрабатываем dimensions
         if self.dimensions:
             data.update(
                 {
@@ -83,13 +81,10 @@ class MachineUpdate(MachineBase):
                 }
             )
         data.pop('dimensions', None)
-
-        # Обрабатываем location
         if self.location:
             data.update({'city': self.location.city, 'manufacturer': self.location.manufacturer})
         data.pop('location', None)
 
-        # Преобразуем Enum значения в строки
         if isinstance(data.get('accuracy'), Accuracy):
             data['accuracy'] = data['accuracy'].value
         if isinstance(data.get('automation'), Automation):

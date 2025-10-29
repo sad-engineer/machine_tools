@@ -26,7 +26,6 @@ def update_software_control():
     print(f"names_for_update: {names_for_update}")
     print(f"names_for_no_update: {names_for_no_update}")
 
-    # Создаем временные списки для перемещения элементов
     to_move = []
 
     for name in names_for_no_update:
@@ -38,7 +37,6 @@ def update_software_control():
                 if machine.software_control != SoftwareControl.CNC:
                     print(f"{machine.name}: {machine.machine_type}")
 
-    # Перемещаем элементы после завершения итерации
     for name in to_move:
         names_for_no_update.remove(name)
         names_for_update.append(name)
@@ -47,7 +45,6 @@ def update_software_control():
     print(f"names_for_no_update: {names_for_no_update}")
 
     updated_count = 0
-    # обновляем станки по имени
     for name in names_for_update:
         with MachineUpdater() as updater:
             count = updater.update_by_name(

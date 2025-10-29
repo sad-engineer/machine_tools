@@ -17,5 +17,4 @@ class TechnicalRequirement(Base):
     requirement = Column(String, nullable=False)  # Наименование параметра (например, "Максимальный диаметр обработки")
     value = Column(String, nullable=True)  # Значение параметра (может быть числом, текстом или диапазоном)
 
-    # Связь с моделью Machine
     machine = relationship("Machine", back_populates="technical_requirements")

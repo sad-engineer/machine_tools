@@ -9,8 +9,6 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from machine_tools.app.config import get_settings
 
-settings = get_settings()
-
 
 class SessionManager:
     """
@@ -20,15 +18,28 @@ class SessionManager:
     _instance = None
     _default_session: Optional[Session] = None
     _sessions: Dict[str, Session] = {}
+    _engine = None
+    _SessionLocal = None
 
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(SessionManager, cls).__new__(cls)
-            # Создаем движок БД
-            cls._instance.engine = create_engine(settings.DATABASE_URL)
-            # Создаем фабрику сессий
-            cls._instance.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=cls._instance.engine)
         return cls._instance
+
+    @property
+    def engine(self):
+        """Ленивая инициализация engine"""
+        if self._engine is None:
+            settings = get_settings()  # Вызываем только когда нужно
+            self._engine = create_engine(settings.DATABASE_URL)
+        return self._engine
+
+    @property
+    def SessionLocal(self):
+        """Ленивая инициализация SessionLocal"""
+        if self._SessionLocal is None:
+            self._SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+        return self._SessionLocal
 
     @classmethod
     def get_session(cls, session_id: str = None) -> Session:
@@ -43,12 +54,10 @@ class SessionManager:
             Session: Сессия БД
         """
         if session_id is None:
-            # Используем дефолтную сессию для обычных операций
             if cls._default_session is None:
                 cls._default_session = cls().SessionLocal()
             return cls._default_session
         else:
-            # Создаем новую сессию для изолированных операций
             if session_id not in cls._sessions:
                 cls._sessions[session_id] = cls().SessionLocal()
             return cls._sessions[session_id]
@@ -91,10 +100,8 @@ class SessionManager:
             cls.close_session(session_id)
 
 
-# Создаем глобальный экземпляр менеджера сессий
 session_manager = SessionManager()
 
-# Экспортируем функции для удобства использования
 get_session = session_manager.get_session
 close_session = session_manager.close_session
 get_db = session_manager.get_db

@@ -37,43 +37,165 @@ pip install git+https://github.com/sad-engineer/machine_tools.git
 poetry install
 ```
 
+
 ## Инициализация базы данных
 
 ### Настройка PostgreSQL
 
-Установите PostgreSQL, если еще не установлен:
+1) Установите PostgreSQL, если еще не установлен:
    - Windows: скачайте установщик с [официального сайта](https://www.postgresql.org/download/windows/)
    - Linux: `sudo apt-get install postgresql`
    - Mac: `brew install postgresql`
 
-### Устанавливаем базу данных 
+2) Запустите сервер PostgreSQL, если еще не запущен:
+```bash
+# Windows (если установлен в стандартную папку)
+"C:\Program Files\PostgreSQL\17\bin\pg_ctl.exe" start -D "C:\Program Files\PostgreSQL\17\data"
+.\psql.exe -U postgres -c "CREATE USER your_user WITH PASSWORD 'your_password';"
 
-Проект использует базу данных станков. 
+# Linux
+sudo systemctl start postgresql
 
-База данных содержится в пакете machine_tools, который устанавливается при установке зависимостей. 
+# Mac
+brew services start postgresql
+```
 
-Но перед использованием, необходимо инициализировать эту базу.
+3) Создайте подключение для работы с базой данных по станкам:
+```powershell
+.\psql.exe -U postgres -c "CREATE USER your_user WITH PASSWORD 'your_password';"
+```
+Создание базы данных не требуется - команда machine_tools init создаст её автоматически.
+
+4) Передайте настройки подключения.
+```bash
+machine_tools setup-database-connection
+# или просто запустите любую команду, мастер настройки запустится автоматически
+```
+
+5) Установите базу данных 
+
+Проект использует базу данных станков. База данных поставляется с пакетом machine_tools. 
+Перед использованием пакетных данных, необходимо инициализировать данные.
 
 ```bash
 # Вариант 1: Используя команду machine_tools
 machine_tools init
-
-# Вариант 2: Через Python модуль
-python -m machine_tools.app.db.init_db
 ```
 
-## Структура проекта
+### Мастер настройки
+
+При первом запуске любой команды (например, `machine_tools status`), если файл настроек отсутствует, автоматически запустится мастер первоначальной настройки.
+
+Мастер запросит у вас:
+- **Хост PostgreSQL** 
+- **Порт PostgreSQL** 
+- **Пользователь PostgreSQL**
+- **Пароль PostgreSQL**
+
+После ввода настроек автоматически проверяется подключение к серверу PostgreSQL.
+
+
+### Настройка подключения к базе данных
+
+Проект предоставляет удобные команды CLI для проверки соединения, управления настройками подключения к PostgreSQL:
+
+| Параметр                        | Команда               | Поддерживаемые параметры |
+|---------------------------------|-----------------------|--------------------------|
+| Загрузить настройки подключения | `setup-db-connection` | `--verbose` или `-v`     |
+ | Проверка подключения            | `check-connection`    | `--verbose` или `-v`     |
+| Проверка базы данных            | `check-database`      | `--verbose` или `-v`     |
+| Проверка таблиц                 | `check-tables`        | `--verbose` или `-v`     |
+| Общий статус системы            | `status`              | `--verbose` или `-v`     |
+
+* Например:
+```bash
+machine_tools status
+# или 
+python -m machine_tools.cli status
+
+machine_tools status --verbose
+# или 
+python -m machine_tools.cli status --verbose
 ```
-machine_tools/
-├── alembic/ # Миграции базы данных
-├── app/
-│ ├── db/ # Работа с базой данных
-│ ├── models/ # Модели SQLAlchemy
-│ └── resources/ # CSV-файлы с данными
-├── tests/ # Тесты
-├── pyproject.toml # Зависимости и метаданные
-└── setup.cfg # Настройки установки
+
+#### Команда `status` - Проверка статуса системы
+
+Команда `status` выполняет комплексную проверку всей системы:
+
+1. **Проверка наличия настроек** - если файл настроек отсутствует, автоматически запускается мастер настройки
+2. **Проверка подключения к PostgreSQL** - проверяет доступность сервера БД
+3. **Проверка базы данных** - проверяет существование базы данных `machine_tools`
+4. **Проверка таблиц** - проверяет наличие необходимых таблиц в базе данных
+
+```bash
+# Базовая проверка
+machine_tools status
+
+# Проверка с подробным выводом ошибок
+machine_tools status --verbose
 ```
+Используйте флаг `--verbose` для подробной информации об ошибке
+
+#### Настройка параметров подключения
+
+| Параметр                         | Команда                | Параметр с примеров использования              |
+|----------------------------------|------------------------|------------------------------------------------|
+| Просмотр настроек подключения    | `config show`          |                                                |
+| Хост                             | `config set-host`      | `--host "192.168.1.100"`                       |
+| Порт                             | `config set-port`      | `--port 5432`                                  |
+| Пользователь                     | `config set-user`      | `--user "user"`                                |
+| Пароль                           | `config set-password`  | `--password "new_password"`                    |
+| Комплексно                       | `config set`           | `--host localhost --port 5432 --user postgres` |
+
+* Например:
+```bash
+machine_tools config set-host --host "192.168.1.100"
+# или через запрос:
+machine_tools config set-host
+# Команда запросит адрес хоста интерактивно
+```
+
+ Команда `config set` позволяет настроить все основные параметры подключения к базе данных одновременно:
+
+```bash
+machine_tools config set --host localhost --port 5432 --user postgres
+#Параметры команды:
+# --host - Хост PostgreSQL сервера (по умолчанию: localhost)
+# --port - Порт PostgreSQL сервера (по умолчанию: 5432)  
+# --user - Имя пользователя PostgreSQL (по умолчанию: local_user)
+# --password - Пароль (запрашивается интерактивно, скрытый ввод)
+
+# Альтернативный способ:
+python -m machine_tools.cli config set --host localhost --port 5432 --user postgres
+```
+
+### Файл настроек
+
+Настройки сохраняются в файл `settings/machine_tools.env`:
+
+```env
+# Настройки базы данных
+POSTGRES_USER=postgres_user
+POSTGRES_PASSWORD=your_password
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB=machine_tools
+
+# Настройки приложения
+APP_NAME=Machine Tools
+DEBUG=True
+API_V1_STR=/api/v1
+```
+
+#### Проверка данных
+
+| Параметр                          | Команда                       | Параметр         |
+|-----------------------------------|-------------------------------|------------------|
+| Просмотр станков (10 строк)       | `show-machines`               |                  |
+| Просмотр станков (N строк)        | `show-machines`               | `--limit N`      |
+| Просмотр техтребований (10 строк) | `show-technical-requirements` |                  |
+| Просмотр техтребований (N строк)  | `show-technical-requirements` | `--limit N`      |
+
 
 ## Использование
 
