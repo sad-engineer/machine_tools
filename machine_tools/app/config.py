@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------------------------------------------------
 import os
-from functools import lru_cache
 from pathlib import Path
-
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 

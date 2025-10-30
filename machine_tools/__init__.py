@@ -16,6 +16,7 @@ from machine_tools.app.formatters import (
 )
 from machine_tools.app.models import Machine, TechnicalRequirement
 from machine_tools.app.schemas import Dimensions, Location, MachineInfo
+from machine_tools.app.db import session_manager, get_session, close_session, get_db
 from machine_tools.app.services import FinderContainer as Container
 from machine_tools.app.services import (
     find_names,
@@ -67,6 +68,11 @@ __all__ = [
     "MachineInfo",
     # контейнеры
     "Container",
+    # менеджер сессий
+    "session_manager",
+    "get_session",
+    "close_session",
+    "get_db",
     # функции
     "find_names",
     "get_finder_with_list_names",

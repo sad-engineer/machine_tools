@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
     names = []
     with MachineFinder(limit=None) as finder:
-        names.extend(finder.all())
+        names.extend(finder.find_all())
     print(f"names: {names}")
 
     for name in names:

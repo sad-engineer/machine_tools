@@ -14,6 +14,7 @@ from machine_tools.app.checks import (
 )
 from machine_tools.app.constants import HELP_CONNECTION, HELP_DATABASE, HELP_TABLES
 from machine_tools.app.db.init_db import init_db_from_csv
+from machine_tools.app.db.delete_db import delete_database
 from machine_tools.app.db.session_manager import session_manager
 from machine_tools.version import __version__
 
@@ -31,6 +32,23 @@ def init(ctx, verbose):
     """Инициализирует базу данных"""
     __ensure_settings_configured(ctx, verbose)
     init_db_from_csv()
+
+
+@main.command(name="drop-db")
+@click.option('--verbose', '-v', is_flag=False, help='Показать детали ошибки')
+@click.pass_context
+def drop_db(ctx, verbose):
+    """Удаляет базу данных machine_tools"""
+    __ensure_settings_configured(ctx, verbose)
+    try:
+        success = delete_database()
+        if success:
+            click.echo("[OK] База данных удалена")
+        else:
+            click.echo("[ERROR] Не удалось удалить базу данных", err=True)
+    except Exception as e:
+        click.echo(f"[ERROR] Ошибка при удалении базы данных: {e}", err=True)
+
 
 
 def __ensure_settings_configured(ctx, verbose):

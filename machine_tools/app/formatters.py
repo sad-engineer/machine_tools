@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Any, Dict, List, Protocol, Union
+from typing import Dict, List, Protocol
 
 from machine_tools.app.models.machine import Machine
 from machine_tools.app.schemas.machine import MachineInfo
