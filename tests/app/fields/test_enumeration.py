@@ -18,7 +18,7 @@ class TestEnumerationField(unittest.TestCase):
 
     def test_01_abstract_methods(self):
         """Тест абстрактных методов"""
-        # Проверяем, что нельзя создать экземпляр абстрактного класса
+
         with self.assertRaises(TypeError):
             EnumerationField()
 
@@ -40,11 +40,10 @@ class TestAccuracyField(unittest.TestCase):
 
     def test_02_set_valid_value(self):
         """Тест установки корректного значения"""
-        # Устанавливаем строковое значение
+
         self.test_instance.accuracy = "Н"
         self.assertEqual(self.test_instance.accuracy, "Н")
 
-        # Устанавливаем значение перечисления
         self.test_instance.accuracy = Accuracy.P
         self.assertEqual(self.test_instance.accuracy, Accuracy.P.value)
 
@@ -79,11 +78,10 @@ class TestAutomationField(unittest.TestCase):
 
     def test_02_set_valid_value(self):
         """Тест установки корректного значения"""
-        # Устанавливаем строковое значение
+
         self.test_instance.automation = "Автомат"
         self.assertEqual(self.test_instance.automation, "Автомат")
 
-        # Устанавливаем значение перечисления
         self.test_instance.automation = Automation.AUTOMATIC
         self.assertEqual(self.test_instance.automation, Automation.AUTOMATIC.value)
 
@@ -118,11 +116,10 @@ class TestSpecializationField(unittest.TestCase):
 
     def test_02_set_valid_value(self):
         """Тест установки корректного значения"""
-        # Устанавливаем строковое значение
+
         self.test_instance.specialization = "Специализированный"
         self.assertEqual(self.test_instance.specialization, "Специализированный")
 
-        # Устанавливаем значение перечисления
         self.test_instance.specialization = Specialization.SPECIALIZED
         self.assertEqual(self.test_instance.specialization, Specialization.SPECIALIZED.value)
 
@@ -157,11 +154,10 @@ class TestWeightClassField(unittest.TestCase):
 
     def test_02_set_valid_value(self):
         """Тест установки корректного значения"""
-        # Устанавливаем строковое значение
+
         self.test_instance.weight_class = "Лёгкий"
         self.assertEqual(self.test_instance.weight_class, "Лёгкий")
 
-        # Устанавливаем значение перечисления
         self.test_instance.weight_class = WeightClass.LIGHT
         self.assertEqual(self.test_instance.weight_class, WeightClass.LIGHT.value)
 

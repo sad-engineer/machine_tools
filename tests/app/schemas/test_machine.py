@@ -11,7 +11,6 @@ from machine_tools.app.schemas.machine import (
     Dimensions,
     Location,
     Machine,
-    MachineCreate,
     MachineInfo,
     MachineUpdate,
 )
@@ -116,27 +115,22 @@ class TestMachineInfo(unittest.TestCase):
 
     def test_03_invalid_values(self):
         """Тест невалидных значений"""
-        # Пустое имя
+
         with self.assertRaises(ValidationError):
             MachineInfo(name="")
 
-        # Отрицательная группа
         with self.assertRaises(ValidationError):
             MachineInfo(name="16К20", group=-1)
 
-        # Группа больше 9
         with self.assertRaises(ValidationError):
             MachineInfo(name="16К20", group=10)
 
-        # Отрицательная мощность
         with self.assertRaises(ValidationError):
             MachineInfo(name="16К20", power=-10.0)
 
-        # КПД больше 1
         with self.assertRaises(ValidationError):
             MachineInfo(name="16К20", efficiency=1.5)
 
-        # Отрицательная масса
         with self.assertRaises(ValidationError):
             MachineInfo(name="16К20", weight=-2000.0)
 
@@ -159,7 +153,6 @@ class TestMachineUpdate(unittest.TestCase):
 
         flat_dict = machine.get_flat_dict()
 
-        # Проверяем, что вложенные структуры развернуты
         self.assertEqual(flat_dict['length'], 2000)
         self.assertEqual(flat_dict['width'], 1000)
         self.assertEqual(flat_dict['height'], 1500)
@@ -167,14 +160,12 @@ class TestMachineUpdate(unittest.TestCase):
         self.assertEqual(flat_dict['city'], "Москва")
         self.assertEqual(flat_dict['manufacturer'], "Завод им. Орджоникидзе")
 
-        # Проверяем, что Enum значения преобразованы в строки
         self.assertEqual(flat_dict['accuracy'], Accuracy.P.value)
         self.assertEqual(flat_dict['automation'], Automation.AUTOMATIC.value)
         self.assertEqual(flat_dict['software_control'], SoftwareControl.CNC.value)
         self.assertEqual(flat_dict['specialization'], Specialization.UNIVERSAL.value)
         self.assertEqual(flat_dict['weight_class'], WeightClass.MEDIUM.value)
 
-        # Проверяем, что вложенные структуры удалены
         self.assertNotIn('dimensions', flat_dict)
         self.assertNotIn('location', flat_dict)
 

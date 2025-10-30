@@ -11,7 +11,7 @@ class TestAccuracy(unittest.TestCase):
 
     def test_01_values(self):
         """Тест проверки значений перечисления"""
-        # Проверяем все значения
+
         self.assertEqual(Accuracy.S.value, "С")
         self.assertEqual(Accuracy.S_A.value, "С/А")
         self.assertEqual(Accuracy.A.value, "А")
@@ -26,7 +26,7 @@ class TestAccuracy(unittest.TestCase):
 
     def test_02_from_str_valid(self):
         """Тест преобразования корректных строковых значений"""
-        # Проверяем преобразование для каждого значения
+
         self.assertEqual(Accuracy.from_str("С"), Accuracy.S)
         self.assertEqual(Accuracy.from_str("С/А"), Accuracy.S_A)
         self.assertEqual(Accuracy.from_str("А"), Accuracy.A)
@@ -39,17 +39,15 @@ class TestAccuracy(unittest.TestCase):
         self.assertEqual(Accuracy.from_str("Нет данных"), Accuracy.NO_DATA)
         self.assertEqual(Accuracy.from_str("ТУ ТВ-16-0001"), Accuracy.TU_TB_16_0001)
 
-        # Проверяем обработку пробелов
         self.assertEqual(Accuracy.from_str("  С  "), Accuracy.S)
         self.assertEqual(Accuracy.from_str("  С/А  "), Accuracy.S_A)
 
     def test_03_from_str_invalid(self):
         """Тест обработки некорректных строковых значений"""
-        # Проверяем обработку некорректных значений
+
         with self.assertRaises(ValueError) as context:
             Accuracy.from_str("Некорректное значение")
 
-        # Проверяем, что сообщение об ошибке содержит список допустимых значений
         error_message = str(context.exception)
         self.assertIn("Недопустимое значение точности", error_message)
         self.assertIn("Допустимые значения", error_message)
@@ -58,7 +56,7 @@ class TestAccuracy(unittest.TestCase):
 
     def test_04_case_sensitivity(self):
         """Тест чувствительности к регистру"""
-        # Проверяем, что значения чувствительны к регистру
+
         with self.assertRaises(ValueError):
             Accuracy.from_str("с")  # строчная буква вместо заглавной
 

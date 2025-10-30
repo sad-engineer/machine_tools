@@ -16,7 +16,7 @@ class TestMachine(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Подготовка тестового окружения"""
-        # Создаем тестовую базу данных в памяти
+
         cls.engine = create_engine('sqlite:///:memory:')
         Base.metadata.create_all(cls.engine)
         Session = sessionmaker(bind=cls.engine)
@@ -24,15 +24,15 @@ class TestMachine(unittest.TestCase):
 
     def setUp(self):
         """Подготовка к каждому тесту"""
-        # Откатываем предыдущую транзакцию, если она была
+
         self.session.rollback()
-        # Очищаем таблицу перед каждым тестом
+
         self.session.query(Machine).delete()
         self.session.commit()
 
     def test_01_create_machine(self):
         """Тест создания станка"""
-        # Создаем тестовый станок
+
         machine = Machine(
             name="16К20",
             group=1,
@@ -54,14 +54,11 @@ class TestMachine(unittest.TestCase):
             machine_type="Токарный",
         )
 
-        # Сохраняем в базу
         self.session.add(machine)
         self.session.commit()
 
-        # Получаем из базы
         saved_machine = self.session.query(Machine).filter_by(name="16К20").first()
 
-        # Проверяем все поля
         self.assertEqual(saved_machine.name, "16К20")
         self.assertEqual(saved_machine.group, 1)
         self.assertEqual(saved_machine.type, 1)
@@ -83,37 +80,33 @@ class TestMachine(unittest.TestCase):
 
     def test_02_unique_name_constraint(self):
         """Тест ограничения уникальности имени"""
-        # Создаем первый станок
+
         machine1 = Machine(name="16К20")
         self.session.add(machine1)
         self.session.commit()
 
-        # Пытаемся создать второй станок с тем же именем
         machine2 = Machine(name="16К20")
         self.session.add(machine2)
 
-        # Должно быть исключение
         with self.assertRaises(Exception):
             self.session.commit()
 
     def test_03_not_null_name_constraint(self):
         """Тест ограничения NOT NULL для имени"""
-        # Пытаемся создать станок без имени
+
         machine = Machine()
         self.session.add(machine)
 
-        # Должно быть исключение
         with self.assertRaises(Exception):
             self.session.commit()
 
     def test_04_default_timestamps(self):
         """Тест значений по умолчанию для временных меток"""
-        # Создаем станок
+
         machine = Machine(name="16К20")
         self.session.add(machine)
         self.session.commit()
 
-        # Проверяем, что временные метки установлены
         self.assertIsNotNone(machine.created_at)
         self.assertIsNotNone(machine.updated_at)
         self.assertIsInstance(machine.created_at, datetime)
@@ -121,31 +114,27 @@ class TestMachine(unittest.TestCase):
 
     def test_05_relationship_technical_requirements(self):
         """Тест связи с техническими требованиями"""
-        # Создаем станок
+
         machine = Machine(name="16К20")
         self.session.add(machine)
         self.session.commit()
 
-        # Проверяем, что связь существует
         self.assertIsNotNone(machine.technical_requirements)
         self.assertEqual(len(machine.technical_requirements), 0)
 
     def test_06_update_timestamp(self):
         """Тест обновления временной метки"""
-        # Создаем станок
+
         machine = Machine(name="16К20")
         self.session.add(machine)
         self.session.commit()
 
-        # Запоминаем начальные временные метки
         created_at = machine.created_at
         updated_at = machine.updated_at
 
-        # Обновляем станок
         machine.power = 15.0
         self.session.commit()
 
-        # Проверяем, что created_at не изменился, а updated_at обновился
         self.assertEqual(machine.created_at, created_at)
         self.assertGreater(machine.updated_at, updated_at)
 

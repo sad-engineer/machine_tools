@@ -143,7 +143,6 @@ class TestMachineFormatters(unittest.TestCase):
         """Тест форматтеров с пустым списком"""
         empty_machines: List[Machine] = []
 
-        # Проверяем все форматтеры
         formatters = [
             ListNameFormatter(),
             ListMachineInfoFormatter(),

@@ -22,7 +22,7 @@ class TestQueryBuilder(unittest.TestCase):
 
     def setUp(self):
         """Подготовка тестовых данных перед каждым тестом"""
-        # Очищаем все таблицы перед каждым тестом
+
         Base.metadata.drop_all(self.engine)
         Base.metadata.create_all(self.engine)
 
@@ -65,7 +65,7 @@ class TestQueryBuilder(unittest.TestCase):
     def tearDown(self):
         """Очистка после каждого теста"""
         self.session.close()
-        # Очищаем все таблицы после каждого теста
+
         Base.metadata.drop_all(self.engine)
 
     @classmethod
